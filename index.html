@@ -797,7 +797,7 @@ function MiniMqtt(url, opts) {
 (function(){
 'use strict';
 var BROKER='wss://broker.emqx.io:8084/mqtt';
-var ROOM_DEFAULT='xiuxian-q7k2mz';
+var ROOM_DEFAULT='xiuxian-gz22cd';
 var ROOM=(function(){var h=(location.hash||'').replace(/^#/,'').toLowerCase();return /^[a-z0-9-]{4,32}$/.test(h)?h:ROOM_DEFAULT;})();
 var PREFIX='guoshen/v1/'+ROOM+'/';
 var DEFAULT_STATUS={machine:'passed',selftest:'missing',manual:'pending',submittedAt:'2026-09-27',version:'0.9.1',modapi:'中国版3.9（基岩版1.21.120）',note:'测试工具 3.9.100.297020 里还搜不到',by:'',at:0};
