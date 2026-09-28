@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1f1411">
+<meta name="format-detection" content="telephone=no">
+<meta name="description" content="和朋友一起在线上香、叩首、敲木鱼、求签许愿，为《非常了不起的修仙模拟》祈求早日过审。">
+<title>过审祈福殿</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;900&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --hall:#1f1411;--hall-2:#2a1a15;--hall-3:#37231b;
+  --line:rgba(216,178,92,.26);--line-2:rgba(216,178,92,.52);
+  --gold:#d8b25c;--gold-hi:#f0d38a;--gold-lo:#9c7f45;
+  --cinnabar:#b4372b;
+  --ash:#ece3d3;--ash-2:#bcae99;--ash-3:#968874;
+  --paper:#efe6d2;--ink:#2a211c;--ink-2:#6f5f4f;--seal:#9c2a20;
+  --jade:#8fc3a6;--amber:#e8aa52;--danger:#e37564;
+  --f-brush:"Ma Shan Zheng","STKaiti","KaiTi","Kaiti SC",serif;
+  --f-serif:"Noto Serif SC","Source Han Serif SC","Songti SC","SimSun",serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--hall);-webkit-text-size-adjust:100%}
+body{margin:0;background:radial-gradient(1100px 520px at 50% -8%,rgba(216,178,92,.11),transparent 62%),var(--hall);
+  color:var(--ash);font-family:var(--f-serif);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button,input,select{font:inherit;color:inherit}
+button{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.brush{font-family:var(--f-brush);font-weight:400}
+
+.page{max-width:1180px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left));
+  padding-block:max(14px,env(safe-area-inset-top)) max(40px,env(safe-area-inset-bottom));display:grid;gap:18px}
+
+/* header */
+.top{display:flex;align-items:flex-end;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
+.brand h1{font-family:var(--f-brush);font-weight:400;font-size:clamp(32px,5.4vw,46px);line-height:1;margin:0;color:var(--gold-hi);letter-spacing:.08em}
+.brand p{margin:8px 0 0;color:var(--ash-2);font-size:14px;max-width:62ch}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ash-2);font-variant-numeric:tabular-nums}
+.pill b{color:var(--ash);font-weight:600}
+.dotc{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:none}
+.pill[data-conn="online"] .dotc{background:var(--jade);box-shadow:0 0 0 3px rgba(143,195,166,.18)}
+.pill[data-conn="offline"] .dotc{background:var(--danger)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ash);border-radius:999px;padding:5px 13px;font-size:13px;cursor:pointer;transition:border-color .2s}
+.btn-ghost:hover{border-color:var(--gold)}
+.btn-gold{background:linear-gradient(180deg,#f0d38a,#c99a45);border:0;color:#2a1a12;border-radius:999px;padding:8px 20px;font-weight:600;cursor:pointer;letter-spacing:.08em}
+
+/* progress */
+.progress{display:grid;gap:8px}
+.track{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:10px;background:var(--hall-2);overflow:hidden}
+.stage{flex:1 1 200px;padding:10px 16px 11px;display:grid;gap:1px;min-width:0}
+.stage + .stage{border-left:1px solid var(--line)}
+.stage .k{font-size:12px;letter-spacing:.16em;color:var(--ash-3)}
+.stage .v{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15.5px}
+.stage .vt{color:var(--ash)}
+.dot{width:9px;height:9px;border-radius:50%;background:currentColor;flex:none;box-shadow:0 0 0 3px color-mix(in srgb,currentColor 22%,transparent)}
+.ok{color:var(--jade)} .wait{color:var(--amber)} .bad{color:var(--danger)} .muted{color:var(--ash-3)}
+.stage .sub{font-size:12.5px;color:var(--ash-2);min-height:1.3em}
+.prog-foot{display:flex;justify-content:space-between;align-items:flex-start;gap:8px 16px;flex-wrap:wrap;font-size:12.5px;color:var(--ash-3)}
+.edit summary{cursor:pointer;color:var(--gold);list-style:none}
+.edit summary::-webkit-details-marker{display:none}
+.edit[open] summary{margin-bottom:8px}
+.edit form{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 12px;background:var(--hall-2);border:1px solid var(--line);border-radius:10px;padding:12px;max-width:640px}
+.edit label{display:grid;gap:3px;font-size:12px;color:var(--ash-2)}
+.edit .wide{grid-column:1/-1}
+.edit select,.edit input,.panel input{background:var(--hall);border:1px solid var(--line);border-radius:6px;padding:7px 9px;color:var(--ash);font-size:16px;width:100%}
+.edit .row{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.edit .row small{color:var(--ash-3)}
+@media (max-width:640px){.stage{flex-basis:100%}.stage + .stage{border-left:0;border-top:1px solid var(--line)}}
+
+/* hall */
+.hall{display:grid;justify-items:center;gap:12px}
+.scene,.merit,.actions,.hint{width:100%;max-width:880px}
+@supports (width:min(1px,max(1px,calc(1svh * 2)))){
+  .scene,.merit,.actions,.hint{width:min(100%,880px,max(300px,calc((100svh - 340px) * 4 / 3)))}
+}
+.scene{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#150c0a;
+  box-shadow:0 34px 60px -34px rgba(0,0,0,.8),inset 0 0 0 1px rgba(216,178,92,.2);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.stage-inner{position:absolute;inset:0;transform-origin:50% 100%}
+.stage-inner svg,.stage-inner canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.stage-inner canvas{pointer-events:none}
+.stage-inner.bowing{animation:bow 1.1s cubic-bezier(.45,.05,.3,1)}
+@keyframes bow{0%{transform:none;filter:none}38%,60%{transform:perspective(1000px) rotateX(10deg) translateY(4%) scale(.97);filter:brightness(.62)}100%{transform:none;filter:none}}
+.rays{transform-box:view-box;transform-origin:400px 238px;animation:spin 150s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.flame{transform-box:fill-box;transform-origin:50% 100%;animation:flick 1.9s ease-in-out infinite}
+#candleR .flame{animation-duration:2.3s;animation-delay:-.7s}
+@keyframes flick{0%,100%{transform:scale(1,1) skewX(0)}25%{transform:scale(.93,1.07) skewX(2deg)}50%{transform:scale(1.05,.95) skewX(-1.5deg)}75%{transform:scale(.97,1.04) skewX(1deg)}}
+.glow{transform-box:fill-box;transform-origin:center;animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{50%{opacity:.72}}
+.hot{cursor:pointer}
+.hot:hover #muyuBody,.hot:hover #cushionBody,.hot:hover #signbox,.hot:hover .burner-body{filter:brightness(1.14)}
+#muyuBody{transform-box:fill-box;transform-origin:50% 100%}
+#muyuBody.knock{animation:knock .18s ease-out}
+@keyframes knock{40%{transform:scale(1.05,.92)}}
+#mallet{transform-box:view-box;transform-origin:272px 390px}
+#mallet.knock{animation:mallet .18s ease-out}
+@keyframes mallet{40%{transform:rotate(-16deg)}}
+#signbox{transform-box:view-box;transform-origin:545px 386px}
+#signbox.shake{animation:shake .9s ease-in-out}
+@keyframes shake{10%{transform:rotate(-9deg)}25%{transform:rotate(8deg)}40%{transform:rotate(-8deg)}55%{transform:rotate(7deg)}70%{transform:rotate(-5deg)}85%{transform:rotate(3deg)}100%{transform:none}}
+#popStick{opacity:0}
+#popStick.pop{animation:pop 1.3s ease-out forwards}
+@keyframes pop{0%{opacity:0;transform:translateY(0)}25%{opacity:1;transform:translateY(-28px)}80%{opacity:1;transform:translateY(-28px)}100%{opacity:0;transform:translateY(-28px)}}
+#cushionBody{transform-box:fill-box;transform-origin:50% 100%}
+#cushionBody.press{animation:press .9s ease-out}
+@keyframes press{30%{transform:scale(1.02,.88)}}
+.ripple{fill:none;stroke:#f0d38a;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ripple 1.2s ease-out forwards}
+@keyframes ripple{from{opacity:.9;transform:scale(.45)}to{opacity:0;transform:scale(1.6)}}
+.floaters{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.floater{position:absolute;transform:translate(-50%,-50%);font-weight:900;color:var(--gold-hi);text-shadow:0 0 14px rgba(240,200,110,.65);
+  animation:float 1.3s ease-out forwards;font-size:clamp(13px,2.1vw,19px);white-space:nowrap;font-variant-numeric:tabular-nums}
+.floater.other{color:#e9dcc4;opacity:.75;font-weight:600;text-shadow:none}
+@keyframes float{from{opacity:0;transform:translate(-50%,-20%)}15%{opacity:1}to{opacity:0;transform:translate(-50%,-240%)}}
+.toasts{position:absolute;left:10px;bottom:10px;display:grid;gap:6px;max-width:min(64%,340px);pointer-events:none}
+.toast{background:rgba(22,13,11,.8);border:1px solid var(--line);color:var(--ash);padding:5px 10px;border-radius:6px;font-size:13px;line-height:1.45;animation:tin .3s ease-out;transition:opacity .4s}
+.toast.out{opacity:0}
+.toast b{color:var(--gold-hi);font-weight:600}
+@keyframes tin{from{opacity:0;transform:translateY(6px)}}
+
+/* merit */
+.merit{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 20px;align-items:center}
+.m-main{display:grid;gap:2px}
+.label{font-size:12px;letter-spacing:.18em;color:var(--ash-3)}
+.num{font-weight:900;font-size:clamp(30px,4.4vw,42px);line-height:1;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.m-bar{display:grid;gap:6px;align-self:end;padding-bottom:4px}
+.bar{height:6px;border-radius:3px;background:rgba(216,178,92,.14);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-lo),var(--gold-hi));transition:width .6s ease}
+.m-next{font-size:13px;color:var(--ash-2)}
+.aside{font-size:13px;color:var(--ash-2);text-align:right;font-variant-numeric:tabular-nums;line-height:1.7}
+.aside b{color:var(--ash);font-weight:600}
+@media (max-width:600px){.merit{grid-template-columns:1fr}.aside{text-align:left}}
+
+/* actions */
+.actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.act{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:linear-gradient(180deg,var(--hall-3),var(--hall-2));color:var(--ash);border-radius:10px;
+  padding:10px 6px 9px;display:grid;justify-items:center;gap:2px;cursor:pointer;min-height:78px;transition:border-color .2s,transform .08s,filter .2s}
+.act svg{width:26px;height:26px;stroke:var(--gold);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.act b{font-size:16px;font-weight:600;letter-spacing:.12em}
+.act small{font-size:12px;color:var(--ash-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.act:hover{border-color:var(--gold)}
+.act:active{transform:translateY(1px)}
+.act.primary{background:linear-gradient(180deg,#c3463a,#8f271f);border-color:rgba(240,211,138,.55)}
+.act.primary svg{stroke:var(--gold-hi)}
+.act.primary small{color:#f3d7c4}
+.act[aria-disabled="true"]{filter:saturate(.5) brightness(.85)}
+.hint{margin:0;color:var(--ash-2);font-size:14px;text-align:center;min-height:1.6em}
+@media (max-width:520px){.act{min-height:64px;padding:8px 2px}.act small{display:none}.act b{font-size:14px;letter-spacing:.04em}}
+
+/* lower */
+.lower{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start;margin-top:6px}
+@media (max-width:900px){.lower{grid-template-columns:1fr}}
+.sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.sec-head h2{font-family:var(--f-brush);font-weight:400;font-size:30px;line-height:1.1;color:var(--gold-hi);margin:0;letter-spacing:.08em}
+.sec-head .note{color:var(--ash-3);font-size:13px}
+.sec-head .btn-ghost{margin-left:auto}
+.wall{border-radius:12px;padding:22px 16px 18px;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 46px),linear-gradient(180deg,#3a2419,#2b1a13)}
+.tags{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:26px 14px}
+.tag{position:relative;padding:20px 14px 12px;border-radius:4px 4px 12px 12px;color:#f8e8c8;background:linear-gradient(180deg,#bb3d30,#8c291f);
+  box-shadow:0 12px 18px -12px rgba(0,0,0,.85),inset 0 0 0 1px rgba(240,211,138,.35);transform-origin:50% -12px;animation:sway 6s ease-in-out infinite}
+.tag:nth-child(3n){animation-duration:7.2s;animation-delay:-2.4s}
+.tag:nth-child(3n+1){animation-duration:5.5s;animation-delay:-1.1s}
+.tag::before{content:"";position:absolute;left:50%;top:-13px;width:10px;height:10px;border-radius:50%;transform:translateX(-50%);background:radial-gradient(circle at 35% 35%,#f3dc98,#9c7437)}
+.tag::after{content:"";position:absolute;left:50%;top:6px;width:7px;height:7px;border-radius:50%;transform:translateX(-50%);background:#2b1a13;box-shadow:inset 0 0 0 1.5px rgba(240,211,138,.55)}
+.tag p{margin:0;font-size:15px;line-height:1.55;overflow-wrap:anywhere}
+.tag footer{margin-top:9px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:2px 8px;font-size:12px;color:#f1cfa9}
+.tag .rm{background:none;border:0;color:#f1cfa9;cursor:pointer;font-size:12px;padding:0;text-decoration:underline;text-underline-offset:2px}
+@keyframes sway{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.1deg)}}
+.empty p{margin:0 0 10px;color:var(--ash-2)}
+.presets{display:flex;flex-wrap:wrap;gap:8px}
+.presets button{background:rgba(180,55,43,.16);border:1px solid rgba(207,74,60,.5);color:#f3d7c4;border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer}
+.present{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.person{display:flex;align-items:center;gap:8px;background:var(--hall-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-size:13px;max-width:100%}
+.person .av{width:24px;height:24px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;font-weight:600;color:#2a1a12}
+.person .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:9em}
+.person .doing{color:var(--ash-3);font-size:12px;white-space:nowrap}
+.person .doing.busy{color:var(--gold)}
+.person.me{border-color:var(--line-2)}
+.ledger{background:var(--paper);color:var(--ink);border-radius:6px;padding:14px 16px 8px 30px;position:relative;box-shadow:0 18px 30px -24px rgba(0,0,0,.9);
+  background-image:linear-gradient(90deg,transparent 18px,rgba(156,42,32,.35) 18px 19px,transparent 19px)}
+.ledger h3{font-family:var(--f-brush);font-weight:400;font-size:26px;line-height:1.2;margin:0 0 4px;color:var(--seal);letter-spacing:.1em}
+.ledger ol{list-style:none;margin:0;padding:0;max-height:380px;overflow:auto}
+.ledger li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(111,95,79,.35);font-size:14px}
+.ledger li:last-child{border-bottom:0}
+.ledger li span{overflow-wrap:anywhere}
+.ledger li b{font-weight:600;color:#5a1b12}
+.ledger time{color:var(--ink-2);font-size:12px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.ledger-empty{margin:4px 0 8px;color:var(--ink-2);font-size:14px}
+.foot{color:var(--ash-3);font-size:12.5px;text-align:center;margin:4px 0 0;display:grid;gap:4px}
+
+/* overlays */
+.overlay{position:fixed;inset:0;z-index:30;background:rgba(10,6,5,.74);display:grid;place-items:center;padding:16px;animation:fade .2s ease-out}
+@keyframes fade{from{opacity:0}}
+.panel{width:min(100%,440px);max-height:calc(100% - 24px);overflow:auto;background:var(--hall-2);border:1px solid var(--line-2);border-radius:12px;padding:20px;display:grid;gap:12px;box-shadow:0 30px 60px -20px rgba(0,0,0,.8)}
+.panel h3{font-family:var(--f-brush);font-weight:400;font-size:28px;margin:0;color:var(--gold-hi);letter-spacing:.08em}
+.panel .lbl{font-size:13px;color:var(--ash-2)}
+.panel .row{display:flex;justify-content:flex-end;gap:10px;align-items:center}
+.panel .desc{margin:0;font-size:13.5px;color:var(--ash-2)}
+.sign{display:flex;gap:22px;justify-content:center;align-items:flex-start}
+.stick{writing-mode:vertical-rl;display:flex;gap:10px;align-items:center;background:linear-gradient(90deg,#b98e52,#e8cb92 45%,#c49a5c);color:#4a170f;
+  border-radius:8px 8px 3px 3px;padding:14px 9px 18px;font-family:var(--f-brush);font-size:23px;letter-spacing:.12em;box-shadow:inset 0 0 0 1px rgba(90,40,20,.25)}
+.stick .lvl{color:var(--seal)}
+.poem{writing-mode:vertical-rl;font-family:var(--f-brush);font-size:27px;line-height:1.35;color:var(--ash);letter-spacing:.14em;padding-top:4px}
+.poem span{display:block}
+.poem span + span{margin-block-start:14px}
+.jie{margin:0;font-size:14.5px;color:var(--ash-2);display:grid;gap:2px}
+.jie b{font-family:var(--f-brush);font-weight:400;font-size:19px;color:var(--gold)}
+.sign-note{margin:0;font-size:12.5px;color:var(--ash-3)}
+.linkbox{width:100%;background:var(--hall);border:1px solid var(--line);border-radius:6px;padding:8px 10px;color:var(--ash);font-size:14px}
+
+@media (prefers-reduced-motion:reduce){
+  .rays,.flame,.glow,.tag{animation:none!important}
+  .stage-inner.bowing{animation:dim .6s ease}
+  @keyframes dim{50%{filter:brightness(.7)}}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="top">
+    <div class="brand">
+      <h1>过审祈福殿</h1>
+      <p>为《非常了不起的修仙模拟 · 炼气篇》祈福：愿人审早过，愿手机自测早日现身。</p>
+    </div>
+    <div class="tools">
+      <span class="pill" id="connPill" data-conn="connecting"><i class="dotc" aria-hidden="true"></i><span id="connText">连接中…</span></span>
+      <button type="button" class="btn-ghost" id="nameBtn">法号：<span id="nameShow">香客</span></button>
+      <button type="button" class="btn-ghost" id="inviteBtn">邀请朋友</button>
+      <button type="button" class="btn-ghost" id="soundBtn" aria-pressed="true">声音：开</button>
+    </div>
+  </header>
+
+  <section class="progress" aria-labelledby="progTitle">
+    <h2 class="sr" id="progTitle">审核进度</h2>
+    <ul class="track">
+      <li class="stage" id="stMachine"><span class="k">机审</span><span class="v muted"><i class="dot"></i><span class="vt">—</span></span><span class="sub"></span></li>
+      <li class="stage" id="stSelf"><span class="k">手机自测</span><span class="v muted"><i class="dot"></i><span class="vt">—</span></span><span class="sub"></span></li>
+      <li class="stage" id="stManual"><span class="k">人审</span><span class="v muted"><i class="dot"></i><span class="vt">—</span></span><span class="sub"></span></li>
+    </ul>
+    <div class="prog-foot">
+      <span id="stVersion"></span>
+      <details class="edit" id="statusEdit">
+        <summary>更新进度</summary>
+        <form id="statusForm">
+          <label for="fSelf">手机自测
+            <select id="fSelf"><option value="missing">已发布 · 手机端未现身</option><option value="visible">手机端已现身</option></select>
+          </label>
+          <label for="fManual">人审
+            <select id="fManual"><option value="pending">审核中</option><option value="passed">已通过</option><option value="returned">被退回</option></select>
+          </label>
+          <label for="fDate">提审日期<input type="date" id="fDate"></label>
+          <label for="fVer">提审版本<input id="fVer" maxlength="20" placeholder="0.9.1"></label>
+          <label class="wide" for="fNote">备注<input id="fNote" maxlength="60" placeholder="例如：测试工具 3.9.100 仍搜不到"></label>
+          <div class="row"><button type="submit" class="btn-gold">保存进度</button><span id="fMsg"></span><small>殿里所有人都能改，改完大家同时看到。</small></div>
+        </form>
+      </details>
+    </div>
+  </section>
+
+  <section class="hall" aria-label="大殿">
+    <div class="scene" id="scene">
+      <div class="stage-inner" id="stageInner">
+        <svg viewBox="0 0 800 600" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e1a14"/><stop offset="1" stop-color="#160c0a"/></linearGradient>
+            <radialGradient id="gAura" cx="400" cy="238" r="270" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f1cf7a" stop-opacity=".32"/><stop offset=".45" stop-color="#d8a24a" stop-opacity=".1"/><stop offset="1" stop-color="#d8a24a" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gInner" cx="400" cy="238" r="98" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffe7a8" stop-opacity=".42"/><stop offset=".7" stop-color="#e3b35a" stop-opacity=".12"/><stop offset="1" stop-color="#e3b35a" stop-opacity="0"/></radialGradient>
+            <pattern id="lattice" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M0 12H24M12 0V24" stroke="#d8b25c" stroke-width="1" fill="none"/><rect x="7" y="7" width="10" height="10" fill="none" stroke="#d8b25c" stroke-width="1"/></pattern>
+            <linearGradient id="gPillar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#52150f"/><stop offset=".38" stop-color="#b4372b"/><stop offset=".56" stop-color="#c94a3b"/><stop offset="1" stop-color="#43100c"/></linearGradient>
+            <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3dc98"/><stop offset=".5" stop-color="#d8b25c"/><stop offset="1" stop-color="#8c6a2e"/></linearGradient>
+            <linearGradient id="gBronze" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a2914"/><stop offset=".28" stop-color="#8a6a3a"/><stop offset=".48" stop-color="#c29a55"/><stop offset=".72" stop-color="#6d522c"/><stop offset="1" stop-color="#2f200d"/></linearGradient>
+            <linearGradient id="gLip" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e2bd6e"/><stop offset="1" stop-color="#6d522c"/></linearGradient>
+            <linearGradient id="gWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e3c27"/><stop offset="1" stop-color="#3b1f15"/></linearGradient>
+            <linearGradient id="gCloth" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9332a"/><stop offset="1" stop-color="#651c16"/></linearGradient>
+            <linearGradient id="gCandle" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#781b13"/><stop offset=".45" stop-color="#d4493b"/><stop offset="1" stop-color="#651710"/></linearGradient>
+            <radialGradient id="gFlame" cx=".5" cy=".72" r=".62"><stop offset="0" stop-color="#fffbe8"/><stop offset=".35" stop-color="#ffd66e"/><stop offset=".8" stop-color="#ff8a2a" stop-opacity=".85"/><stop offset="1" stop-color="#ff6a00" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffb347" stop-opacity=".5"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gPearlGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff1c4" stop-opacity=".75"/><stop offset=".5" stop-color="#f0c96e" stop-opacity=".22"/><stop offset="1" stop-color="#f0c96e" stop-opacity="0"/></radialGradient>
+            <radialGradient id="gPearl" cx=".4" cy=".36" r=".64"><stop offset="0" stop-color="#fffdf3"/><stop offset=".45" stop-color="#f6df9c"/><stop offset="1" stop-color="#c38f3a"/></radialGradient>
+            <linearGradient id="gPetal" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#9e4a37"/><stop offset=".55" stop-color="#dc9277"/><stop offset="1" stop-color="#f6d6b6"/></linearGradient>
+            <linearGradient id="gPetalBack" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#6e2d22"/><stop offset=".6" stop-color="#b8664f"/><stop offset="1" stop-color="#e2b497"/></linearGradient>
+            <linearGradient id="gBamboo" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#6a4820"/><stop offset=".5" stop-color="#c49c57"/><stop offset="1" stop-color="#5a3d1b"/></linearGradient>
+            <radialGradient id="gMuyu" cx=".38" cy=".32" r=".78"><stop offset="0" stop-color="#b8653d"/><stop offset=".6" stop-color="#7a3420"/><stop offset="1" stop-color="#461a0f"/></radialGradient>
+            <radialGradient id="gCushion" cx=".5" cy=".32" r=".72"><stop offset="0" stop-color="#d4ad64"/><stop offset=".7" stop-color="#94703a"/><stop offset="1" stop-color="#5a421e"/></radialGradient>
+            <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d120e"/><stop offset="1" stop-color="#0d0806"/></linearGradient>
+            <path id="petal" d="M0,0 C-19,-16 -17,-44 0,-64 C17,-44 19,-16 0,0Z"/>
+          </defs>
+          <rect width="800" height="600" fill="url(#gWall)"/>
+          <rect width="800" height="600" fill="url(#gAura)"/>
+          <rect x="120" y="112" width="128" height="226" fill="url(#lattice)" opacity=".1"/>
+          <rect x="552" y="112" width="128" height="226" fill="url(#lattice)" opacity=".1"/>
+          <rect x="120" y="112" width="128" height="226" fill="none" stroke="#d8b25c" stroke-opacity=".18"/>
+          <rect x="552" y="112" width="128" height="226" fill="none" stroke="#d8b25c" stroke-opacity=".18"/>
+          <rect x="0" y="0" width="800" height="18" fill="#3b2117"/>
+          <rect x="0" y="18" width="800" height="2.5" fill="#d8b25c" opacity=".55"/>
+          <line x1="330" y1="19" x2="336" y2="26" stroke="#d8b25c" stroke-width="1.2" opacity=".7"/>
+          <line x1="470" y1="19" x2="464" y2="26" stroke="#d8b25c" stroke-width="1.2" opacity=".7"/>
+          <rect x="276" y="24" width="248" height="62" rx="4" fill="#1b100d" stroke="#d8b25c" stroke-width="2.5"/>
+          <rect x="283" y="31" width="234" height="48" rx="2" fill="none" stroke="#9c7f45" stroke-width="1"/>
+          <text class="brush" x="400" y="70" font-size="38" text-anchor="middle" fill="#f0d38a" letter-spacing="6">有求必应</text>
+          <circle cx="400" cy="238" r="98" fill="url(#gInner)"/>
+          <g id="rays" class="rays" stroke="#e8c66e" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"></g>
+          <circle cx="400" cy="238" r="112" fill="none" stroke="#e8c66e" stroke-opacity=".6" stroke-width="1.3"/>
+          <circle cx="400" cy="238" r="104" fill="none" stroke="#d8b25c" stroke-opacity=".38" stroke-width="1" stroke-dasharray="1.5 5"/>
+          <circle cx="400" cy="238" r="92" fill="none" stroke="#f3dc98" stroke-opacity=".3" stroke-width="1"/>
+          <rect x="316" y="298" width="168" height="9" rx="2" fill="url(#gGold)"/>
+          <rect x="332" y="307" width="136" height="16" fill="#5b271b"/>
+          <rect x="310" y="323" width="180" height="11" rx="2" fill="url(#gGold)"/>
+          <g transform="translate(400 300)" fill="url(#gPetalBack)" stroke="#e7c27a" stroke-opacity=".5" stroke-width=".8">
+            <use href="#petal" transform="rotate(-68) scale(1.02)"/>
+            <use href="#petal" transform="rotate(-34) scale(1.06)"/>
+            <use href="#petal" transform="scale(1.1)"/>
+            <use href="#petal" transform="rotate(34) scale(1.06)"/>
+            <use href="#petal" transform="rotate(68) scale(1.02)"/>
+          </g>
+          <circle cx="400" cy="250" r="46" fill="url(#gPearlGlow)" class="glow"/>
+          <path d="M400 212 C392 222 386 231 388 241 C390 235 395 232 400 231 C405 232 410 235 412 241 C414 231 408 222 400 212Z" fill="#f6d27a" opacity=".85"/>
+          <circle cx="400" cy="254" r="20" fill="url(#gPearl)"/>
+          <g transform="translate(400 300)">
+            <g fill="url(#gPetal)" stroke="#f0cf8a" stroke-opacity=".6" stroke-width=".8">
+              <use href="#petal" transform="rotate(-50) scale(.9)"/>
+              <use href="#petal" transform="rotate(-17) scale(.86)"/>
+              <use href="#petal" transform="rotate(17) scale(.86)"/>
+              <use href="#petal" transform="rotate(50) scale(.9)"/>
+            </g>
+            <ellipse cx="0" cy="1" rx="66" ry="7" fill="url(#gGold)"/>
+          </g>
+          <rect x="30" y="0" width="66" height="600" fill="url(#gPillar)"/>
+          <rect x="704" y="0" width="66" height="600" fill="url(#gPillar)"/>
+          <rect x="22" y="560" width="82" height="40" fill="#4a3a2c"/>
+          <rect x="696" y="560" width="82" height="40" fill="#4a3a2c"/>
+          <rect x="43" y="120" width="40" height="330" rx="3" fill="#1b100d" stroke="#d8b25c" stroke-width="1.5"/>
+          <rect x="717" y="120" width="40" height="330" rx="3" fill="#1b100d" stroke="#d8b25c" stroke-width="1.5"/>
+          <g class="brush" fill="#ebcb7c" font-size="30" text-anchor="middle">
+            <text x="63" y="168">机</text><text x="63" y="210">审</text><text x="63" y="252">已</text><text x="63" y="294">过</text><text x="63" y="336">千</text><text x="63" y="378">重</text><text x="63" y="420">浪</text>
+            <text x="737" y="168">人</text><text x="737" y="210">审</text><text x="737" y="252">只</text><text x="737" y="294">隔</text><text x="737" y="336">一</text><text x="737" y="378">层</text><text x="737" y="420">纱</text>
+          </g>
+          <rect x="0" y="520" width="800" height="80" fill="url(#gFloor)"/>
+          <line x1="0" y1="520" x2="800" y2="520" stroke="#d8b25c" stroke-opacity=".16"/>
+          <rect x="140" y="386" width="520" height="14" rx="2" fill="url(#gWood)"/>
+          <rect x="140" y="386" width="520" height="2" fill="#c89d58" opacity=".6"/>
+          <path d="M150 400 H650 V512 Q600 520 550 512 Q500 520 450 512 Q400 520 350 512 Q300 520 250 512 Q200 520 150 512Z" fill="url(#gCloth)"/>
+          <rect x="150" y="400" width="500" height="11" fill="#d8b25c" opacity=".85"/>
+          <path d="M150 411 H650" stroke="#6e1a13" stroke-width="1"/>
+          <g transform="translate(400 460)" fill="none" stroke="#e8c66e" stroke-width="1.4" opacity=".7">
+            <circle r="30"/><circle r="22" stroke-dasharray="2 4"/>
+            <path d="M-13 6 C-13 -7 -3 -11 0 -18 C3 -11 13 -7 13 6 C6 2 -6 2 -13 6Z"/>
+          </g>
+          <g id="candleL">
+            <circle cx="175" cy="300" r="36" fill="url(#gGlow)" class="glow"/>
+            <ellipse cx="175" cy="388" rx="21" ry="4" fill="#000" opacity=".35"/>
+            <path d="M160 387h30l-4-7h-22z" fill="url(#gGold)"/>
+            <rect x="171" y="366" width="8" height="15" fill="#8c6a2e"/>
+            <ellipse cx="175" cy="366" rx="15" ry="3.5" fill="url(#gGold)"/>
+            <rect x="166" y="318" width="18" height="48" rx="2" fill="url(#gCandle)"/>
+            <ellipse cx="175" cy="318" rx="9" ry="2.4" fill="#e06050"/>
+            <path d="M168 319 q-2 8 0 12 q2 -4 1 -12z" fill="#d9493b"/>
+            <line x1="175" y1="318" x2="175" y2="311" stroke="#2a1a10" stroke-width="1.4"/>
+            <path class="flame" d="M175 290 C168 300 169 309 175 313 C181 309 182 300 175 290Z" fill="url(#gFlame)"/>
+          </g>
+          <g id="candleR">
+            <circle cx="625" cy="300" r="36" fill="url(#gGlow)" class="glow"/>
+            <ellipse cx="625" cy="388" rx="21" ry="4" fill="#000" opacity=".35"/>
+            <path d="M610 387h30l-4-7h-22z" fill="url(#gGold)"/>
+            <rect x="621" y="366" width="8" height="15" fill="#8c6a2e"/>
+            <ellipse cx="625" cy="366" rx="15" ry="3.5" fill="url(#gGold)"/>
+            <rect x="616" y="318" width="18" height="48" rx="2" fill="url(#gCandle)"/>
+            <ellipse cx="625" cy="318" rx="9" ry="2.4" fill="#e06050"/>
+            <path d="M632 319 q2 8 0 12 q-2 -4 -1 -12z" fill="#d9493b"/>
+            <line x1="625" y1="318" x2="625" y2="311" stroke="#2a1a10" stroke-width="1.4"/>
+            <path class="flame" d="M625 290 C618 300 619 309 625 313 C631 309 632 300 625 290Z" fill="url(#gFlame)"/>
+          </g>
+          <g id="hotMuyu" class="hot">
+            <title>木鱼：敲一下，功德 +1</title>
+            <ellipse cx="248" cy="388" rx="42" ry="4.5" fill="#000" opacity=".35"/>
+            <g id="muyuBody">
+              <path d="M210 372 C206 350 226 340 248 340 C272 340 290 352 286 372 C283 384 266 388 248 388 C228 388 213 384 210 372Z" fill="url(#gMuyu)"/>
+              <path d="M216 370 Q248 382 280 370" stroke="#260c06" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M232 352 q16 -8 32 0" stroke="#e7a878" stroke-opacity=".45" stroke-width="1.4" fill="none"/>
+              <circle cx="268" cy="357" r="2.4" fill="#260c06"/>
+              <ellipse cx="236" cy="350" rx="10" ry="4" fill="#fff" opacity=".12"/>
+            </g>
+            <g id="mallet">
+              <line x1="272" y1="390" x2="296" y2="360" stroke="#6b3a1f" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="298" cy="357" r="6.5" fill="#94502c"/>
+            </g>
+            <rect x="200" y="328" width="103" height="66" fill="transparent"/>
+          </g>
+          <g id="hotSign" class="hot">
+            <title>签筒：摇一摇，问问审核</title>
+            <ellipse cx="545" cy="388" rx="27" ry="4" fill="#000" opacity=".35"/>
+            <g id="signbox">
+              <rect id="popStick" x="543" y="294" width="4" height="36" rx="1" fill="#f0d08e"/>
+              <rect x="530.5" y="303" width="3" height="28" fill="#dcb878"/><rect x="530.5" y="303" width="3" height="5" fill="#b4372b"/>
+              <rect x="534.5" y="297" width="3" height="34" fill="#d2ad6c"/><rect x="534.5" y="297" width="3" height="5" fill="#b4372b"/>
+              <rect x="538.5" y="305" width="3" height="26" fill="#dcb878"/><rect x="538.5" y="305" width="3" height="5" fill="#b4372b"/>
+              <rect x="542.5" y="299" width="3" height="32" fill="#d2ad6c"/><rect x="542.5" y="299" width="3" height="5" fill="#b4372b"/>
+              <rect x="547" y="295" width="3" height="36" fill="#dcb878"/><rect x="547" y="295" width="3" height="5" fill="#b4372b"/>
+              <rect x="551" y="302" width="3" height="29" fill="#d2ad6c"/><rect x="551" y="302" width="3" height="5" fill="#b4372b"/>
+              <rect x="555" y="298" width="3" height="33" fill="#dcb878"/><rect x="555" y="298" width="3" height="5" fill="#b4372b"/>
+              <rect x="559" y="306" width="3" height="25" fill="#d2ad6c"/><rect x="559" y="306" width="3" height="5" fill="#b4372b"/>
+              <rect x="527" y="326" width="36" height="60" rx="5" fill="url(#gBamboo)"/>
+              <rect x="527" y="333" width="36" height="3" fill="#d8b25c" opacity=".85"/>
+              <rect x="527" y="376" width="36" height="3" fill="#d8b25c" opacity=".85"/>
+              <rect x="538" y="343" width="14" height="25" rx="1.5" fill="#b4372b"/>
+              <text class="brush" x="545" y="361" font-size="13" text-anchor="middle" fill="#f0d38a">签</text>
+            </g>
+            <rect x="515" y="288" width="60" height="104" fill="transparent"/>
+          </g>
+          <g id="hotBurner" class="hot">
+            <title>香炉：点三炷香</title>
+            <ellipse cx="400" cy="391" rx="94" ry="6" fill="#000" opacity=".4"/>
+            <path d="M314 315 v-18 a9 9 0 0 1 18 0 v18" fill="none" stroke="#9a7640" stroke-width="5"/>
+            <path d="M468 315 v-18 a9 9 0 0 1 18 0 v18" fill="none" stroke="#9a7640" stroke-width="5"/>
+            <g class="burner-body">
+              <ellipse cx="400" cy="313" rx="86" ry="4.5" fill="#8b8276"/>
+              <path d="M312 321 H488 C486 350 470 376 432 383 H368 C330 376 314 350 312 321Z" fill="url(#gBronze)"/>
+              <rect x="304" y="313" width="192" height="9" rx="3" fill="url(#gLip)"/>
+              <path d="M318 338 H482" stroke="#e2bd6e" stroke-opacity=".45" stroke-width="1.2"/>
+              <path d="M324 351 H476" stroke="#e2bd6e" stroke-opacity=".22" stroke-width="1"/>
+              <g fill="none" stroke="#e2bd6e" stroke-opacity=".55" stroke-width="1.2">
+                <circle cx="362" cy="344" r="4.5"/><circle cx="400" cy="344" r="4.5"/><circle cx="438" cy="344" r="4.5"/>
+              </g>
+              <path d="M366 380 h14 v9 h-14z M420 380 h14 v9 h-14z" fill="#3e2c17"/>
+            </g>
+            <rect x="304" y="200" width="192" height="190" fill="transparent"/>
+          </g>
+          <g id="hotCushion" class="hot">
+            <title>蒲团：叩首</title>
+            <ellipse cx="400" cy="575" rx="106" ry="12" fill="#000" opacity=".45"/>
+            <g id="cushionBody">
+              <ellipse cx="400" cy="556" rx="94" ry="27" fill="url(#gCushion)"/>
+              <g fill="none" stroke="#5e4520" stroke-opacity=".55">
+                <ellipse cx="400" cy="553" rx="72" ry="20"/><ellipse cx="400" cy="551" rx="50" ry="14"/><ellipse cx="400" cy="549" rx="27" ry="7.5"/>
+              </g>
+              <ellipse cx="400" cy="546" rx="62" ry="10" fill="#fff" opacity=".06"/>
+            </g>
+            <rect x="296" y="522" width="208" height="72" fill="transparent"/>
+          </g>
+          <g id="fx"></g>
+        </svg>
+        <canvas id="smoke" aria-hidden="true"></canvas>
+      </div>
+      <div class="floaters" id="floaters" aria-hidden="true"></div>
+      <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
+    </div>
+
+    <div class="merit">
+      <div class="m-main"><span class="label">合寺功德</span><b class="num" id="meritNum">0</b></div>
+      <div class="m-bar"><div class="bar"><i id="meritBar"></i></div><span class="m-next" id="meritNext">距「小有功德」还差 108</span></div>
+      <div class="aside">你的功德 <b id="meritMine">0</b> · 炉中香火 <b id="stickCount">1</b> 炷<br><span id="myStats">上香 0 · 叩首 0 · 木鱼 0 · 求签 0</span></div>
+    </div>
+
+    <div class="actions" role="group" aria-label="礼佛">
+      <button type="button" class="act primary" id="actIncense">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21V10M12 21V7M16 21V10M5 21h14"/><path d="M12 5.5c-1.4-1.1-.5-2.4.5-3.3M8 8.5c-1.1-.9-.4-1.9.4-2.6M16 8.5c1.1-.9.4-1.9-.4-2.6"/></svg>
+        <b>上香</b><small id="incenseSub">点三炷</small>
+      </button>
+      <button type="button" class="act" id="actBow">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="18.5" rx="8.5" ry="3"/><path d="M7.5 14.5c1.2-3.2 7.8-3.2 9 0"/><circle cx="12" cy="8" r="2.3"/></svg>
+        <b>叩首</b><small id="bowSub">三叩为礼</small>
+      </button>
+      <button type="button" class="act" id="actMuyu">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 15c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7c0 2.6-3.8 4-8.5 4s-8.5-1.4-8.5-4z"/><path d="M6 15.2c3.2 1.8 8.8 1.8 12 0"/><path d="M17 8.2l2.6-4"/><circle cx="20.2" cy="3.4" r="1.3"/></svg>
+        <b>木鱼</b><small>功德 +1</small>
+      </button>
+      <button type="button" class="act" id="actSign">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="10" width="10" height="11" rx="1.5"/><path d="M9 10V4.5M11.5 10V2.5M14 10V4M16 10V5.5"/></svg>
+        <b>求签</b><small>问问审核</small>
+      </button>
+      <button type="button" class="act" id="actWish">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-wish"><path d="M7 8h10l1.2 11H5.8z"/><circle cx="12" cy="11" r="1.2"/><path d="M12 8V3M10 19l-1.2 3M14 19l1.2 3"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="ico-vow" hidden><path d="M12 20c-4 0-7-3-7-6 2 0 4 1 5 2-1-3 0-6 2-9 2 3 3 6 2 9 1-1 3-2 5-2 0 3-3 6-7 6z"/></svg>
+        <b id="wishLbl">许愿</b><small id="wishSub">挂许愿牌</small>
+      </button>
+    </div>
+    <p class="hint" id="hint" aria-live="polite">先上三炷香，再到蒲团前叩首三次。心诚则灵。</p>
+  </section>
+
+  <section class="lower">
+    <div>
+      <div class="sec-head"><h2>许愿墙</h2><span class="note" id="wishCount">每人最多挂 5 块</span><button type="button" class="btn-ghost" id="wishOpen2">挂许愿牌</button></div>
+      <div class="wall">
+        <ul class="tags" id="tags"></ul>
+        <div class="empty" id="wishEmpty"><p>墙上还没有许愿牌，挂上第一块吧：</p><div class="presets" id="presets2"></div></div>
+      </div>
+    </div>
+    <aside>
+      <div class="sec-head"><h2>殿中香客</h2><span class="note">此刻开着这页的人</span></div>
+      <ul class="present" id="present"></ul>
+      <div class="ledger">
+        <h3>功德簿</h3>
+        <ol id="ledger"></ol>
+        <p class="ledger-empty" id="ledgerEmpty">功德簿还空着，上第一炷香吧。</p>
+      </div>
+    </aside>
+  </section>
+  <p class="foot"><span>心诚则灵，仅供一乐。审核进度以开发者平台为准。</span><span id="roomLine"></span></p>
+</div>
+
+<div class="overlay" id="nameOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="nameTitle">
+  <form class="panel" id="nameForm">
+    <h3 id="nameTitle">报上法号</h3>
+    <p class="desc">进殿前留个名字，朋友们在功德簿和许愿墙上看到的就是它。</p>
+    <label class="lbl" for="nameInput">法号，12 字以内</label>
+    <input id="nameInput" maxlength="12" autocomplete="nickname" placeholder="例如：炼气一层">
+    <div class="row"><button type="submit" class="btn-gold">进殿</button></div>
+  </form>
+</div>
+
+<div class="overlay" id="wishOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="wishTitle">
+  <form class="panel" id="wishForm">
+    <h3 id="wishTitle">挂一块许愿牌</h3>
+    <label class="lbl" for="wishText">写下心愿，30 字以内</label>
+    <input id="wishText" maxlength="30" autocomplete="off" placeholder="愿网易人审早日通过">
+    <div class="presets" id="presets"></div>
+    <div class="row"><button type="button" class="btn-ghost" data-close>先不挂</button><button type="submit" class="btn-gold">挂上</button></div>
+  </form>
+</div>
+
+<div class="overlay" id="signOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="signNo">
+  <div class="panel">
+    <div class="sign">
+      <div class="poem" id="signPoem"></div>
+      <div class="stick"><span id="signNo">第一签</span><span class="lvl" id="signLvl">上上签</span></div>
+    </div>
+    <p class="jie"><b>解曰</b><span id="signJie"></span></p>
+    <p class="sign-note" id="signNote"></p>
+    <div class="row"><button type="button" class="btn-gold" data-close>收下此签</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="inviteOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="inviteTitle">
+  <div class="panel">
+    <h3 id="inviteTitle">邀请朋友进殿</h3>
+    <p class="desc" id="inviteMsg">把这个链接发到群里，大家用手机或电脑打开就能一起上香。</p>
+    <input class="linkbox" id="inviteLink" readonly>
+    <div class="row"><button type="button" class="btn-ghost" data-close>好</button><button type="button" class="btn-gold" id="copyBtn">复制链接</button></div>
+  </div>
+</div>
+
+<script>
+/* MiniMqtt: MQTT 3.1.1 over WebSocket, QoS 0, retained publish, last will. No dependencies. */
+function MiniMqtt(url, opts) {
+  var enc = new TextEncoder(), dec = new TextDecoder();
+  var ws = null, buf = new Uint8Array(0), pingTimer = 0, nextId = 1;
+  function str(s) { var b = enc.encode(s); var o = new Uint8Array(2 + b.length); o[0] = b.length >> 8; o[1] = b.length & 255; o.set(b, 2); return o; }
+  function concat(list) { var n = 0, i, p = 0; for (i = 0; i < list.length; i++) n += list[i].length; var o = new Uint8Array(n); for (i = 0; i < list.length; i++) { o.set(list[i], p); p += list[i].length; } return o; }
+  function remLen(n) { var out = []; do { var d = n % 128; n = Math.floor(n / 128); if (n > 0) d |= 128; out.push(d); } while (n > 0); return new Uint8Array(out); }
+  function packet(first, parts) { var body = concat(parts); return concat([new Uint8Array([first]), remLen(body.length), body]); }
+  function send(u8) { if (ws && ws.readyState === 1) { ws.send(u8); return true; } return false; }
+  function handle(type, flags, body) {
+    if (type === 2) {
+      if (body.length >= 2 && body[1] === 0) {
+        clearInterval(pingTimer);
+        pingTimer = setInterval(function () { send(new Uint8Array([0xC0, 0])); }, Math.max(10, opts.keepalive * 0.6) * 1000);
+        if (opts.onConnect) opts.onConnect();
+      } else { try { ws.close(); } catch (e) {} }
+    } else if (type === 3) {
+      if (body.length < 2) return;
+      var tl = (body[0] << 8) | body[1], p = 2 + tl, qos = (flags >> 1) & 3;
+      var topic = dec.decode(body.subarray(2, p));
+      if (qos > 0) { var id = (body[p] << 8) | body[p + 1]; p += 2; if (qos === 1) send(new Uint8Array([0x40, 2, id >> 8, id & 255])); }
+      if (opts.onMessage) opts.onMessage(topic, dec.decode(body.subarray(p)), !!(flags & 1));
+    }
+  }
+  function parse() {
+    while (buf.length >= 2) {
+      var mul = 1, len = 0, i = 1, b;
+      do { if (i >= buf.length) return; b = buf[i++]; len += (b & 127) * mul; mul *= 128; if (i > 5) { try { ws.close(); } catch (e) {} return; } } while (b & 128);
+      if (buf.length < i + len) return;
+      var first = buf[0], body = buf.slice(i, i + len);
+      buf = buf.slice(i + len);
+      handle(first >> 4, first & 15, body);
+    }
+  }
+  function open() {
+    try { ws = new WebSocket(url, ['mqtt']); } catch (e) { if (opts.onClose) setTimeout(opts.onClose, 0); return; }
+    ws.binaryType = 'arraybuffer';
+    ws.onopen = function () {
+      var flags = 0x02, payload = [str(opts.clientId)];
+      if (opts.will) {
+        flags |= 0x04; if (opts.will.retain) flags |= 0x20;
+        var wb = enc.encode(opts.will.payload || '');
+        payload.push(str(opts.will.topic));
+        payload.push(concat([new Uint8Array([wb.length >> 8, wb.length & 255]), wb]));
+      }
+      var ka = opts.keepalive || 60;
+      send(packet(0x10, [str('MQTT'), new Uint8Array([4, flags, (ka >> 8) & 255, ka & 255])].concat(payload)));
+    };
+    ws.onmessage = function (e) {
+      var d = new Uint8Array(e.data), nb = new Uint8Array(buf.length + d.length);
+      nb.set(buf); nb.set(d, buf.length); buf = nb; parse();
+    };
+    ws.onclose = function () { clearInterval(pingTimer); buf = new Uint8Array(0); if (opts.onClose) opts.onClose(); };
+    ws.onerror = function () {};
+  }
+  open();
+  return {
+    subscribe: function (filter) { var id = nextId++; if (nextId > 65000) nextId = 1; return send(packet(0x82, [new Uint8Array([id >> 8, id & 255]), str(filter), new Uint8Array([0])])); },
+    publish: function (topic, payload, retain) { return send(packet(0x30 | (retain ? 1 : 0), [str(topic), enc.encode(payload || '')])); },
+    end: function () { send(new Uint8Array([0xE0, 0])); try { ws.close(); } catch (e) {} },
+    drop: function () { try { ws.close(); } catch (e) {} },
+    connected: function () { return !!ws && ws.readyState === 1; }
+  };
+}
+</script>
+<script>
+(function(){
+'use strict';
+var BROKER='wss://broker.emqx.io:8084/mqtt';
+var ROOM_DEFAULT='xiuxian-q7k2mz';
+var ROOM=(function(){var h=(location.hash||'').replace(/^#/,'').toLowerCase();return /^[a-z0-9-]{4,32}$/.test(h)?h:ROOM_DEFAULT;})();
+var PREFIX='guoshen/v1/'+ROOM+'/';
+var DEFAULT_STATUS={machine:'passed',selftest:'missing',manual:'pending',submittedAt:'2026-09-27',version:'0.9.1',modapi:'中国版3.9（基岩版1.21.120）',note:'测试工具 3.9.100.297020 里还搜不到',by:'',at:0};
+var W=800,H=600;
+var BURN_MS=20*60*1000,INCENSE_CD=30*1000,SIGN_CD=60*1000;
+var RITUAL_KEEP=6,WISH_KEEP=5,LOG_KEEP=12,FEED_LIMIT=40;
+var MILESTONES=[[108,'小有功德'],[1080,'功德深厚'],[3600,'福慧双修'],[9999,'功德圆满']];
+var SIGNS=[
+  {n:'第一签',lvl:'上上',poem:['灵根已测天资足','一纸批文破九霄'],jie:'审核如渡劫，此签主雷云散尽，批文将至。'},
+  {n:'第二签',lvl:'上上',poem:['千里之行过一半','佳音不日到门前'],jie:'机审已过，人审一般三个工作日，耐心等候。'},
+  {n:'第三签',lvl:'上上',poem:['紫气东来盈宝殿','玉简飞书报捷频'],jie:'近日当有站内信，记得常看开发者平台的邮箱。'},
+  {n:'第四签',lvl:'上上',poem:['炼气一层功已就','筑基大道自此开'],jie:'炼气篇上架在即，可以开始构思筑基篇了。'},
+  {n:'第五签',lvl:'上吉',poem:['蒲团坐稳吐纳匀','何须焦急问归期'],jie:'心急吃不了热豆腐，先把手头的 bug 修完。'},
+  {n:'第六签',lvl:'上吉',poem:['青灯一盏守长夜','自测仙门终会开'],jie:'手机端若仍不见：清缓存、重装测试工具，再提一单。'},
+  {n:'第七签',lvl:'上吉',poem:['妖狼夜吼终须静','丹炉火候自然成'],jie:'火候到了，丹自然成；审核也一样。'},
+  {n:'第八签',lvl:'上吉',poem:['一炷清香通三界','万般心愿达天听'],jie:'你的香火已经上达，静候回音即可。'},
+  {n:'第九签',lvl:'中吉',poem:['版本须升零点一','旧号莫教再重逢'],jie:'下次打包前，把仓库里的 UUID 和版本号对齐。'},
+  {n:'第十签',lvl:'中吉',poem:['好事多磨非坏事','三番审阅见真金'],jie:'若被退回，按意见改好再提，终会过审。'},
+  {n:'第十一签',lvl:'中吉',poem:['月过中天云自散','静听檐下铁马声'],jie:'宜等待，忌频繁催审。'},
+  {n:'第十二签',lvl:'中吉',poem:['鼎中灵火需人守','莫把丹方随手抛'],jie:'平台会加密上传的包，本地工程与源码务必备份好。'},
+  {n:'第十三签',lvl:'中平',poem:['山路弯弯十八折','回头已过万重山'],jie:'路虽长，大半已经走完。'},
+  {n:'第十四签',lvl:'中平',poem:['今日宜修不宜问','明朝再看站内书'],jie:'今天先修 bug，明天再看审核邮件。'},
+  {n:'第十五签',lvl:'中平',poem:['一叶扁舟候潮起','潮来自有顺风时'],jie:'国庆长假将至，审核或许顺延，潮水总会来。'},
+  {n:'第十六签',lvl:'下',poem:['风急云低雷未至','闭关三日再出山'],jie:'下签也是好签：闭关修 bug，出关即过审。'}
+];
+var PRESETS=['愿网易人审早日通过','愿手机自测早日现身','愿炼气篇上架大卖','愿再也不撞 UUID','愿玩家都玩得开心'];
+var ACT_TEXT={incense:'上香中',bow:'叩首中',muyu:'敲木鱼',sign:'求签中',wish:'许愿中',vow:'还愿中'};
+var LOG_KINDS={incense:1,bow3:1,muyu108:1,sign:1,wish:1,vow:1};
+var FEED_TEXT={
+  incense:function(){return '上了三炷香';},
+  bow3:function(){return '行三叩首礼';},
+  muyu108:function(it){return '敲满木鱼 '+num(it.c)+' 下';},
+  sign:function(it){var s=SIGNS[it.no];return s?('求得'+s.n+' · '+lvlName(s)):'求了一签';},
+  wish:function(it){return '挂上许愿牌「'+it.t+'」';},
+  vow:function(){return '前来还愿';},
+  status:function(){return '更新了审核进度';}
+};
+var REDUCED=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
+var SMALL=Math.min(screen.width||800,screen.height||800)<500;
+
+function $(s){return document.querySelector(s);}
+function num(n){return Number(n||0).toLocaleString('zh-CN');}
+function lvlName(s){return s.lvl==='下'?'下签':s.lvl+'签';}
+function ago(ts){var d=Math.max(0,Date.now()-ts);if(d<45e3)return '刚刚';if(d<3600e3)return Math.round(d/60e3)+' 分钟前';if(d<86400e3)return Math.round(d/3600e3)+' 小时前';return Math.round(d/86400e3)+' 天前';}
+var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+function h32(s){var h=2166136261>>>0;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
+function r01(seed,k){return (h32(seed+'#'+k)%100000)/100000;}
+function cnt(v){v=Math.floor(Number(v)||0);return v<0?0:Math.min(v,1e7);}
+function tstamp(v){v=Number(v);return isFinite(v)&&v>0?v:0;}
+function txt(v,n){return typeof v==='string'?v.replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,n):'';}
+function rid(n){var a='abcdefghijkmnpqrstuvwxyz23456789',s='';var r=new Uint8Array(n);(window.crypto||{}).getRandomValues?crypto.getRandomValues(r):r.forEach(function(_,i){r[i]=Math.random()*256;});for(var i=0;i<n;i++)s+=a[r[i]%a.length];return s;}
+function parseJSON(s){try{var v=JSON.parse(s);return v&&typeof v==='object'&&!Array.isArray(v)?v:null;}catch(e){return null;}}
+function hue(id){return h32(String(id))%360;}
+
+var S={pid:null,tab:rid(8),name:'',mq:null,conn:'connecting',synced:false,retry:0,retryT:0,dirty:false,
+  people:new Map(),here:new Map(),status:null,cleared:new Set(),
+  mine:{incense:0,bows:0,muyu:0,signs:0,lastSignAt:0,lastSignNo:-1,rituals:[],wishes:[],vowed:false,log:[]},
+  removed:new Set(),bowStreak:0,bowAt:0,bowDoneAt:0,bowLock:false,myAct:{act:'idle',at:0},muyuPending:0,
+  throttle:new Map(),sawPassed:false,statusPrimed:false,sound:LS.get('gs.sound',true)!==false};
+S.pid=LS.get('gs.pid',null);if(typeof S.pid!=='string'||!/^[a-z0-9]{6,16}$/.test(S.pid)){S.pid=rid(10);LS.set('gs.pid',S.pid);}
+S.name=txt(LS.get('gs.name',''),12);
+
+/* ---------- sound ---------- */
+var AC=null;
+function ac(){if(!S.sound)return null;try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();}if(AC.state==='suspended')AC.resume();return AC;}catch(e){return null;}}
+function noise(a,dur){var len=Math.max(1,Math.floor(a.sampleRate*dur)),b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<len;i++)d[i]=Math.random()*2-1;var s=a.createBufferSource();s.buffer=b;return s;}
+function tok(){var a=ac();if(!a)return;var t=a.currentTime;var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(740,t);o.frequency.exponentialRampToValueAtTime(410,t+.09);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.5,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.17);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.2);
+  var n=noise(a,.03),f=a.createBiquadFilter(),g2=a.createGain();f.type='bandpass';f.frequency.value=1900;f.Q.value=2.5;g2.gain.setValueAtTime(.3,t);g2.gain.exponentialRampToValueAtTime(.0001,t+.03);n.connect(f);f.connect(g2);g2.connect(a.destination);n.start(t);}
+function bell(){var a=ac();if(!a)return;var t=a.currentTime,base=392;[[1,.3,3.6],[2.71,.13,2.4],[5.18,.05,1.4],[1.004,.16,3.2]].forEach(function(p){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=base*p[0];g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(p[1],t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+p[2]);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+p[2]+.05);});}
+function whoosh(){var a=ac();if(!a)return;var t=a.currentTime,n=noise(a,.7),f=a.createBiquadFilter(),g=a.createGain();f.type='lowpass';f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(2400,t+.25);f.frequency.exponentialRampToValueAtTime(500,t+.7);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.22,t+.08);g.gain.exponentialRampToValueAtTime(.0001,t+.7);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}
+function rattle(){var a=ac();if(!a)return;var t0=a.currentTime;for(var i=0;i<9;i++){var t=t0+i*.085+Math.random()*.03,n=noise(a,.025),f=a.createBiquadFilter(),g=a.createGain();f.type='bandpass';f.frequency.value=2200+Math.random()*1400;f.Q.value=4;g.gain.setValueAtTime(.26,t);g.gain.exponentialRampToValueAtTime(.0001,t+.025);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}}
+function toggleSound(){S.sound=!S.sound;LS.set('gs.sound',S.sound);paintSound();}
+function paintSound(){var b=$('#soundBtn');b.textContent='声音：'+(S.sound?'开':'关');b.setAttribute('aria-pressed',S.sound?'true':'false');}
+
+/* ---------- canvas: incense, smoke, petals ---------- */
+var cv=$('#smoke'),ctx=cv.getContext('2d'),dpr=1,scale=1;
+function resize(){var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);scale=w/W;}
+try{new ResizeObserver(resize).observe(cv);}catch(e){window.addEventListener('resize',resize);}
+resize();
+function sprite(r,g,b,size,stops){var c=document.createElement('canvas');c.width=c.height=size;var x=c.getContext('2d'),gr=x.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);stops.forEach(function(s){gr.addColorStop(s[0],'rgba('+r+','+g+','+b+','+s[1]+')');});x.fillStyle=gr;x.fillRect(0,0,size,size);return c;}
+var SMOKE=sprite(226,218,204,64,[[0,.9],[.45,.45],[1,0]]);
+var EMBER=sprite(255,150,60,32,[[0,1],[.35,.55],[1,0]]);
+var STICKS=[],P=[],PETALS=[],PMAX=SMALL?220:380;
+function rebuildSticks(){
+  var now=Date.now(),list=[];
+  entries().forEach(function(e){
+    var id=e[0],d=e[1],rs=d.rituals||[];
+    rs.slice(-RITUAL_KEEP).forEach(function(ts){
+      var age=now-ts;if(!ts||age>BURN_MS||age<-300000)return;
+      var seed=id+':'+ts,cx=400+(r01(seed,1)-.5)*124,y0=313+(r01(seed,2)-.5)*2.4,lean=(r01(seed,3)-.5)*.14;
+      for(var k=-1;k<=1;k++)list.push({x:cx+k*6.5,y0:y0,lean:lean+k*.05,born:Math.min(ts,now),seed:r01(seed,5+k),fixed:false});
+    });
+  });
+  list.sort(function(a,b){return b.born-a.born;});
+  STICKS=[{x:400,y0:313,lean:0,born:0,seed:.37,fixed:true}].concat(list.slice(0,45));
+}
+function tipOf(s,now){var f=s.fixed?1:Math.max(0,1-(now-s.born)/BURN_MS),L=s.fixed?90:10+102*f;return [s.x+Math.sin(s.lean)*L,s.y0-Math.cos(s.lean)*L];}
+function drawSticks(now){
+  ctx.save();ctx.beginPath();ctx.rect(0,0,W,313.6);ctx.clip();ctx.lineCap='round';
+  STICKS.forEach(function(s){var t=tipOf(s,now);ctx.strokeStyle=s.fixed?'#a4552f':'#8d4526';ctx.lineWidth=2.1;ctx.beginPath();ctx.moveTo(s.x,s.y0+3);ctx.lineTo(t[0],t[1]);ctx.stroke();s.tx=t[0];s.ty=t[1];});
+  ctx.restore();
+  STICKS.forEach(function(s){var fresh=!s.fixed&&now-s.born<1400,fl=.7+.3*Math.sin(now/170+s.seed*40),r=fresh?12:6.5;ctx.globalAlpha=fl;ctx.drawImage(EMBER,s.tx-r,s.ty-r,r*2,r*2);ctx.globalAlpha=1;ctx.fillStyle='#ffd88a';ctx.beginPath();ctx.arc(s.tx,s.ty,1.15,0,6.2832);ctx.fill();});
+}
+function emit(dt){
+  var rate=Math.min(4.2,80/Math.max(1,STICKS.length))*(REDUCED?.5:1);
+  STICKS.forEach(function(s){if(s.tx==null)return;if(Math.random()<rate*dt&&P.length<PMAX){P.push({x:s.tx,y:s.ty-2,vx:(Math.random()-.5)*4,vy:-(16+Math.random()*12),age:0,life:4.5+Math.random()*3.5,r0:1.6,grow:12+Math.random()*12,ph:Math.random()*6.28,fr:.7+Math.random()*.9,amp:6+Math.random()*10,a0:.2+Math.random()*.12});}});
+}
+function drawSmoke(dt){
+  for(var i=P.length-1;i>=0;i--){var p=P[i];p.age+=dt;if(p.age>=p.life){P.splice(i,1);continue;}var t=p.age/p.life;p.vy*=1-.12*dt;p.y+=p.vy*dt;p.x+=(p.vx+Math.sin(p.ph+p.age*p.fr)*p.amp*(.25+t))*dt;var r=p.r0+p.grow*t,a=p.a0*(t<.12?t/.12:Math.pow(1-t,1.3));ctx.globalAlpha=a;ctx.drawImage(SMOKE,p.x-r,p.y-r,r*2,r*2);}
+  ctx.globalAlpha=1;
+}
+function burstPetals(n){if(REDUCED)n=Math.round(n/3);for(var i=0;i<n;i++)PETALS.push({x:Math.random()*W,y:-20-Math.random()*220,vy:26+Math.random()*40,vx:(Math.random()-.5)*20,rot:Math.random()*6.28,vr:(Math.random()-.5)*3,s:3+Math.random()*4,c:Math.random()<.5?'#f2b6a0':'#f0d38a',age:0,life:6+Math.random()*3});}
+function drawPetals(dt){for(var i=PETALS.length-1;i>=0;i--){var p=PETALS[i];p.age+=dt;if(p.age>p.life||p.y>H+20){PETALS.splice(i,1);continue;}p.y+=p.vy*dt;p.x+=(p.vx+Math.sin(p.age*2+p.rot)*14)*dt;p.rot+=p.vr*dt;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.globalAlpha=Math.max(0,Math.min(1,p.life-p.age));ctx.fillStyle=p.c;ctx.beginPath();ctx.ellipse(0,0,p.s,p.s*.55,0,0,6.2832);ctx.fill();ctx.restore();}ctx.globalAlpha=1;}
+var lastT=0,raf=0,lastRebuild=0;
+function frame(ts){
+  raf=requestAnimationFrame(frame);
+  var dt=lastT?Math.min(.05,(ts-lastT)/1000):.016;lastT=ts;var now=Date.now();
+  if(now-lastRebuild>4000){lastRebuild=now;rebuildSticks();mark('merit');}
+  ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.clearRect(0,0,W,H);
+  drawSticks(now);emit(dt);drawSmoke(dt);drawPetals(dt);
+}
+
+/* ---------- scene helpers ---------- */
+function buildRays(){var g=$('#rays'),s='';for(var i=0;i<48;i++){var a=i*Math.PI*2/48,r1=118,r2=i%2?130:137;s+='<line x1="'+(400+Math.cos(a)*r1).toFixed(1)+'" y1="'+(238+Math.sin(a)*r1).toFixed(1)+'" x2="'+(400+Math.cos(a)*r2).toFixed(1)+'" y2="'+(238+Math.sin(a)*r2).toFixed(1)+'"/>';}g.innerHTML=s;}
+function restart(el,cls){el.classList.remove(cls);void el.getBoundingClientRect();el.classList.add(cls);}
+function floater(x,y,text,cls){var el=document.createElement('span');el.className='floater'+(cls?' '+cls:'');el.textContent=text;el.style.left=(x/W*100)+'%';el.style.top=(y/H*100)+'%';$('#floaters').appendChild(el);setTimeout(function(){el.remove();},1500);}
+function ripple(){var e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');e.setAttribute('cx','400');e.setAttribute('cy','556');e.setAttribute('rx','96');e.setAttribute('ry','28');e.setAttribute('class','ripple');$('#fx').appendChild(e);setTimeout(function(){e.remove();},1300);}
+function nameEl(name){var b=document.createElement('b');b.textContent=name||'一位香客';return b;}
+function toast(node){var box=$('#toasts'),el=document.createElement('div');el.className='toast';if(typeof node==='string')el.textContent=node;else el.appendChild(node);box.appendChild(el);while(box.children.length>3)box.firstElementChild.remove();setTimeout(function(){el.classList.add('out');setTimeout(function(){el.remove();},450);},4200);}
+function toastWho(name,text){var f=document.createDocumentFragment();f.appendChild(nameEl(name));f.appendChild(document.createTextNode(' '+text));toast(f);}
+function hint(t){$('#hint').textContent=t;}
+function throttled(key,ms){var now=Date.now(),t=S.throttle.get(key)||0;if(now-t<ms)return false;S.throttle.set(key,now);return true;}
+
+/* ---------- data model ---------- */
+function cleanPerson(d){
+  var o={n:txt(d.n,12)||'香客',incense:cnt(d.incense),bows:cnt(d.bows),muyu:cnt(d.muyu),signs:cnt(d.signs),vowed:!!d.vowed,rituals:[],wishes:[],log:[]};
+  if(Array.isArray(d.rituals))o.rituals=d.rituals.slice(-RITUAL_KEEP).map(tstamp).filter(Boolean);
+  if(Array.isArray(d.wishes))d.wishes.slice(0,WISH_KEEP).forEach(function(w){if(w&&typeof w==='object'){var t=txt(w.t,30);if(t)o.wishes.push({t:t,at:tstamp(w.at)});}});
+  if(Array.isArray(d.log))d.log.slice(-LOG_KEEP).forEach(function(l){if(l&&typeof l==='object'&&LOG_KINDS[l.k]){o.log.push({k:l.k,at:tstamp(l.at),no:Number.isInteger(l.no)?l.no:-1,t:txt(l.t,30),c:cnt(l.c)});}});
+  return o;
+}
+function cleanStatus(s){
+  if(!s)return null;
+  return {machine:s.machine==='passed'?'passed':'pending',selftest:s.selftest==='visible'?'visible':'missing',
+    manual:(s.manual==='passed'||s.manual==='returned')?s.manual:'pending',
+    submittedAt:/^\d{4}-\d{2}-\d{2}$/.test(s.submittedAt||'')?s.submittedAt:'',version:txt(s.version,20),modapi:txt(s.modapi,40),note:txt(s.note,60),by:txt(s.by,12),at:tstamp(s.at)};
+}
+function meDoc(){var m=S.mine;return {n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,vowed:m.vowed,rituals:m.rituals,wishes:m.wishes,log:m.log};}
+function entries(){var out=[],hasMe=false;S.people.forEach(function(d,id){if(id===S.pid){out.push([id,meDoc()]);hasMe=true;}else out.push([id,d]);});if(!hasMe)out.push([S.pid,meDoc()]);return out;}
+function meritOf(d){return cnt(d.incense)*3+cnt(d.bows)+cnt(d.muyu)+(d.vowed?99:0);}
+function lastRitual(){var rs=S.mine.rituals;return rs.length?Math.max.apply(null,rs):0;}
+function mergeMine(r){
+  var m=S.mine,now=Date.now(),d=cleanPerson(r);
+  ['incense','bows','muyu','signs'].forEach(function(k){if(d[k]>m[k])m[k]=d[k];});
+  var rsa=tstamp(r.lastSignAt);if(rsa>m.lastSignAt){m.lastSignAt=rsa;if(Number.isInteger(r.lastSignNo))m.lastSignNo=r.lastSignNo;}
+  var set={};m.rituals.concat(d.rituals).forEach(function(t){if(t&&now-t<BURN_MS)set[t]=1;});
+  m.rituals=Object.keys(set).map(Number).sort(function(a,b){return a-b;}).slice(-RITUAL_KEEP);
+  var ws={};m.wishes.concat(d.wishes).forEach(function(w){if(S.removed.has(w.at))return;ws[w.at+'|'+w.t]=w;});
+  m.wishes=Object.keys(ws).map(function(k){return ws[k];}).sort(function(a,b){return b.at-a.at;}).slice(0,WISH_KEEP);
+  var ls={};m.log.concat(d.log).forEach(function(l){ls[l.at+'|'+l.k]=l;});
+  m.log=Object.keys(ls).map(function(k){return ls[k];}).sort(function(a,b){return a.at-b.at;}).slice(-LOG_KEEP);
+  if(d.vowed)m.vowed=true;
+}
+function myBody(){var m=S.mine,now=Date.now();return JSON.stringify({v:1,n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,lastSignAt:m.lastSignAt,lastSignNo:m.lastSignNo,
+  rituals:m.rituals.filter(function(t){return now-t<BURN_MS;}).slice(-RITUAL_KEEP),wishes:m.wishes.slice(0,WISH_KEEP),vowed:!!m.vowed,log:m.log.slice(-LOG_KEEP),at:now});}
+function saveLocal(){LS.set('gs.mine.'+ROOM,S.mine);}
+function loadLocal(){var m=LS.get('gs.mine.'+ROOM,null);if(m&&typeof m==='object'){mergeMine(m);}}
+
+/* ---------- network ---------- */
+var pubTimer=0;
+function queueSave(delay){saveLocal();S.dirty=true;clearTimeout(pubTimer);pubTimer=setTimeout(publishMine,delay==null?800:delay);}
+function publishMine(){if(!S.dirty||!S.synced||!S.mq||!S.mq.connected())return;if(S.mq.publish(PREFIX+'p/'+S.pid,myBody(),true))S.dirty=false;}
+function publishHere(){if(!S.mq||!S.mq.connected())return;S.mq.publish(PREFIX+'h/'+S.tab,JSON.stringify({p:S.pid,n:S.name||'香客',act:S.myAct.act,at:Date.now()}),true);}
+function emitEv(k,extra){if(!S.mq||!S.mq.connected())return;var e={p:S.pid,n:S.name||'香客',k:k,at:Date.now()};if(extra)for(var x in extra)e[x]=extra[x];S.mq.publish(PREFIX+'e',JSON.stringify(e),false);}
+function logAndEmit(k,extra){var l={k:k,at:Date.now(),no:-1,t:'',c:0};if(extra)for(var x in extra)l[x]=extra[x];S.mine.log.push(l);S.mine.log=S.mine.log.slice(-LOG_KEEP);emitEv(k,extra);mark('ledger');}
+function setConn(c){S.conn=c;mark('conn');}
+function connect(){
+  if(S.mq&&S.mq.connected())return;
+  clearTimeout(S.retryT);setConn('connecting');
+  if(S.mq){var old=S.mq;S.mq=null;try{old.end();}catch(e){}}
+  var mq=MiniMqtt(BROKER,{clientId:'gs_'+S.pid.slice(0,8)+'_'+rid(6),keepalive:45,will:{topic:PREFIX+'h/'+S.tab,payload:'',retain:true},
+    onConnect:function(){if(S.mq!==mq)return;S.retry=0;setConn('online');mq.subscribe(PREFIX+'#');publishHere();
+      setTimeout(function(){if(S.mq!==mq)return;S.synced=true;S.dirty=true;publishMine();},1600);},
+    onMessage:onMsg,
+    onClose:function(){if(S.mq!==mq)return;S.synced=false;setConn('offline');scheduleRetry();}});
+  S.mq=mq;
+}
+function scheduleRetry(){clearTimeout(S.retryT);var d=Math.min(30000,1500*Math.pow(2,S.retry++));S.retryT=setTimeout(connect,d);}
+function onMsg(topic,payload,retained){
+  if(topic.indexOf(PREFIX)!==0||payload.length>12000)return;
+  var parts=topic.slice(PREFIX.length).split('/'),kind=parts[0],id=parts[1]||'';
+  if(kind==='p'&&/^[a-z0-9]{6,16}$/.test(id)){
+    if(!payload){S.people.delete(id);}
+    else{var d=parseJSON(payload);if(!d)return;if(S.people.size>300&&!S.people.has(id))return;
+      if(id===S.pid){mergeMine(d);}
+      S.people.set(id,cleanPerson(d));}
+    rebuildSticks();mark('merit','wishes','ledger','actions');
+  }else if(kind==='h'&&/^[a-z0-9]{6,16}$/.test(id)){
+    if(!payload)S.here.delete(id);
+    else{var h=parseJSON(payload);if(!h)return;
+      var hp=/^[a-z0-9]{6,16}$/.test(h.p||'')?h.p:'',isNew=!S.here.has(id);
+      S.here.set(id,{p:hp,n:txt(h.n,12)||'香客',act:ACT_TEXT[h.act]?h.act:'idle',at:tstamp(h.at),seen:Date.now()});
+      if(isNew&&!retained&&hp&&hp!==S.pid&&throttled('join'+hp,60000))toastWho(txt(h.n,12)||'香客','进殿了');}
+    mark('present');
+  }else if(kind==='e'&&!parts[1]){
+    if(retained)return;var ev=parseJSON(payload);if(!ev||ev.p===S.pid)return;onEvent(ev);
+  }else if(kind==='s'&&!parts[1]){
+    var st=payload?cleanStatus(parseJSON(payload)):null;S.status=st;mark('status');
+  }
+}
+function onEvent(ev){
+  var name=txt(ev.n,12)||'香客',k=ev.k;
+  if(k==='bow'){ripple();if(throttled('bow'+ev.p,2500))toastWho(name,'叩首');}
+  else if(k==='muyu'){var c=Math.min(4,cnt(ev.c)||1);for(var i=0;i<c;i++)setTimeout(function(){floater(248+(Math.random()-.5)*44,334,'+1','other');},i*120);}
+  else if(k==='incense')toastWho(name,'上了三炷香');
+  else if(k==='bow3'){ripple();toastWho(name,'行三叩首礼');}
+  else if(k==='muyu108')toastWho(name,'敲满木鱼 '+num(ev.c)+' 下');
+  else if(k==='sign'){var s=SIGNS[Number.isInteger(ev.no)?ev.no:-1];toastWho(name,s?('求得'+s.n+' · '+lvlName(s)):'求了一签');}
+  else if(k==='wish'){var t=txt(ev.t,30);toastWho(name,t?('挂上许愿牌「'+t+'」'):'挂上一块许愿牌');}
+  else if(k==='vow'){toastWho(name,'前来还愿');burstPetals(80);}
+  else if(k==='status')toastWho(name,'更新了审核进度');
+}
+
+/* ---------- actions ---------- */
+function setAct(act){
+  S.myAct={act:act,at:Date.now()};
+  if(throttled('here',act==='muyu'?900:250))publishHere();
+  clearTimeout(setAct.t);if(act!=='idle')setAct.t=setTimeout(function(){setAct('idle');},5000);
+  mark('present');
+}
+function doIncense(){
+  var now=Date.now(),left=INCENSE_CD-(now-lastRitual());
+  if(left>0){hint('香火正旺，'+Math.ceil(left/1000)+' 秒后可以再上。');return;}
+  S.mine.rituals=S.mine.rituals.filter(function(t){return now-t<BURN_MS;}).concat([now]).slice(-RITUAL_KEEP);
+  S.mine.incense++;whoosh();setAct('incense');rebuildSticks();floater(400,190,'+3 功德');
+  hint('香已点燃。请到蒲团前叩首三次。');logAndEmit('incense');queueSave(250);mark('merit','actions');
+}
+function doBow(){
+  if(S.bowLock)return;S.bowLock=true;setTimeout(function(){S.bowLock=false;},REDUCED?300:950);
+  var now=Date.now();if(now-S.bowAt>20000)S.bowStreak=0;S.bowAt=now;S.bowStreak++;
+  S.mine.bows++;bell();setAct('bow');emitEv('bow');
+  restart($('#stageInner'),'bowing');restart($('#cushionBody'),'press');ripple();floater(400,512,'+1 功德');
+  var n=S.bowStreak;
+  if(n>=3){hint('三叩首 · 礼成');S.bowStreak=0;S.bowDoneAt=now;logAndEmit('bow3');setTimeout(function(){if(Date.now()-S.bowDoneAt>=1300)hint('礼成。可以敲木鱼积攒功德，或者求一签。');},1500);}
+  else hint(n===1?'一叩首':'二叩首');
+  queueSave();mark('merit','actions');
+}
+var muyuTimer=0;
+function doMuyu(){
+  S.mine.muyu++;tok();setAct('muyu');
+  restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');
+  floater(248+(Math.random()-.5)*34,326,'功德 +1');
+  S.muyuPending++;if(!muyuTimer)muyuTimer=setTimeout(function(){muyuTimer=0;var c=S.muyuPending;S.muyuPending=0;if(c)emitEv('muyu',{c:c});},600);
+  if(S.mine.muyu%108===0){logAndEmit('muyu108',{c:S.mine.muyu});hint('木鱼又敲满一百零八下，功德记上了。');}
+  queueSave(1200);mark('merit');
+}
+function doSign(){
+  var now=Date.now();
+  if(now-S.mine.lastSignAt<SIGN_CD&&S.mine.lastSignNo>=0){openSign(S.mine.lastSignNo,true);return;}
+  rattle();setAct('sign');restart($('#signbox'),'shake');
+  var idx=Math.floor(Math.random()*SIGNS.length);S.mine.lastSignAt=now;S.mine.lastSignNo=idx;S.mine.signs++;
+  setTimeout(function(){restart($('#popStick'),'pop');},REDUCED?0:700);
+  setTimeout(function(){openSign(idx,false);logAndEmit('sign',{no:idx});queueSave(300);mark('merit');},REDUCED?150:1250);
+}
+function openSign(i,again){
+  var s=SIGNS[i];if(!s)return;
+  $('#signNo').textContent=s.n;$('#signLvl').textContent=lvlName(s);
+  var poem=$('#signPoem');poem.textContent='';s.poem.forEach(function(l){var sp=document.createElement('span');sp.textContent=l;poem.appendChild(sp);});
+  $('#signJie').textContent=s.jie;
+  $('#signNote').textContent=again?('一事一签。这是你刚才求得的签，'+Math.max(1,Math.ceil((SIGN_CD-(Date.now()-S.mine.lastSignAt))/1000))+' 秒后可以再求。'):'';
+  openOverlay('#signOverlay');
+}
+function openWish(prefill){$('#wishText').value=typeof prefill==='string'?prefill:'';openOverlay('#wishOverlay');}
+function submitWish(text){
+  text=txt(String(text||'').replace(/\s+/g,' '),30);if(!text){$('#wishText').focus();return;}
+  var now=Date.now(),full=S.mine.wishes.length>=WISH_KEEP;
+  S.mine.wishes=[{t:text,at:now}].concat(S.mine.wishes).slice(0,WISH_KEEP);
+  setAct('wish');logAndEmit('wish',{t:text});queueSave(200);closeOverlay();
+  hint(full?'许愿牌挂上了。每人最多 5 块，最早那块已经取下。':'许愿牌挂上了。');mark('wishes');
+}
+function removeWish(at){S.removed.add(at);S.mine.wishes=S.mine.wishes.filter(function(w){return w.at!==at;});queueSave(200);mark('wishes');}
+function curStatus(){return S.status||DEFAULT_STATUS;}
+function isPassed(){return curStatus().manual==='passed';}
+function doVow(){
+  if(S.mine.vowed){hint('你已经还过愿了，再撒一次花。');burstPetals(40);return;}
+  S.mine.vowed=true;bell();burstPetals(110);setAct('vow');logAndEmit('vow');queueSave(200);hint('还愿礼成，功德 +99。');mark('merit','actions');
+}
+
+/* ---------- overlays ---------- */
+var lastFocus=null;
+function openOverlay(sel){closeOverlay(true);var o=$(sel);lastFocus=document.activeElement;o.hidden=false;var f=o.querySelector('input:not([readonly]),button.btn-gold');if(f)f.focus();}
+function closeOverlay(silent){var any=false;Array.prototype.forEach.call(document.querySelectorAll('.overlay'),function(o){if(!o.hidden)any=true;o.hidden=true;});if(any&&!silent&&lastFocus&&lastFocus.focus)lastFocus.focus();}
+function inviteUrl(){var base=location.href.split('#')[0];return ROOM===ROOM_DEFAULT?base:base+'#'+ROOM;}
+function openInvite(){var url=inviteUrl();$('#inviteLink').value=url;
+  $('#inviteMsg').textContent=/^https?:/.test(url)?'把这个链接发到群里，大家用手机或电脑打开就能一起上香。':'这个页面现在是从本机文件打开的，朋友打不开这个地址。把页面放到网上后，再从这里复制链接。';
+  $('#copyBtn').textContent='复制链接';openOverlay('#inviteOverlay');}
+function copyInvite(){var url=$('#inviteLink').value;var done=function(){$('#copyBtn').textContent='已复制';};
+  try{navigator.clipboard.writeText(url).then(done,function(){selectLink();});}catch(e){selectLink();}}
+function selectLink(){var i=$('#inviteLink');i.focus();i.select();try{if(document.execCommand('copy'))$('#copyBtn').textContent='已复制';else $('#copyBtn').textContent='请长按链接复制';}catch(e){$('#copyBtn').textContent='请长按链接复制';}}
+function openName(){$('#nameInput').value=S.name||('香客'+(1000+Math.floor(Math.random()*9000)));openOverlay('#nameOverlay');}
+function submitName(){var n=txt($('#nameInput').value.replace(/\s+/g,' '),12);if(!n){$('#nameInput').focus();return;}
+  S.name=n;LS.set('gs.name',n);closeOverlay();$('#nameShow').textContent=n;publishHere();queueSave(200);mark('present','wishes','ledger');hint('欢迎进殿，'+n+'。先上三炷香吧。');}
+
+/* ---------- rendering ---------- */
+var need={},rq=0;
+function mark(){for(var i=0;i<arguments.length;i++)need[arguments[i]]=1;if(!rq)rq=requestAnimationFrame(flushRender);}
+function flushRender(){rq=0;var n=need;need={};
+  if(n.merit)renderMerit();if(n.actions)renderActions();if(n.wishes)renderWishes();if(n.ledger)renderLedger();if(n.present||n.conn)renderPresent();if(n.status)renderStatus();}
+function renderMerit(){
+  var total=0;entries().forEach(function(e){total+=meritOf(e[1]);});
+  var i=0;while(i<MILESTONES.length-1&&total>=MILESTONES[i][0])i++;
+  var next=MILESTONES[i],prev=i?MILESTONES[i-1][0]:0,pct=total>=next[0]?100:(total-prev)/(next[0]-prev)*100;
+  $('#meritNum').textContent=num(total);$('#meritBar').style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
+  $('#meritNext').textContent=total>=MILESTONES[MILESTONES.length-1][0]?'功德圆满，审核必过':('距「'+next[1]+'」还差 '+num(next[0]-total));
+  $('#meritMine').textContent=num(meritOf(S.mine));$('#stickCount').textContent=num(STICKS.length);
+  $('#myStats').textContent='上香 '+num(S.mine.incense)+' · 叩首 '+num(S.mine.bows)+' · 木鱼 '+num(S.mine.muyu)+' · 求签 '+num(S.mine.signs);
+}
+function renderActions(){
+  var passed=isPassed(),w=$('#actWish');
+  w.classList.toggle('primary',passed);$('#wishLbl').textContent=passed?'还愿':'许愿';
+  $('#wishSub').textContent=passed?(S.mine.vowed?'已还愿':'功德 +99'):'挂许愿牌';
+  w.querySelector('.ico-wish').toggleAttribute('hidden',passed);w.querySelector('.ico-vow').toggleAttribute('hidden',!passed);
+  var left=INCENSE_CD-(Date.now()-lastRitual());
+  $('#incenseSub').textContent=left>0?('香火正旺 '+Math.ceil(left/1000)+'s'):'点三炷';
+  $('#actIncense').setAttribute('aria-disabled',left>0?'true':'false');
+  var done=Date.now()-S.bowDoneAt<4000;
+  $('#bowSub').textContent=done?'礼成':(S.bowStreak===1?'一叩':S.bowStreak===2?'二叩':'三叩为礼');
+}
+function renderWishes(){
+  var list=[];
+  entries().forEach(function(e){var id=e[0],d=e[1];(d.wishes||[]).forEach(function(w){list.push({id:id,n:d.n,t:w.t,at:w.at});});});
+  list.sort(function(a,b){return b.at-a.at;});
+  var box=$('#tags');box.textContent='';$('#wishEmpty').hidden=list.length>0;
+  list.slice(0,30).forEach(function(w){
+    var li=document.createElement('li');li.className='tag';
+    var p=document.createElement('p');p.textContent=w.t;
+    var f=document.createElement('footer'),nm=document.createElement('span'),tm=document.createElement('time');
+    nm.textContent=w.id===S.pid?(S.name||'你'):(w.n||'香客');tm.textContent=ago(w.at);f.appendChild(nm);f.appendChild(tm);
+    if(w.id===S.pid){var rm=document.createElement('button');rm.type='button';rm.className='rm';rm.textContent='取下';rm.addEventListener('click',function(){removeWish(w.at);});f.appendChild(rm);}
+    li.appendChild(p);li.appendChild(f);box.appendChild(li);
+  });
+  $('#wishCount').textContent=list.length?('已挂 '+list.length+' 块 · 每人最多 5 块'):'每人最多挂 5 块';
+}
+function renderLedger(){
+  var items=[];
+  entries().forEach(function(e){var id=e[0],d=e[1];(d.log||[]).forEach(function(l){if(FEED_TEXT[l.k])items.push({n:id===S.pid?(S.name||'你'):d.n,k:l.k,at:l.at,no:l.no,t:l.t,c:l.c});});});
+  items.sort(function(a,b){return b.at-a.at;});items=items.slice(0,FEED_LIMIT);
+  var ol=$('#ledger');ol.textContent='';$('#ledgerEmpty').hidden=items.length>0;
+  items.forEach(function(it){var li=document.createElement('li'),sp=document.createElement('span'),tm=document.createElement('time');
+    sp.appendChild(nameEl(it.n));sp.appendChild(document.createTextNode(' '+FEED_TEXT[it.k](it)));tm.textContent=ago(it.at);
+    li.appendChild(sp);li.appendChild(tm);ol.appendChild(li);});
+}
+function renderPresent(){
+  var now=Date.now(),byPid=new Map();
+  S.here.forEach(function(h,tab){
+    var age=now-h.at,fresh=age<90000&&age>-120000;
+    if(now-h.at>600000&&!S.cleared.has(tab)&&S.mq&&S.mq.connected()){S.cleared.add(tab);S.mq.publish(PREFIX+'h/'+tab,'',true);}
+    if(!fresh||!h.p||h.p===S.pid)return;var prev=byPid.get(h.p);if(!prev||h.at>prev.at)byPid.set(h.p,h);
+  });
+  var list=[{p:S.pid,n:S.name||'你',act:S.myAct.act,at:S.myAct.at,me:true}];byPid.forEach(function(h){list.push(h);});
+  var box=$('#present');box.textContent='';
+  list.forEach(function(p){
+    var li=document.createElement('li');li.className='person'+(p.me?' me':'');
+    var av=document.createElement('span');av.className='av';av.style.background='hsl('+hue(p.p)+' 55% 68%)';av.textContent=Array.from(p.n||'香')[0];
+    var nm=document.createElement('span');nm.className='nm';nm.textContent=p.n||'香客';
+    var busy=p.act!=='idle'&&now-p.at<6500&&ACT_TEXT[p.act];
+    var d=document.createElement('span');d.className='doing'+(busy?' busy':'');d.textContent=(p.me?'你 · ':'')+(busy||'静坐');
+    li.appendChild(av);li.appendChild(nm);li.appendChild(d);box.appendChild(li);
+  });
+  var pill=$('#connPill');pill.dataset.conn=S.conn;
+  $('#connText').textContent=S.conn==='online'?('联机中 · 殿中 '+list.length+' 人'):S.conn==='connecting'?'连接中…':'断线了，正在重连…';
+}
+function ymd(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s||''));return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
+function setStage(id,cls,text,sub){var el=$(id);el.querySelector('.v').className='v '+cls;el.querySelector('.vt').textContent=text;el.querySelector('.sub').textContent=sub||'';}
+function renderStatus(){
+  var st=curStatus();
+  setStage('#stMachine',st.machine==='passed'?'ok':'wait',st.machine==='passed'?'已通过':'进行中','');
+  setStage('#stSelf',st.selftest==='visible'?'ok':'wait',st.selftest==='visible'?'手机端已现身':'已发布 · 手机端未现身',st.selftest==='visible'?'可以开始手机自测':st.note);
+  var d=ymd(st.submittedAt),days=null;if(d){var t0=new Date();t0=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate());days=Math.max(0,Math.round((t0-d)/864e5));}
+  var today=new Date(),holiday=(today.getMonth()===8&&today.getDate()>=25)||(today.getMonth()===9&&today.getDate()<=8);
+  if(st.manual==='passed')setStage('#stManual','ok','已通过！','请众施主前来还愿');
+  else if(st.manual==='returned')setStage('#stManual','bad','被退回','按审核意见改好，再提一次');
+  else setStage('#stManual','wait','审核中',(days!=null?('已等 '+days+' 天 · '):'')+'官方一般 3 个工作日'+(holiday?'，国庆长假可能顺延':''));
+  var bits=[];if(st.version)bits.push('提审版本 '+st.version);if(st.modapi)bits.push('modAPI '+st.modapi);if(st.by&&st.at)bits.push(st.by+' '+ago(st.at)+'更新');
+  $('#stVersion').textContent=bits.join(' · ');
+  if(isPassed()&&!S.sawPassed){S.sawPassed=true;burstPetals(S.statusPrimed?100:40);hint('人审通过了！点「还愿」谢过诸佛。');}
+  S.statusPrimed=true;
+  if(!$('#statusEdit').open){$('#fSelf').value=st.selftest;$('#fManual').value=st.manual;$('#fDate').value=st.submittedAt||'';$('#fVer').value=st.version||'';$('#fNote').value=st.note||'';}
+  mark('actions');
+}
+
+/* ---------- wiring ---------- */
+function bind(){
+  $('#actIncense').addEventListener('click',doIncense);
+  $('#actBow').addEventListener('click',doBow);
+  $('#actMuyu').addEventListener('click',doMuyu);
+  $('#actSign').addEventListener('click',doSign);
+  $('#actWish').addEventListener('click',function(){if(isPassed())doVow();else openWish();});
+  $('#wishOpen2').addEventListener('click',function(){openWish();});
+  $('#hotBurner').addEventListener('click',doIncense);
+  $('#hotCushion').addEventListener('click',doBow);
+  $('#hotSign').addEventListener('click',doSign);
+  $('#hotMuyu').addEventListener('pointerdown',function(e){e.preventDefault();doMuyu();});
+  $('#soundBtn').addEventListener('click',toggleSound);
+  $('#nameBtn').addEventListener('click',openName);
+  $('#inviteBtn').addEventListener('click',openInvite);
+  $('#copyBtn').addEventListener('click',copyInvite);
+  $('#nameForm').addEventListener('submit',function(e){e.preventDefault();submitName();});
+  $('#wishForm').addEventListener('submit',function(e){e.preventDefault();submitWish($('#wishText').value);});
+  Array.prototype.forEach.call(document.querySelectorAll('.overlay'),function(o){o.addEventListener('click',function(e){if(o.id==='nameOverlay'&&!S.name)return;if(e.target===o||e.target.closest('[data-close]'))closeOverlay();});});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!(!S.name&&!$('#nameOverlay').hidden))closeOverlay();});
+  [['#presets',function(t){$('#wishText').value=t;$('#wishText').focus();}],['#presets2',function(t){openWish(t);}]].forEach(function(p){
+    var box=$(p[0]);PRESETS.forEach(function(t){var b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',function(){p[1](t);});box.appendChild(b);});});
+  $('#statusForm').addEventListener('submit',function(e){
+    e.preventDefault();var msg=$('#fMsg');
+    if(!S.mq||!S.mq.connected()){msg.textContent='还没连上，稍后再存';return;}
+    var cur=curStatus();
+    var b={machine:cur.machine||'passed',selftest:$('#fSelf').value,manual:$('#fManual').value,submittedAt:$('#fDate').value||'',version:txt($('#fVer').value,20),
+      modapi:cur.modapi||'',note:txt($('#fNote').value,60),by:S.name||'香客',at:Date.now()};
+    S.mq.publish(PREFIX+'s',JSON.stringify(b),true);emitEv('status');
+    S.status=cleanStatus(b);msg.textContent='已保存';setTimeout(function(){$('#statusEdit').open=false;msg.textContent='';mark('status');},900);
+  });
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){cancelAnimationFrame(raf);raf=0;}
+    else{if(!raf){lastT=0;raf=requestAnimationFrame(frame);}if(!S.mq||!S.mq.connected()){S.retry=0;connect();}else publishHere();}
+  });
+  window.addEventListener('online',function(){if(!S.mq||!S.mq.connected()){S.retry=0;connect();}});
+  window.addEventListener('pagehide',function(){try{if(S.mq&&S.mq.connected()){publishMine();S.mq.publish(PREFIX+'h/'+S.tab,'',true);S.mq.end();}}catch(e){}});
+}
+function tick(){
+  mark('actions');
+  var s=Math.floor(Date.now()/1000);
+  if(s%3===0)mark('present');
+  if(s%25===0)publishHere();
+  if(s%30===0)mark('wishes','ledger','status');
+}
+
+buildRays();loadLocal();bind();paintSound();
+$('#nameShow').textContent=S.name||'未留名';
+$('#roomLine').textContent='殿号 '+ROOM+' · 联机服务：EMQX 公共 MQTT 服务器（消息公开，请勿写隐私）';
+rebuildSticks();mark('merit','actions','wishes','ledger','present','status','conn');
+raf=requestAnimationFrame(frame);
+setInterval(tick,1000);
+connect();
+if(!S.name)setTimeout(openName,500);
+})();
+</script>
+</body>
+</html>
