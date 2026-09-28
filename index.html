@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1f1411">
 <meta name="format-detection" content="telephone=no">
-<meta name="description" content="和朋友一起在线上香、叩首、撞钟、放天灯、摆供品、求签许愿，为《非常了不起的修仙模拟》祈求早日过审。">
+<meta name="description" content="和朋友一起在线上香、叩首、撞钟、御剑、放烟花、渡劫突破，为《非常了不起的修仙模拟》祈求早日过审。">
 <title>过审祈福殿</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +38,10 @@ button{touch-action:manipulation}
 
 /* header */
 .top{display:flex;align-items:flex-end;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
-.brand h1{font-family:var(--f-brush);font-weight:400;font-size:clamp(32px,5.4vw,46px);line-height:1;margin:0;color:var(--gold-hi);letter-spacing:.08em}
+.brand h1{font-family:var(--f-brush);font-weight:400;font-size:clamp(32px,5.4vw,46px);line-height:1.05;margin:0;letter-spacing:.08em;
+  background:linear-gradient(100deg,#c99a45 0%,#f0d38a 20%,#fff6d6 28%,#f0d38a 36%,#c99a45 55%,#f0d38a 80%,#c99a45 100%);background-size:260% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:gild 7s linear infinite}
+@keyframes gild{from{background-position:100% 0}to{background-position:-160% 0}}
 .brand p{margin:8px 0 0;color:var(--ash-2);font-size:14px;max-width:62ch}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ash-2);font-variant-numeric:tabular-nums}
@@ -48,6 +51,7 @@ button{touch-action:manipulation}
 .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ash);border-radius:999px;padding:5px 13px;font-size:13px;cursor:pointer;transition:border-color .2s}
 .btn-ghost:hover{border-color:var(--gold)}
 .btn-gold{background:linear-gradient(180deg,#f0d38a,#c99a45);border:0;color:#2a1a12;border-radius:999px;padding:8px 20px;font-weight:600;cursor:pointer;letter-spacing:.08em;text-decoration:none;display:inline-block}
+.notice{border:1px solid rgba(227,117,100,.55);background:rgba(120,30,20,.28);color:#ffd9cf;border-radius:10px;padding:10px 14px;font-size:14px}
 
 /* progress */
 .progress{display:grid;gap:8px}
@@ -73,19 +77,22 @@ button{touch-action:manipulation}
 
 /* hall */
 .hall{display:grid;justify-items:center;gap:12px}
-.scene,.merit,.actions,.hint,.dm-bar,.chips{width:100%;max-width:880px}
+.scene,.merit,.actions,.hint,.dm-bar,.chips,.rules,.notice{width:100%;max-width:880px}
 @supports (width:min(1px,max(1px,calc(1svh * 2)))){
-  .scene,.merit,.actions,.hint,.dm-bar,.chips{width:min(100%,880px,max(300px,calc((100svh - 340px) * 4 / 3)))}
+  .scene,.merit,.actions,.hint,.dm-bar,.chips,.rules,.notice{width:min(100%,880px,max(300px,calc((100svh - 340px) * 4 / 3)))}
 }
 .scene{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#150c0a;
   box-shadow:0 34px 60px -34px rgba(0,0,0,.8),inset 0 0 0 1px rgba(216,178,92,.2);touch-action:manipulation;user-select:none;-webkit-user-select:none}
 .scene.shake{animation:jolt .5s ease-out}
-@keyframes jolt{15%{transform:translate(2px,-1px)}30%{transform:translate(-2px,1px)}45%{transform:translate(1.5px,1px)}60%{transform:translate(-1px,-1px)}80%{transform:translate(.5px,0)}}
+@keyframes jolt{15%{transform:translate(3px,-2px)}30%{transform:translate(-3px,2px)}45%{transform:translate(2px,1px)}60%{transform:translate(-1.5px,-1px)}80%{transform:translate(.5px,0)}}
+.tilt{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform}
 .stage-inner{position:absolute;inset:0;transform-origin:50% 100%}
 .stage-inner svg,.stage-inner canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .stage-inner canvas{pointer-events:none}
 .stage-inner.bowing{animation:bow 1.1s cubic-bezier(.45,.05,.3,1)}
 @keyframes bow{0%{transform:none;filter:none}38%,60%{transform:perspective(1000px) rotateX(10deg) translateY(4%) scale(.97);filter:brightness(.62)}100%{transform:none;filter:none}}
+.glare{position:absolute;inset:0;pointer-events:none;mix-blend-mode:screen;opacity:0;transition:opacity .4s;background:radial-gradient(circle at var(--gx,50%) var(--gy,40%),rgba(255,236,190,.16),transparent 55%)}
+.scene.tilting .glare{opacity:1}
 .rays{transform-box:view-box;transform-origin:400px 238px;animation:spin 150s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .flame{transform-box:fill-box;transform-origin:50% 100%;animation:flick 1.9s ease-in-out infinite}
@@ -93,6 +100,8 @@ button{touch-action:manipulation}
 @keyframes flick{0%,100%{transform:scale(1,1) skewX(0)}25%{transform:scale(.93,1.07) skewX(2deg)}50%{transform:scale(1.05,.95) skewX(-1.5deg)}75%{transform:scale(.97,1.04) skewX(1deg)}}
 .glow{transform-box:fill-box;transform-origin:center;animation:breathe 3.2s ease-in-out infinite}
 @keyframes breathe{50%{opacity:.72}}
+.tw{animation:twinkle 3s ease-in-out infinite}
+@keyframes twinkle{50%{opacity:.25}}
 .hot{cursor:pointer}
 .hot:hover #muyuBody,.hot:hover #cushionBody,.hot:hover #signbox,.hot:hover .burner-body,.hot:hover #bellBody{filter:brightness(1.14)}
 #muyuBody{transform-box:fill-box;transform-origin:50% 100%}
@@ -120,24 +129,36 @@ button{touch-action:manipulation}
 .floater{position:absolute;transform:translate(-50%,-50%);font-weight:900;color:var(--gold-hi);text-shadow:0 0 14px rgba(240,200,110,.65);
   animation:float 1.3s ease-out forwards;font-size:clamp(13px,2.1vw,19px);white-space:nowrap;font-variant-numeric:tabular-nums}
 .floater.other{color:#e9dcc4;opacity:.75;font-weight:600;text-shadow:none}
-.floater.big{font-size:clamp(16px,2.8vw,24px)}
+.floater.big{font-size:clamp(17px,3vw,26px);animation-duration:1.8s}
+.floater.bad{color:#ff9a80;text-shadow:0 0 12px rgba(255,80,50,.6)}
 @keyframes float{from{opacity:0;transform:translate(-50%,-20%)}15%{opacity:1}to{opacity:0;transform:translate(-50%,-240%)}}
 .dm{position:absolute;left:100%;white-space:nowrap;font-size:clamp(13px,2.2vw,17px);color:#fff4d6;text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 12px rgba(240,200,110,.4);will-change:transform}
 .dm.go{animation:dmfly 9s linear forwards}
 .dm b{color:var(--gold-hi);margin-right:.45em;font-weight:600}
 .dm.mine{color:#ffe3a1}
 @keyframes dmfly{to{transform:translateX(var(--d,-1200px))}}
-.toasts{position:absolute;left:10px;bottom:10px;display:grid;gap:6px;max-width:min(66%,360px);pointer-events:none}
-.toast{background:rgba(22,13,11,.82);border:1px solid var(--line);color:var(--ash);padding:5px 10px;border-radius:6px;font-size:13px;line-height:1.45;animation:tin .3s ease-out;transition:opacity .4s}
+.toasts{position:absolute;left:10px;bottom:10px;display:grid;gap:6px;max-width:min(70%,380px);pointer-events:none;z-index:3}
+.toast{background:rgba(22,13,11,.84);border:1px solid var(--line);color:var(--ash);padding:5px 10px;border-radius:6px;font-size:13px;line-height:1.45;animation:tin .3s ease-out;transition:opacity .4s}
+.toast.bad{border-color:rgba(227,117,100,.7);background:rgba(70,14,10,.88);color:#ffd9cf}
 .toast.out{opacity:0}
 .toast b{color:var(--gold-hi);font-weight:600}
 @keyframes tin{from{opacity:0;transform:translateY(6px)}}
+.banner{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0;z-index:2}
+.banner.show{animation:banner 2.8s ease-out forwards}
+.banner div{text-align:center;padding:0 12px}
+.banner small{display:block;font-size:clamp(14px,2.4vw,20px);color:#fff4d6;text-shadow:0 0 10px rgba(0,0,0,.9)}
+.banner b{display:block;font-family:var(--f-brush);font-weight:400;font-size:clamp(44px,10vw,96px);line-height:1.08;
+  background:linear-gradient(180deg,#fff6d8,#f0c860 55%,#c88a2a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(255,200,90,.8))}
+.banner.bad b{background:linear-gradient(180deg,#ffe0d6,#ff7a5c 55%,#b3231a);-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 18px rgba(255,60,40,.8))}
+@keyframes banner{0%{opacity:0;transform:scale(.7)}14%{opacity:1;transform:scale(1.06)}24%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1.02)}}
+.scene.cursed::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,rgba(150,15,8,0),rgba(150,15,8,.6));animation:curse 1.8s ease-out forwards;z-index:1}
+@keyframes curse{0%{opacity:0}12%{opacity:1}100%{opacity:0}}
 
 /* merit */
 .merit{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:6px 20px;align-items:center}
 .m-main{display:grid;gap:2px}
 .label{font-size:12px;letter-spacing:.18em;color:var(--ash-3)}
-.num{font-weight:900;font-size:clamp(30px,4.4vw,42px);line-height:1;color:var(--gold-hi);font-variant-numeric:tabular-nums}
+.num{font-weight:900;font-size:clamp(30px,4.4vw,42px);line-height:1;color:var(--gold-hi);font-variant-numeric:tabular-nums;text-shadow:0 0 18px rgba(240,200,110,.25)}
 .m-bar{display:grid;gap:6px;align-self:end;padding-bottom:4px}
 .bar{height:6px;border-radius:3px;background:rgba(216,178,92,.14);overflow:hidden}
 .bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold-lo),var(--gold-hi));transition:width .6s ease}
@@ -145,6 +166,7 @@ button{touch-action:manipulation}
 .aside{font-size:13px;color:var(--ash-2);text-align:right;font-variant-numeric:tabular-nums;line-height:1.7}
 .aside b{color:var(--ash);font-weight:600}
 .realm{display:inline-block;font-size:11px;line-height:1;padding:3px 5px;border-radius:4px;border:1px solid currentColor;white-space:nowrap;font-weight:600;vertical-align:1px}
+.badge-bad{color:var(--danger)}
 
 /* actions */
 .actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
@@ -165,8 +187,10 @@ button{touch-action:manipulation}
 .dm-bar input::placeholder{color:var(--ash-3)}
 .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
 .chip{background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--ash-2);cursor:pointer}
+.chip:hover{border-color:var(--gold)}
 .chip[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-hi);background:rgba(216,178,92,.12)}
 .hint{margin:0;color:var(--ash-2);font-size:14px;text-align:center;min-height:1.6em}
+.rules{margin:0;font-size:12.5px;color:var(--ash-3);text-align:center;max-width:62ch;justify-self:center}
 @media (max-width:520px){.act{min-height:62px;padding:8px 2px}.act small{display:none}.act b{font-size:14px;letter-spacing:.04em}.actions.second .act{min-height:58px}}
 
 /* lower */
@@ -195,11 +219,13 @@ button{touch-action:manipulation}
 .rank{list-style:none;margin:0;padding:0;display:grid;gap:6px}
 .rank li{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 12px;background:var(--hall-2);border:1px solid var(--line);border-radius:8px}
 .rank li.me{border-color:var(--line-2);background:linear-gradient(90deg,rgba(216,178,92,.1),var(--hall-2))}
+.rank li.out{opacity:.75;border-color:rgba(227,117,100,.45);background:linear-gradient(90deg,rgba(120,30,20,.3),var(--hall-2))}
 .rank .no{font-weight:900;color:var(--ash-3);font-variant-numeric:tabular-nums;text-align:center;font-size:15px}
 .rank li:nth-child(1) .no{color:#f0d38a}.rank li:nth-child(2) .no{color:#d8d8d8}.rank li:nth-child(3) .no{color:#d59a6a}
-.rank .who{display:flex;align-items:center;gap:6px;min-width:0}
-.rank .who span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.rank .who{display:flex;align-items:center;gap:6px;min-width:0;flex-wrap:wrap}
+.rank .who span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;max-width:10em}
 .rank .pts{font-weight:600;font-variant-numeric:tabular-nums;color:var(--gold-hi)}
+.rank li.out .pts{color:var(--danger)}
 .rank-empty{margin:0;color:var(--ash-3);font-size:14px}
 .present{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .person{display:flex;align-items:center;gap:7px;background:var(--hall-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-size:13px;max-width:100%}
@@ -207,12 +233,14 @@ button{touch-action:manipulation}
 .person .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:8em}
 .person .doing{color:var(--ash-3);font-size:12px;white-space:nowrap}
 .person .doing.busy{color:var(--gold)}
+.person .doing.banned{color:var(--danger)}
 .person.me{border-color:var(--line-2)}
 .ledger{background:var(--paper);color:var(--ink);border-radius:6px;padding:14px 16px 8px 30px;position:relative;box-shadow:0 18px 30px -24px rgba(0,0,0,.9);
   background-image:linear-gradient(90deg,transparent 18px,rgba(156,42,32,.35) 18px 19px,transparent 19px)}
 .ledger h3{font-family:var(--f-brush);font-weight:400;font-size:26px;line-height:1.2;margin:0 0 4px;color:var(--seal);letter-spacing:.1em}
 .ledger ol{list-style:none;margin:0;padding:0;max-height:380px;overflow:auto}
 .ledger li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(111,95,79,.35);font-size:14px}
+.ledger li.bad span{color:#8c1d14}
 .ledger li:last-child{border-bottom:0}
 .ledger li span{overflow-wrap:anywhere}
 .ledger li b{font-weight:600;color:#5a1b12}
@@ -256,11 +284,6 @@ button{touch-action:manipulation}
 .panel.pen h3{color:#ff9a80;font-size:40px}
 .pen-list{margin:0;padding-left:1.2em;display:grid;gap:4px}
 .pen-list li::marker{color:var(--danger)}
-.badge-bad{color:var(--danger)}
-.person .doing.banned{color:var(--danger)}
-.scene.cursed::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,rgba(150,15,8,0),rgba(150,15,8,.6));animation:curse 1.8s ease-out forwards}
-@keyframes curse{0%{opacity:0}12%{opacity:1}100%{opacity:0}}
-.rules{margin:0;font-size:12.5px;color:var(--ash-3);text-align:center;max-width:62ch;justify-self:center}
 
 @media (max-width:640px){
   .stage{flex-basis:100%;padding:8px 14px}
@@ -269,7 +292,7 @@ button{touch-action:manipulation}
   .merit{grid-template-columns:1fr}.aside{text-align:left}
 }
 @media (prefers-reduced-motion:reduce){
-  .rays,.flame,.glow,.tag{animation:none!important}
+  .rays,.flame,.glow,.tag,.tw,.brand h1{animation:none!important}
   .stage-inner.bowing{animation:dim .6s ease}
   .scene.shake{animation:none}
   @keyframes dim{50%{filter:brightness(.7)}}
@@ -318,14 +341,22 @@ button{touch-action:manipulation}
   </section>
 
   <section class="hall" aria-label="大殿">
+    <p class="notice" id="passiveNote" hidden>这座殿已经在本浏览器的另一个标签页里开着了，这里只能看不能拜。关掉另一个标签页，几秒后这里就能用。</p>
+    <p class="notice" id="cryptoNote" hidden>你的浏览器不支持数字签名，只能观礼。请换用新版 Chrome、Edge、Safari 或微信里「在浏览器打开」。</p>
     <div class="scene" id="scene">
+      <div class="tilt" id="tilt">
       <div class="stage-inner" id="stageInner">
         <svg viewBox="0 0 800 600" aria-hidden="true" focusable="false">
           <defs>
             <linearGradient id="gWall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2e1a14"/><stop offset="1" stop-color="#160c0a"/></linearGradient>
             <radialGradient id="gAura" cx="400" cy="238" r="270" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#f1cf7a" stop-opacity=".32"/><stop offset=".45" stop-color="#d8a24a" stop-opacity=".1"/><stop offset="1" stop-color="#d8a24a" stop-opacity="0"/></radialGradient>
             <radialGradient id="gInner" cx="400" cy="238" r="98" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#ffe7a8" stop-opacity=".42"/><stop offset=".7" stop-color="#e3b35a" stop-opacity=".12"/><stop offset="1" stop-color="#e3b35a" stop-opacity="0"/></radialGradient>
-            <pattern id="lattice" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M0 12H24M12 0V24" stroke="#d8b25c" stroke-width="1" fill="none"/><rect x="7" y="7" width="10" height="10" fill="none" stroke="#d8b25c" stroke-width="1"/></pattern>
+            <linearGradient id="gSkyDay" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fbe4b0"/><stop offset="1" stop-color="#e9b66a"/></linearGradient>
+            <linearGradient id="gSkyDawn" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a7b8da"/><stop offset="1" stop-color="#f4c28e"/></linearGradient>
+            <linearGradient id="gSkyDusk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5e4476"/><stop offset=".6" stop-color="#dc7658"/><stop offset="1" stop-color="#f2b067"/></linearGradient>
+            <linearGradient id="gSkyNight" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0a1130"/><stop offset="1" stop-color="#1b2956"/></linearGradient>
+            <pattern id="latticeWin" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M0 12H24M12 0V24" stroke="#2a160f" stroke-width="2.6" fill="none"/><rect x="6.5" y="6.5" width="11" height="11" fill="none" stroke="#2a160f" stroke-width="2"/></pattern>
+            <clipPath id="winClip"><rect x="120" y="112" width="128" height="226"/><rect x="552" y="112" width="128" height="226"/></clipPath>
             <linearGradient id="gPillar" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#52150f"/><stop offset=".38" stop-color="#b4372b"/><stop offset=".56" stop-color="#c94a3b"/><stop offset="1" stop-color="#43100c"/></linearGradient>
             <linearGradient id="gGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3dc98"/><stop offset=".5" stop-color="#d8b25c"/><stop offset="1" stop-color="#8c6a2e"/></linearGradient>
             <linearGradient id="gBronze" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3a2914"/><stop offset=".28" stop-color="#8a6a3a"/><stop offset=".48" stop-color="#c29a55"/><stop offset=".72" stop-color="#6d522c"/><stop offset="1" stop-color="#2f200d"/></linearGradient>
@@ -354,10 +385,13 @@ button{touch-action:manipulation}
           </defs>
           <rect width="800" height="600" fill="url(#gWall)"/>
           <rect width="800" height="600" fill="url(#gAura)"/>
-          <rect x="120" y="112" width="128" height="226" fill="url(#lattice)" opacity=".1"/>
-          <rect x="552" y="112" width="128" height="226" fill="url(#lattice)" opacity=".1"/>
-          <rect x="120" y="112" width="128" height="226" fill="none" stroke="#d8b25c" stroke-opacity=".18"/>
-          <rect x="552" y="112" width="128" height="226" fill="none" stroke="#d8b25c" stroke-opacity=".18"/>
+          <rect id="skyL" x="120" y="112" width="128" height="226" fill="url(#gSkyNight)"/>
+          <rect id="skyR" x="552" y="112" width="128" height="226" fill="url(#gSkyNight)"/>
+          <g id="stars" clip-path="url(#winClip)"></g>
+          <rect x="120" y="112" width="128" height="226" fill="url(#latticeWin)" opacity=".92"/>
+          <rect x="552" y="112" width="128" height="226" fill="url(#latticeWin)" opacity=".92"/>
+          <rect x="120" y="112" width="128" height="226" fill="none" stroke="#5a3322" stroke-width="4"/>
+          <rect x="552" y="112" width="128" height="226" fill="none" stroke="#5a3322" stroke-width="4"/>
           <rect x="0" y="0" width="800" height="18" fill="#3b2117"/>
           <rect x="0" y="18" width="800" height="2.5" fill="#d8b25c" opacity=".55"/>
           <line x1="330" y1="19" x2="336" y2="26" stroke="#d8b25c" stroke-width="1.2" opacity=".7"/>
@@ -365,6 +399,29 @@ button{touch-action:manipulation}
           <rect x="276" y="24" width="248" height="62" rx="4" fill="#1b100d" stroke="#d8b25c" stroke-width="2.5"/>
           <rect x="283" y="31" width="234" height="48" rx="2" fill="none" stroke="#9c7f45" stroke-width="1"/>
           <text class="brush" x="400" y="70" font-size="38" text-anchor="middle" fill="#f0d38a" letter-spacing="6">有求必应</text>
+          <rect x="30" y="0" width="66" height="600" fill="url(#gPillar)"/>
+          <rect x="704" y="0" width="66" height="600" fill="url(#gPillar)"/>
+          <rect x="22" y="560" width="82" height="40" fill="#4a3a2c"/>
+          <rect x="696" y="560" width="82" height="40" fill="#4a3a2c"/>
+          <rect x="43" y="120" width="40" height="330" rx="3" fill="#1b100d" stroke="#d8b25c" stroke-width="1.5"/>
+          <rect x="717" y="120" width="40" height="330" rx="3" fill="#1b100d" stroke="#d8b25c" stroke-width="1.5"/>
+          <g class="brush" fill="#ebcb7c" font-size="30" text-anchor="middle">
+            <text x="63" y="168">机</text><text x="63" y="210">审</text><text x="63" y="252">已</text><text x="63" y="294">过</text><text x="63" y="336">千</text><text x="63" y="378">重</text><text x="63" y="420">浪</text>
+            <text x="737" y="168">人</text><text x="737" y="210">审</text><text x="737" y="252">只</text><text x="737" y="294">隔</text><text x="737" y="336">一</text><text x="737" y="378">层</text><text x="737" y="420">纱</text>
+          </g>
+          <g id="hotBell" class="hot">
+            <title>大钟：撞一下，全殿都听得见</title>
+            <line x1="190" y1="18" x2="190" y2="31" stroke="#8c6a2e" stroke-width="2"/>
+            <g id="bellBody">
+              <path d="M184 32 a6 6 0 0 1 12 0" fill="none" stroke="#b8924f" stroke-width="3"/>
+              <path d="M173 40 C173 34 178 32 190 32 C202 32 207 34 207 40 L211 79 C212 85 216 88 222 90 L158 90 C164 88 168 85 169 79 Z" fill="url(#gBronze)"/>
+              <path d="M172 50 H208 M170 72 H210" stroke="#e2bd6e" stroke-opacity=".5" stroke-width="1.2"/>
+              <g fill="#e2bd6e" opacity=".6"><circle cx="180" cy="58" r="1.8"/><circle cx="190" cy="58" r="1.8"/><circle cx="200" cy="58" r="1.8"/><circle cx="185" cy="64" r="1.8"/><circle cx="195" cy="64" r="1.8"/></g>
+              <ellipse cx="190" cy="90" rx="32" ry="3.5" fill="#4a3518"/>
+            </g>
+            <rect x="150" y="16" width="80" height="84" fill="transparent"/>
+          </g>
+          <rect id="nightShade" width="800" height="600" fill="#050716" opacity="0" pointer-events="none"/>
           <circle cx="400" cy="238" r="98" fill="url(#gInner)"/>
           <g id="rays" class="rays" stroke="#e8c66e" stroke-opacity=".55" stroke-width="1.3" stroke-linecap="round"></g>
           <circle cx="400" cy="238" r="112" fill="none" stroke="#e8c66e" stroke-opacity=".6" stroke-width="1.3"/>
@@ -391,28 +448,6 @@ button{touch-action:manipulation}
               <use href="#petal" transform="rotate(50) scale(.9)"/>
             </g>
             <ellipse cx="0" cy="1" rx="66" ry="7" fill="url(#gGold)"/>
-          </g>
-          <rect x="30" y="0" width="66" height="600" fill="url(#gPillar)"/>
-          <rect x="704" y="0" width="66" height="600" fill="url(#gPillar)"/>
-          <rect x="22" y="560" width="82" height="40" fill="#4a3a2c"/>
-          <rect x="696" y="560" width="82" height="40" fill="#4a3a2c"/>
-          <rect x="43" y="120" width="40" height="330" rx="3" fill="#1b100d" stroke="#d8b25c" stroke-width="1.5"/>
-          <rect x="717" y="120" width="40" height="330" rx="3" fill="#1b100d" stroke="#d8b25c" stroke-width="1.5"/>
-          <g class="brush" fill="#ebcb7c" font-size="30" text-anchor="middle">
-            <text x="63" y="168">机</text><text x="63" y="210">审</text><text x="63" y="252">已</text><text x="63" y="294">过</text><text x="63" y="336">千</text><text x="63" y="378">重</text><text x="63" y="420">浪</text>
-            <text x="737" y="168">人</text><text x="737" y="210">审</text><text x="737" y="252">只</text><text x="737" y="294">隔</text><text x="737" y="336">一</text><text x="737" y="378">层</text><text x="737" y="420">纱</text>
-          </g>
-          <g id="hotBell" class="hot">
-            <title>大钟：撞一下，全殿都听得见</title>
-            <line x1="190" y1="18" x2="190" y2="31" stroke="#8c6a2e" stroke-width="2"/>
-            <g id="bellBody">
-              <path d="M184 32 a6 6 0 0 1 12 0" fill="none" stroke="#b8924f" stroke-width="3"/>
-              <path d="M173 40 C173 34 178 32 190 32 C202 32 207 34 207 40 L211 79 C212 85 216 88 222 90 L158 90 C164 88 168 85 169 79 Z" fill="url(#gBronze)"/>
-              <path d="M172 50 H208 M170 72 H210" stroke="#e2bd6e" stroke-opacity=".5" stroke-width="1.2"/>
-              <g fill="#e2bd6e" opacity=".6"><circle cx="180" cy="58" r="1.8"/><circle cx="190" cy="58" r="1.8"/><circle cx="200" cy="58" r="1.8"/><circle cx="185" cy="64" r="1.8"/><circle cx="195" cy="64" r="1.8"/></g>
-              <ellipse cx="190" cy="90" rx="32" ry="3.5" fill="#4a3518"/>
-            </g>
-            <rect x="150" y="16" width="80" height="84" fill="transparent"/>
           </g>
           <rect x="0" y="520" width="800" height="80" fill="url(#gFloor)"/>
           <line x1="0" y1="520" x2="800" y2="520" stroke="#d8b25c" stroke-opacity=".16"/>
@@ -529,15 +564,18 @@ button{touch-action:manipulation}
         </svg>
         <canvas id="smoke" aria-hidden="true"></canvas>
       </div>
+      <div class="glare" aria-hidden="true"></div>
+      </div>
       <div class="danmaku" id="danmaku" aria-hidden="true"></div>
       <div class="floaters" id="floaters" aria-hidden="true"></div>
+      <div class="banner" id="banner" aria-hidden="true"><div><small id="bannerSmall"></small><b id="bannerBig"></b></div></div>
       <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
     </div>
 
     <div class="merit">
       <div class="m-main"><span class="label">合寺功德</span><b class="num" id="meritNum">0</b></div>
       <div class="m-bar"><div class="bar"><i id="meritBar"></i></div><span class="m-next" id="meritNext">距「小有功德」还差 108</span></div>
-      <div class="aside">你的功德 <b id="meritMine">0</b> <span id="myRealm"></span> · 炉中香火 <b id="stickCount">1</b> 炷<br><span id="myStats">上香 0 · 叩首 0 · 木鱼 0</span></div>
+      <div class="aside">你的功德 <b id="meritMine">0</b> <span id="myRealm"></span> · 今日 <b id="todayMerit">0</b> / <span id="todayCap">0</span><br><span id="myStats">上香 0 · 叩首 0 · 木鱼 0</span></div>
     </div>
 
     <div class="actions" role="group" aria-label="礼佛">
@@ -570,19 +608,19 @@ button{touch-action:manipulation}
       </button>
       <button type="button" class="act" id="actLamp">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5c0-1 1.8-2 4-2s4 1 4 2l-1 12H9z"/><path d="M9.5 17h5M12 17v2.5M11 21.5h2"/></svg>
-        <b>放天灯</b><small id="lampSub">写下心愿</small>
+        <b>天灯</b><small id="lampSub">写下心愿</small>
       </button>
       <button type="button" class="act" id="actOffer">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17h18M5 17c0 2 3 3 7 3s7-1 7-3"/><circle cx="9" cy="13" r="3"/><circle cx="15" cy="13" r="3"/><circle cx="12" cy="9" r="3"/></svg>
         <b>供品</b><small id="offerSub">摆上供桌</small>
       </button>
-      <button type="button" class="act" id="actFortune">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg>
-        <b>运势</b><small>今日宜忌</small>
+      <button type="button" class="act" id="actSword">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 4l-9.5 9.5M20 4l-4.2 1 .5 2.7L18.9 8zM10.5 13.5l-2 .5-.5 2 2-.5z"/><path d="M5.5 15.5l3 3M4 20l3-3"/></svg>
+        <b>御剑</b><small id="swordSub">玄天剑绕殿</small>
       </button>
-      <button type="button" class="act" id="actCert">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="13" rx="1.5"/><path d="M8 7.5h8M8 11h5"/><circle cx="15" cy="17.5" r="2.8"/><path d="M13.6 19.8L13 22.5l2-1 2 1-.6-2.7"/></svg>
-        <b>证书</b><small>功德证书</small>
+      <button type="button" class="act" id="actFw">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 13v9"/><path d="M12 3v2.5M12 13l-4-4M12 13l4-4M12 13H6.5M12 13h5.5M7.5 7.5L6 6M16.5 7.5L18 6"/><circle cx="12" cy="9" r=".6"/></svg>
+        <b>烟花</b><small id="fwSub">点亮殿顶</small>
       </button>
     </div>
     <form class="dm-bar" id="dmForm" autocomplete="off">
@@ -591,12 +629,16 @@ button{touch-action:manipulation}
       <button type="submit" class="btn-gold">发送</button>
     </form>
     <div class="chips">
-      <button type="button" class="chip" id="autoBtn" aria-pressed="false">自动敲木鱼</button>
+      <button type="button" class="chip" id="fortuneBtn">今日运势</button>
+      <button type="button" class="chip" id="certBtn">功德证书</button>
+      <button type="button" class="chip" id="skyBtn">天象：自动</button>
+      <button type="button" class="chip" id="tiltBtn" aria-pressed="false">体感视差</button>
       <button type="button" class="chip" id="ambBtn" aria-pressed="false">禅音</button>
+      <button type="button" class="chip" id="autoBtn" aria-pressed="false">自动敲木鱼</button>
       <button type="button" class="chip" id="soundBtn" aria-pressed="true">声音：开</button>
     </div>
     <p class="hint" id="hint" aria-live="polite">先上三炷香，再到蒲团前叩首三次。心诚则灵。</p>
-    <p class="rules">殿规：木鱼只认亲手敲。脚本代点、2 秒超过 32 下、节奏整齐得不像人、触屏落点纹丝不动、连续八分钟不停手，都算走火入魔——本轮连击作废、另罚功德、禅定罚坐，全殿通报。自动敲木鱼只图个响，不计功德。</p>
+    <p class="rules" id="rulesLine"></p>
   </section>
 
   <section class="lower">
@@ -609,7 +651,7 @@ button{touch-action:manipulation}
         </div>
       </div>
       <div>
-        <div class="sec-head"><h2>功德榜</h2><span class="note">修为按个人功德：凡人 → 炼气 → 筑基 → 金丹 → 元婴 → 化神</span></div>
+        <div class="sec-head"><h2>功德榜</h2><span class="note">凡人 → 炼气 → 筑基 → 金丹 → 元婴 → 化神，每项每日有上限</span></div>
         <ol class="rank" id="rank"></ol>
         <p class="rank-empty" id="rankEmpty">还没有人积下功德。</p>
       </div>
@@ -638,7 +680,6 @@ button{touch-action:manipulation}
     <div class="row"><button type="submit" class="btn-gold">进殿</button></div>
   </form>
 </div>
-
 <div class="overlay" id="wishOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="wishTitle">
   <form class="panel" id="wishForm">
     <h3 id="wishTitle">挂一块许愿牌</h3>
@@ -648,7 +689,6 @@ button{touch-action:manipulation}
     <div class="row"><button type="button" class="btn-ghost" data-close>先不挂</button><button type="submit" class="btn-gold">挂上</button></div>
   </form>
 </div>
-
 <div class="overlay" id="lampOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="lampTitle">
   <form class="panel" id="lampForm">
     <h3 id="lampTitle">放一盏天灯</h3>
@@ -659,7 +699,6 @@ button{touch-action:manipulation}
     <div class="row"><button type="button" class="btn-ghost" data-close>先不放</button><button type="submit" class="btn-gold">放飞</button></div>
   </form>
 </div>
-
 <div class="overlay" id="offerOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="offerTitle">
   <div class="panel">
     <h3 id="offerTitle">摆一份供品</h3>
@@ -668,19 +707,14 @@ button{touch-action:manipulation}
     <div class="row"><button type="button" class="btn-ghost" data-close>先不摆</button></div>
   </div>
 </div>
-
 <div class="overlay" id="signOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="signNo">
   <div class="panel">
-    <div class="sign">
-      <div class="poem" id="signPoem"></div>
-      <div class="stick"><span id="signNo">第一签</span><span class="lvl" id="signLvl">上上签</span></div>
-    </div>
+    <div class="sign"><div class="poem" id="signPoem"></div><div class="stick"><span id="signNo">第一签</span><span class="lvl" id="signLvl">上上签</span></div></div>
     <p class="jie"><b>解曰</b><span id="signJie"></span></p>
     <p class="sign-note" id="signNote"></p>
     <div class="row"><button type="button" class="btn-gold" data-close>收下此签</button></div>
   </div>
 </div>
-
 <div class="overlay" id="fortuneOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="fortuneTitle">
   <div class="panel fortune">
     <h3 id="fortuneTitle">今日运势</h3>
@@ -694,11 +728,10 @@ button{touch-action:manipulation}
       <dt>吉时</dt><dd id="fHour"></dd>
       <dt>幸运数</dt><dd id="fNum"></dd>
     </dl>
-    <p class="desc" id="fNote">每人每天一张，明天再来换新的。</p>
+    <p class="desc">每人每天一张，明天再来换新的。</p>
     <div class="row"><button type="button" class="btn-ghost" data-close>好</button><button type="button" class="btn-gold" id="fCopy">复制发群里</button></div>
   </div>
 </div>
-
 <div class="overlay" id="certOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="certTitle">
   <div class="panel">
     <h3 id="certTitle">功德证书</h3>
@@ -707,17 +740,15 @@ button{touch-action:manipulation}
     <div class="row"><button type="button" class="btn-ghost" data-close>收好</button><a class="btn-gold" id="certSave" download="功德证书.png" href="#">保存图片</a></div>
   </div>
 </div>
-
 <div class="overlay" id="penaltyOverlay" hidden role="alertdialog" aria-modal="true" aria-labelledby="penTitle">
   <div class="panel pen">
-    <h3 id="penTitle">走火入魔</h3>
+    <h3 id="penTitle">天雷劈下</h3>
     <p class="desc" id="penReason"></p>
     <ul class="pen-list" id="penList"></ul>
     <p class="desc" id="penNote"></p>
     <div class="row"><button type="button" class="btn-gold" data-close>弟子知错</button></div>
   </div>
 </div>
-
 <div class="overlay" id="inviteOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="inviteTitle">
   <div class="panel">
     <h3 id="inviteTitle">邀请朋友进殿</h3>
@@ -796,17 +827,27 @@ function MiniMqtt(url, opts) {
 <script>
 (function(){
 'use strict';
+/* ================= config ================= */
 var BROKER='wss://broker.emqx.io:8084/mqtt';
-var ROOM_DEFAULT='xiuxian-gz22cd';
+var ROOM_DEFAULT='xiuxian-iznzhf';
+var SEASON_LABEL='2026-09-28';
+var SEASON_DAY='2026-09-27'; /* 账本起始日比开季早一天，照顾西半球时区 */
 var ROOM=(function(){var h=(location.hash||'').replace(/^#/,'').toLowerCase();return /^[a-z0-9-]{4,32}$/.test(h)?h:ROOM_DEFAULT;})();
-var PREFIX='guoshen/v1/'+ROOM+'/';
-var DEFAULT_STATUS={machine:'passed',selftest:'missing',manual:'pending',submittedAt:'2026-09-27',version:'0.9.1',modapi:'中国版3.9（基岩版1.21.120）',note:'测试工具 3.9.100.297020 里还搜不到',by:'',at:0};
+var PREFIX='guoshen/v3/'+ROOM+'/';
+var DEFAULT_STATUS={machine:'passed',selftest:'missing',manual:'pending',submittedAt:'2026-09-27',version:'0.9.1',modapi:'中国版3.9（基岩版1.21.120）',note:'测试工具 3.9.100.297020 里还搜不到',n:'',at:0};
 var W=800,H=600;
-var BURN_MS=20*60*1000,INCENSE_CD=30*1000,SIGN_CD=60*1000,BELL_CD=8*1000,LAMP_CD=60*1000,OFFER_CD=60*1000,DM_CD=3000;
+var BURN_MS=20*60*1000,INCENSE_CD=30*1000,SIGN_CD=60*1000,BELL_CD=8*1000,LAMP_CD=60*1000,OFFER_CD=60*1000,SWORD_CD=20*1000,FW_CD=20*1000,DM_CD=3000;
 var LAMP_MS=30*60*1000,OFFER_MS=3*3600*1000,RISE_MS=5500;
-var RITUAL_KEEP=6,WISH_KEEP=5,LOG_KEEP=14,FEED_LIMIT=40,LAMP_KEEP=3;
+var RITUAL_KEEP=6,WISH_KEEP=5,LOG_KEEP=16,FEED_LIMIT=40,LAMP_KEEP=3;
+/* 严苛反作弊：每项每日上限、速率上限（每秒, 容差） */
+var FIELDS=['mu','in','bo','be','la','of','sw','fw','bn'];
+var FNAME={mu:'木鱼',in:'上香',bo:'叩首',be:'撞钟',la:'天灯',of:'供品',sw:'御剑',fw:'烟花',bn:'同心功德'};
+var CAPS={mu:2000,in:48,bo:300,be:60,la:12,of:12,sw:30,fw:30,bn:100};
+var RATE={mu:[16,40],in:[1/30,2],bo:[1.1,5],be:[1/8,2],la:[1/60,2],of:[1/60,2],sw:[1/20,2],fw:[1/20,2],bn:[5/3,10]};
+var WEIGHT={mu:1,in:3,bo:1,be:2,la:9,of:5,sw:3,fw:2,bn:1};
+var DAY_CAP=(function(){var s=0;FIELDS.forEach(function(f){s+=CAPS[f]*WEIGHT[f];});return s;})();
 var MILESTONES=[[108,'小有功德'],[1080,'功德深厚'],[3600,'福慧双修'],[9999,'功德圆满'],[99999,'功德无量']];
-var REALMS=[{m:0,n:'凡人',c:'#b3a58f'},{m:108,n:'炼气',c:'#8fc3a6'},{m:1080,n:'筑基',c:'#86b6e8'},{m:3600,n:'金丹',c:'#f0d38a'},{m:9999,n:'元婴',c:'#e7a1d9'},{m:30000,n:'化神',c:'#ff9d6e'}];
+var REALMS=[{m:0,n:'凡人',c:'#b3a58f',t:'凡人'},{m:108,n:'炼气',c:'#8fc3a6',t:'引气入体'},{m:1080,n:'筑基',c:'#86b6e8',t:'筑基大成'},{m:3600,n:'金丹',c:'#f0d38a',t:'金丹凝结'},{m:9999,n:'元婴',c:'#e7a1d9',t:'元婴出窍'},{m:30000,n:'化神',c:'#ff9d6e',t:'化神渡劫'}];
 var OFFERS={apple:'苹果',peach:'寿桃',orange:'橘子',bun:'寿包',tea:'清茶',lamp:'莲花灯',flower:'鲜花'};
 var SIGNS=[
   {n:'第一签',lvl:'上上',poem:['灵根已测天资足','一纸批文破九霄'],jie:'审核如渡劫，此签主雷云散尽，批文将至。'},
@@ -844,8 +885,8 @@ var SIGNS=[
 ];
 var PRESETS=['愿网易人审早日通过','愿手机自测早日现身','愿炼气篇上架大卖','愿再也不撞 UUID','愿玩家都玩得开心'];
 var LAMP_PRESETS=['愿人审早过','愿自测现身','愿上架大卖','愿永无 bug','愿好评如潮'];
-var ACT_TEXT={incense:'上香中',bow:'叩首中',muyu:'敲木鱼',sign:'求签中',wish:'许愿中',vow:'还愿中',bell:'撞钟中',lamp:'放天灯',offer:'摆供品'};
-var LOG_KINDS={incense:1,bow3:1,muyu108:1,sign:1,wish:1,vow:1,lamp:1,offer:1,rise:1,tongxin:1,cheat:1};
+var ACT_TEXT={incense:'上香中',bow:'叩首中',muyu:'敲木鱼',sign:'求签中',wish:'许愿中',vow:'还愿中',bell:'撞钟中',lamp:'放天灯',offer:'摆供品',sword:'御剑中',fw:'放烟花'};
+var LOG_KINDS={incense:1,bow3:1,muyu108:1,sign:1,wish:1,vow:1,lamp:1,offer:1,rise:1,tongxin:1,cheat:1,sword:1,fw:1};
 var FEED_TEXT={
   incense:function(){return '上了三炷香';},
   bow3:function(){return '行三叩首礼';},
@@ -855,60 +896,131 @@ var FEED_TEXT={
   vow:function(){return '前来还愿';},
   lamp:function(it){return it.t?('放了一盏天灯「'+it.t+'」'):'放了一盏天灯';},
   offer:function(it){return '供上一份'+(OFFERS[it.o]||'供品');},
-  rise:function(it){var r=REALMS[it.r];return r?('突破至「'+r.n+'」！'):'修为精进';},
+  rise:function(it){var r=REALMS[it.r];return r?('渡劫成功，突破至「'+r.n+'」！'):'修为精进';},
   tongxin:function(it){return '与 '+(it.t||'同道')+' 同心叩首';},
-  cheat:function(it){return '用连点器走火入魔'+(it.t?'（'+it.t+'）':'')+'，功德 -'+num(it.c);}
+  cheat:function(it){return '用连点器被抓（'+(it.t||'连点器')+'），天雷劈下'+(it.c<0?'，逐出山门':'，功德 -'+num(it.c));},
+  sword:function(){return '御剑绕殿一周';},
+  fw:function(){return '放了一场烟花';}
 };
 var LUCK=[['大吉',15],['中吉',30],['小吉',25],['吉',20],['末吉',10]];
-var YI=['提审','修 bug','看站内信','备份工程','写注释','敲木鱼','早点睡','喝奶茶','找人帮测','合并分支','整理贴图','升版本号','摸鱼十分钟','给队友点奶茶','更新手札','调数值','撞钟'];
-var JI=['催审','改 UUID','周五发版','git push --force','熬夜','大改架构','删存档','群里剧透','改完不测','动 manifest 不升版本','深夜提审','和审核员较劲'];
+var YI=['提审','修 bug','看站内信','备份工程','写注释','敲木鱼','早点睡','喝奶茶','找人帮测','合并分支','整理贴图','升版本号','摸鱼十分钟','给队友点奶茶','更新手札','调数值','撞钟','御剑'];
+var JI=['催审','改 UUID','周五发版','git push --force','熬夜','大改架构','删存档','群里剧透','改完不测','动 manifest 不升版本','深夜提审','和审核员较劲','用连点器'];
 var COLORS=['朱红','鎏金','黛青','月白','玄黑','翠绿','藕荷','琥珀'];
 var DIRS=['正东','东南','正南','西南','正西','西北','正北','东北'];
 var HOURS=['子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时'];
 var REDUCED=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 var SMALL=Math.min(screen.width||800,screen.height||800)<500;
 
+/* ================= utils ================= */
 function $(s){return document.querySelector(s);}
 function num(n){return Number(n||0).toLocaleString('zh-CN');}
 function lvlName(s){return s.lvl==='下'?'下签':s.lvl+'签';}
 function ago(ts){var d=Math.max(0,Date.now()-ts);if(d<45e3)return '刚刚';if(d<3600e3)return Math.round(d/60e3)+' 分钟前';if(d<86400e3)return Math.round(d/3600e3)+' 小时前';return Math.round(d/86400e3)+' 天前';}
-var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true;}catch(e){return false;}}};
 function h32(s){var h=2166136261>>>0;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
 function r01(seed,k){return (h32(seed+'#'+k)%100000)/100000;}
 function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
-function cnt(v){v=Math.floor(Number(v)||0);return v<0?0:Math.min(v,1e7);}
+function cnt(v){v=Math.floor(Number(v)||0);return v<0?0:Math.min(v,1e9);}
 function tstamp(v){v=Number(v);return isFinite(v)&&v>0?v:0;}
 function txt(v,n){return typeof v==='string'?v.replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,n):'';}
 function rid(n){var a='abcdefghijkmnpqrstuvwxyz23456789',s='';var r=new Uint8Array(n);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(r);else for(var j=0;j<n;j++)r[j]=Math.random()*256;for(var i=0;i<n;i++)s+=a[r[i]%a.length];return s;}
 function parseJSON(s){try{var v=JSON.parse(s);return v&&typeof v==='object'&&!Array.isArray(v)?v:null;}catch(e){return null;}}
 function hue(id){return h32(String(id))%360;}
+function ymdOf(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function todayKey(){return ymdOf(new Date());}
 function realmOf(m){var i=0;while(i<REALMS.length-1&&m>=REALMS[i+1].m)i++;return i;}
 function realmChip(i){var s=document.createElement('span');s.className='realm';s.style.color=REALMS[i].c;s.textContent=REALMS[i].n;return s;}
-function ymdOf(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function badChip(t){var s=document.createElement('span');s.className='realm badge-bad';s.textContent=t;return s;}
+var ENC=new TextEncoder();
+function b64e(u8){var s='';for(var i=0;i<u8.length;i++)s+=String.fromCharCode(u8[i]);return btoa(s);}
+function b64d(str){try{var s=atob(str),u=new Uint8Array(s.length);for(var i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;}catch(e){return null;}}
+var B32='abcdefghijkmnpqrstuvwxyz23456789';
+function base32(u8){var out='',bits=0,val=0;for(var i=0;i<u8.length;i++){val=((val<<8)|u8[i])&0xffff;bits+=8;while(bits>=5){out+=B32[(val>>>(bits-5))&31];bits-=5;}}return out;}
 
-var S={pid:null,tab:rid(8),name:'',mq:null,conn:'connecting',synced:false,retry:0,retryT:0,dirty:false,
-  people:new Map(),here:new Map(),status:null,cleared:new Set(),
-  mine:{incense:0,bows:0,muyu:0,signs:0,bells:0,lamps:0,offers:0,bonus:0,penalty:0,cheats:0,banUntil:0,lastSignAt:0,lastSignNo:-1,lastBellAt:0,rituals:[],wishes:[],lampList:[],offer:null,vowed:false,log:[]},
+/* ================= identity & signatures ================= */
+var ID={pid:'',pub:'',priv:null,ok:false};
+var HAS_CRYPTO=!!(window.crypto&&crypto.subtle&&window.isSecureContext!==false);
+var ECDSA={name:'ECDSA',namedCurve:'P-256'},SIGALG={name:'ECDSA',hash:'SHA-256'};
+function pidOf(raw){return crypto.subtle.digest('SHA-256',raw).then(function(h){return base32(new Uint8Array(h)).slice(0,12);});}
+function initIdentity(){
+  if(!HAS_CRYPTO)return Promise.reject(new Error('nocrypto'));
+  var saved=LS.get('gs.key3',null);
+  var load=saved&&saved.priv&&saved.pub?crypto.subtle.importKey('jwk',saved.priv,ECDSA,false,['sign']).then(function(k){return {priv:k,raw:b64d(saved.pub)};}).catch(function(){return null;}):Promise.resolve(null);
+  return load.then(function(got){
+    if(got&&got.raw&&got.raw.length===65)return got;
+    return crypto.subtle.generateKey(ECDSA,true,['sign','verify']).then(function(kp){
+      return Promise.all([crypto.subtle.exportKey('jwk',kp.privateKey),crypto.subtle.exportKey('raw',kp.publicKey)]).then(function(x){
+        var raw=new Uint8Array(x[1]);LS.set('gs.key3',{priv:x[0],pub:b64e(raw)});return {priv:kp.privateKey,raw:raw};});});
+  }).then(function(k){ID.priv=k.priv;ID.pub=b64e(k.raw);return pidOf(k.raw);}).then(function(pid){ID.pid=pid;ID.ok=true;return pid;});
+}
+function signEnv(obj){var d=JSON.stringify(obj);return crypto.subtle.sign(SIGALG,ID.priv,ENC.encode(d)).then(function(sig){return JSON.stringify({d:d,k:ID.pub,s:b64e(new Uint8Array(sig))});});}
+var KEYS=new Map();
+function openEnv(payload){
+  var env=parseJSON(payload);
+  if(!env||typeof env.d!=='string'||typeof env.k!=='string'||typeof env.s!=='string'||env.d.length>20000)return Promise.resolve(null);
+  var kc=KEYS.get(env.k);
+  var getKey=kc?Promise.resolve(kc):(function(){var raw=b64d(env.k);if(!raw||raw.length!==65||raw[0]!==4)return Promise.resolve(null);
+    return Promise.all([crypto.subtle.importKey('raw',raw,ECDSA,false,['verify']),pidOf(raw)]).then(function(x){var v={key:x[0],pid:x[1]};if(KEYS.size>600)KEYS.clear();KEYS.set(env.k,v);return v;}).catch(function(){return null;});})();
+  return getKey.then(function(k){
+    if(!k)return null;var sig=b64d(env.s);if(!sig||sig.length!==64)return null;
+    return crypto.subtle.verify(SIGALG,k.key,sig,ENC.encode(env.d)).then(function(ok){
+      if(!ok)return null;var d=parseJSON(env.d);if(!d||d.pid!==k.pid)return null;return {d:d,pid:k.pid,env:payload};});
+  }).catch(function(){return null;});
+}
+
+/* ================= anti-cheat rules (pure, deterministic) ================= */
+function emptyDay(){var b={};FIELDS.forEach(function(f){b[f]=0;});return b;}
+function dayScan(d){
+  var tot=emptyDay(),viol=null,days=d&&d.days&&typeof d.days==='object'&&!Array.isArray(d.days)?d.days:{},keys=Object.keys(days);
+  if(keys.length>500)return {tot:tot,viol:'账簿异常'};
+  var atDay=tstamp(d.at)?ymdOf(new Date(tstamp(d.at)+86400000)):'9999';
+  keys.forEach(function(k){
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<SEASON_DAY)return;
+    if(k>atDay){viol=viol||'账上记了未来的日子';return;}
+    var b=days[k];if(!b||typeof b!=='object'){viol=viol||'账簿异常';return;}
+    FIELDS.forEach(function(f){var v=b[f]===undefined?0:Number(b[f]);
+      if(!isFinite(v)||v<0||Math.floor(v)!==v){viol=viol||'账簿异常';return;}
+      if(v>CAPS[f])viol=viol||(k.slice(5)+' '+FNAME[f]+' '+v+' 次，超过单日上限 '+CAPS[f]);
+      tot[f]+=v;});
+  });
+  return {tot:tot,viol:viol};
+}
+function rateViolation(a,b){
+  var dt=(tstamp(b.at)-tstamp(a.at))/1000;if(!(dt>0))return null;
+  var ta=dayScan(a).tot,tb=dayScan(b).tot;
+  for(var i=0;i<FIELDS.length;i++){var f=FIELDS[i],d=tb[f]-ta[f];if(d>RATE[f][0]*dt+RATE[f][1])return FNAME[f]+' '+(dt<10?dt.toFixed(1):Math.round(dt))+' 秒涨了 '+d+' 次';}
+  return null;
+}
+function meritFromTot(tot){var s=0;FIELDS.forEach(function(f){s+=tot[f]*WEIGHT[f];});return s;}
+
+/* ================= state ================= */
+var S={name:'',tab:rid(8),mq:null,conn:'connecting',synced:false,retry:0,retryT:0,dirty:false,passive:false,
+  docs:new Map(),here:new Map(),status:null,statusEnv:'',frauds:new Map(),proofs:new Map(),cleared:new Set(),struck:0,
+  mine:{days:{},penalty:0,cheats:0,expelled:false,banUntil:0,vowed:false,rituals:[],wishes:[],lampList:[],offer:null,log:[],lastSignAt:0,lastSignNo:-1,lastBellAt:0,lastSwordAt:0,lastFwAt:0},
   removed:new Set(),bowStreak:0,bowAt:0,bowDoneAt:0,bowLock:false,myAct:{act:'idle',at:0},muyuPending:0,combo:0,lastTap:0,
-  streakStart:0,streakTaps:0,lastTapPerf:0,
-  otherBows:[],myLastBow:0,lastBonusAt:0,lastDm:0,realmReady:false,lastRealm:0,auto:false,autoT:0,amb:false,
-  throttle:new Map(),sawPassed:false,statusPrimed:false,sound:LS.get('gs.sound',true)!==false};
-S.pid=LS.get('gs.pid',null);if(typeof S.pid!=='string'||!/^[a-z0-9]{6,16}$/.test(S.pid)){S.pid=rid(10);LS.set('gs.pid',S.pid);}
+  streakStart:0,streakTaps:0,lastTapPerf:0,otherBows:[],myLastBow:0,lastBonusAt:0,lastDm:0,realmReady:false,lastRealm:0,
+  auto:false,autoT:0,amb:false,skyMode:'auto',phase:'',totalPrimed:false,lastTotal:0,celebrated:{},auraUntil:0,
+  throttle:new Map(),sawPassed:false,statusPrimed:false,sound:LS.get('gs.sound',true)!==false,
+  stat:{strikes:0,trib:0,swords:0,fw:0,milestones:0,frauds:0}};
 S.name=txt(LS.get('gs.name',''),12);
+function bumpStat(k){S.stat[k]++;$('#scene').dataset.stats=JSON.stringify(S.stat);}
 
-/* ---------- sound ---------- */
+/* ================= sound ================= */
 var AC=null;
 function ac(){if(!S.sound)return null;try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();}if(AC.state==='suspended')AC.resume();return AC;}catch(e){return null;}}
 function noise(a,dur){var len=Math.max(1,Math.floor(a.sampleRate*dur)),b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<len;i++)d[i]=Math.random()*2-1;var s=a.createBufferSource();s.buffer=b;return s;}
-function partials(a,base,list,dest){var t=a.currentTime;list.forEach(function(p){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=base*p[0];g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(p[1],t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+p[2]);o.connect(g);g.connect(dest||a.destination);o.start(t);o.stop(t+p[2]+.05);});}
-function tok(soft){var a=ac();if(!a)return;var t=a.currentTime,v=soft?.25:.5;var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(740,t);o.frequency.exponentialRampToValueAtTime(410,t+.09);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.17);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.2);
-  var n=noise(a,.03),f=a.createBiquadFilter(),g2=a.createGain();f.type='bandpass';f.frequency.value=1900;f.Q.value=2.5;g2.gain.setValueAtTime(v*.6,t);g2.gain.exponentialRampToValueAtTime(.0001,t+.03);n.connect(f);f.connect(g2);g2.connect(a.destination);n.start(t);}
-function bell(){var a=ac();if(!a)return;partials(a,392,[[1,.3,3.6],[2.71,.13,2.4],[5.18,.05,1.4],[1.004,.16,3.2]]);}
-function bigBell(){var a=ac();if(!a)return;var t=a.currentTime;partials(a,98,[[1,.34,7.5],[2,.18,5.5],[2.76,.13,4.2],[3.01,.08,3.6],[4.07,.06,2.8],[5.4,.045,2],[1.006,.2,7]]);
-  var n=noise(a,.09),f=a.createBiquadFilter(),g=a.createGain();f.type='lowpass';f.frequency.value=900;g.gain.setValueAtTime(.45,t);g.gain.exponentialRampToValueAtTime(.0001,t+.09);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}
-function whoosh(){var a=ac();if(!a)return;var t=a.currentTime,n=noise(a,.7),f=a.createBiquadFilter(),g=a.createGain();f.type='lowpass';f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(2400,t+.25);f.frequency.exponentialRampToValueAtTime(500,t+.7);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.22,t+.08);g.gain.exponentialRampToValueAtTime(.0001,t+.7);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}
-function rattle(){var a=ac();if(!a)return;var t0=a.currentTime;for(var i=0;i<9;i++){var t=t0+i*.085+Math.random()*.03,n=noise(a,.025),f=a.createBiquadFilter(),g=a.createGain();f.type='bandpass';f.frequency.value=2200+Math.random()*1400;f.Q.value=4;g.gain.setValueAtTime(.26,t);g.gain.exponentialRampToValueAtTime(.0001,t+.025);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}}
-function chime(){var a=ac();if(!a)return;var t=a.currentTime;[784,988,1175,1568].forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.09);g.gain.exponentialRampToValueAtTime(.12,t+i*.09+.01);g.gain.exponentialRampToValueAtTime(.0001,t+i*.09+1.6);o.connect(g);g.connect(a.destination);o.start(t+i*.09);o.stop(t+i*.09+1.7);});}
+function partials(a,base,list,delay){var t=a.currentTime+(delay||0);list.forEach(function(p){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=base*p[0];g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(p[1],t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+p[2]);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+p[2]+.05);});}
+function nburst(a,dur,type,freq,q,gain,delay,sweepTo){var t=a.currentTime+(delay||0),n=noise(a,dur),f=a.createBiquadFilter(),g=a.createGain();f.type=type;f.frequency.setValueAtTime(freq,t);if(sweepTo)f.frequency.exponentialRampToValueAtTime(sweepTo,t+dur);f.Q.value=q||1;g.gain.setValueAtTime(gain,t);g.gain.exponentialRampToValueAtTime(.0001,t+dur);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}
+function tok(soft){var a=ac();if(!a)return;var t=a.currentTime,v=soft?.25:.5;var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(740,t);o.frequency.exponentialRampToValueAtTime(410,t+.09);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.17);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.2);nburst(a,.03,'bandpass',1900,2.5,v*.6);}
+function bell(){var a=ac();if(a)partials(a,392,[[1,.3,3.6],[2.71,.13,2.4],[5.18,.05,1.4],[1.004,.16,3.2]]);}
+function bigBell(soft){var a=ac();if(!a)return;var k=soft?.5:1;partials(a,98,[[1,.34*k,7.5],[2,.18*k,5.5],[2.76,.13*k,4.2],[3.01,.08*k,3.6],[4.07,.06*k,2.8],[5.4,.045*k,2],[1.006,.2*k,7]]);nburst(a,.09,'lowpass',900,1,.45*k);}
+function whoosh(){var a=ac();if(a)nburst(a,.7,'lowpass',300,1,.22,0,2400);}
+function rattle(){var a=ac();if(!a)return;for(var i=0;i<9;i++)nburst(a,.025,'bandpass',2200+Math.random()*1400,4,.26,i*.085+Math.random()*.03);}
+function chime(){var a=ac();if(!a)return;[784,988,1175,1568].forEach(function(f,i){partials(a,f,[[1,.12,1.6]],i*.09);});}
+function thunder(){var a=ac();if(!a)return;nburst(a,.08,'highpass',2500,1,.5);nburst(a,2.6,'lowpass',380,1,.7,.02,55);nburst(a,1.8,'lowpass',160,1,.5,.35,50);}
+function swordSound(){var a=ac();if(!a)return;nburst(a,1.1,'bandpass',900,3,.25,0,3200);partials(a,1320,[[1,.05,1.2],[1.5,.03,.9]],.2);}
+function launchSound(){var a=ac();if(a)nburst(a,.5,'bandpass',1200,4,.18,0,3500);}
+function boomSound(){var a=ac();if(!a)return;nburst(a,.7,'lowpass',260,1,.55);for(var i=0;i<8;i++)nburst(a,.02,'highpass',3000,1,.12,.35+Math.random()*.6);}
 var AMB=null;
 function startAmb(){var a=ac();if(!a||AMB)return;var master=a.createGain();master.gain.value=0;master.connect(a.destination);var lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=700;lp.connect(master);
   var oscs=[[110,'sine',.5],[164.81,'sine',.35],[220.6,'triangle',.1]].map(function(p){var o=a.createOscillator(),g=a.createGain();o.type=p[1];o.frequency.value=p[0];g.gain.value=p[2];o.connect(g);g.connect(lp);o.start();return o;});
@@ -921,7 +1033,7 @@ function setAmb(on){S.amb=on;if(on&&!S.sound){S.sound=true;LS.set('gs.sound',tru
 function toggleSound(){S.sound=!S.sound;LS.set('gs.sound',S.sound);if(!S.sound&&S.amb)setAmb(false);paintSound();}
 function paintSound(){var b=$('#soundBtn');b.textContent='声音：'+(S.sound?'开':'关');b.setAttribute('aria-pressed',S.sound?'true':'false');}
 
-/* ---------- canvas: incense, smoke, lanterns, petals ---------- */
+/* ================= canvas world ================= */
 var cv=$('#smoke'),ctx=cv.getContext('2d'),dpr=1,scale=1;
 function resize(){var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);scale=w/W;}
 try{new ResizeObserver(resize).observe(cv);}catch(e){window.addEventListener('resize',resize);}
@@ -930,30 +1042,23 @@ function sprite(r,g,b,size,stops){var c=document.createElement('canvas');c.width
 var SMOKE=sprite(226,218,204,64,[[0,.9],[.45,.45],[1,0]]);
 var EMBER=sprite(255,150,60,32,[[0,1],[.35,.55],[1,0]]);
 var LGLOW=sprite(255,170,80,64,[[0,.55],[.4,.2],[1,0]]);
-var STICKS=[],P=[],PETALS=[],PMAX=SMALL?220:380;
-var LANTERNS=new Map();
+var SGLOW=sprite(150,215,255,64,[[0,.9],[.35,.35],[1,0]]);
+var FFLY=sprite(210,255,130,32,[[0,1],[.3,.5],[1,0]]);
+var CLOUD=sprite(255,246,226,128,[[0,.55],[.5,.25],[1,0]]);
+var STICKS=[],P=[],PETALS=[],SPARKS=[],PMAX=SMALL?220:380,LANTERNS=new Map(),CRANES=[],SWORDS=[],ROCKETS=[],FWP=[],FX=[],DUST=[],FLIES=[],CLOUDS=[];
+function spark(x,y,vx,vy,life,size,c){if(SPARKS.length<(SMALL?260:480))SPARKS.push({x:x,y:y,vx:vx,vy:vy,age:0,life:life,size:size,c:c});}
+function sparkBurst(x,y,n,c){for(var i=0;i<n;i++){var a=Math.random()*6.283,sp=40+Math.random()*130;spark(x,y,Math.cos(a)*sp,Math.sin(a)*sp-40,.6+Math.random()*.7,1.2+Math.random()*1.6,c);}}
+function addFx(dur,draw){FX.push({s:performance.now(),d:dur,draw:draw});}
+
+/* incense */
 function rebuildSticks(){
   var now=Date.now(),list=[];
-  entries().forEach(function(e){
-    var id=e[0],d=e[1];
-    (d.rituals||[]).slice(-RITUAL_KEEP).forEach(function(ts){
-      var age=now-ts;if(!ts||age>BURN_MS||age<-300000)return;
+  entries().forEach(function(e){if(e.fraud)return;var id=e.pid,d=e.d;
+    (d.rituals||[]).slice(-RITUAL_KEEP).forEach(function(ts){ts=tstamp(ts);var age=now-ts;if(!ts||age>BURN_MS||age<-300000)return;
       var seed=id+':'+ts,cx=400+(r01(seed,1)-.5)*124,y0=313+(r01(seed,2)-.5)*2.4,lean=(r01(seed,3)-.5)*.14;
-      for(var k=-1;k<=1;k++)list.push({x:cx+k*6.5,y0:y0,lean:lean+k*.05,born:Math.min(ts,now),seed:r01(seed,5+k),fixed:false});
-    });
-  });
+      for(var k=-1;k<=1;k++)list.push({x:cx+k*6.5,y0:y0,lean:lean+k*.05,born:Math.min(ts,now),seed:r01(seed,5+k),fixed:false});});});
   list.sort(function(a,b){return b.born-a.born;});
   STICKS=[{x:400,y0:313,lean:0,born:0,seed:.37,fixed:true}].concat(list.slice(0,45));
-}
-function lanternSlot(key){var left=r01(key,1)<.5;return {tx:left?(128+r01(key,2)*112):(560+r01(key,2)*112),ty:104+r01(key,3)*92,seed:r01(key,4)};}
-function addLantern(key,name,text,born){if(LANTERNS.has(key))return;var s=lanternSlot(key);LANTERNS.set(key,{key:key,n:name,t:text,born:born,tx:s.tx,ty:s.ty,seed:s.seed,expire:0});}
-function rebuildLanterns(){
-  var now=Date.now(),seen={},list=[];
-  entries().forEach(function(e){var id=e[0],d=e[1];(d.lampList||[]).forEach(function(l){if(!l.at||now-l.at>LAMP_MS||now-l.at<-300000)return;list.push({key:id+':'+l.at,n:id===S.pid?(S.name||'你'):d.n,t:l.t,at:l.at});});});
-  list.sort(function(a,b){return b.at-a.at;});list=list.slice(0,14);
-  list.forEach(function(l){seen[l.key]=1;var ex=LANTERNS.get(l.key);if(ex){ex.expire=l.at+LAMP_MS;ex.n=l.n;}else{addLantern(l.key,l.n,l.t,Math.min(l.at,now-RISE_MS));LANTERNS.get(l.key).expire=l.at+LAMP_MS;}});
-  LANTERNS.forEach(function(v,k){if(!seen[k]&&(v.expire||now-v.born>60000))LANTERNS.delete(k);});
-  $('#scene').dataset.lamps=LANTERNS.size;
 }
 function tipOf(s,now){var f=s.fixed?1:Math.max(0,1-(now-s.born)/BURN_MS),L=s.fixed?90:10+102*f;return [s.x+Math.sin(s.lean)*L,s.y0-Math.cos(s.lean)*L];}
 function drawSticks(now){
@@ -962,532 +1067,570 @@ function drawSticks(now){
   ctx.restore();
   STICKS.forEach(function(s){var fresh=!s.fixed&&now-s.born<1400,fl=.7+.3*Math.sin(now/170+s.seed*40),r=fresh?12:6.5;ctx.globalAlpha=fl;ctx.drawImage(EMBER,s.tx-r,s.ty-r,r*2,r*2);ctx.globalAlpha=1;ctx.fillStyle='#ffd88a';ctx.beginPath();ctx.arc(s.tx,s.ty,1.15,0,6.2832);ctx.fill();});
 }
-function emit(dt){
-  var rate=Math.min(4.2,80/Math.max(1,STICKS.length))*(REDUCED?.5:1);
-  STICKS.forEach(function(s){if(s.tx==null)return;if(Math.random()<rate*dt&&P.length<PMAX){P.push({x:s.tx,y:s.ty-2,vx:(Math.random()-.5)*4,vy:-(16+Math.random()*12),age:0,life:4.5+Math.random()*3.5,r0:1.6,grow:12+Math.random()*12,ph:Math.random()*6.28,fr:.7+Math.random()*.9,amp:6+Math.random()*10,a0:.2+Math.random()*.12});}});
+function emit(dt){var rate=Math.min(4.2,80/Math.max(1,STICKS.length))*(REDUCED?.5:1);
+  STICKS.forEach(function(s){if(s.tx==null)return;if(Math.random()<rate*dt&&P.length<PMAX){P.push({x:s.tx,y:s.ty-2,vx:(Math.random()-.5)*4,vy:-(16+Math.random()*12),age:0,life:4.5+Math.random()*3.5,r0:1.6,grow:12+Math.random()*12,ph:Math.random()*6.28,fr:.7+Math.random()*.9,amp:6+Math.random()*10,a0:.2+Math.random()*.12});}});}
+function drawSmoke(dt){for(var i=P.length-1;i>=0;i--){var p=P[i];p.age+=dt;if(p.age>=p.life){P.splice(i,1);continue;}var t=p.age/p.life;p.vy*=1-.12*dt;p.y+=p.vy*dt;p.x+=(p.vx+Math.sin(p.ph+p.age*p.fr)*p.amp*(.25+t))*dt;var r=p.r0+p.grow*t,a=p.a0*(t<.12?t/.12:Math.pow(1-t,1.3));ctx.globalAlpha=a;ctx.drawImage(SMOKE,p.x-r,p.y-r,r*2,r*2);}ctx.globalAlpha=1;}
+
+/* lanterns */
+function lanternSlot(key){var left=r01(key,1)<.5;return {tx:left?(128+r01(key,2)*112):(560+r01(key,2)*112),ty:104+r01(key,3)*92,seed:r01(key,4)};}
+function addLantern(key,name,text,born){if(LANTERNS.has(key))return;var s=lanternSlot(key);LANTERNS.set(key,{key:key,n:name,t:text,born:born,tx:s.tx,ty:s.ty,seed:s.seed,expire:0});}
+function rebuildLanterns(){
+  var now=Date.now(),seen={},list=[];
+  entries().forEach(function(e){if(e.fraud)return;(e.d.lampList||[]).forEach(function(l){var at=tstamp(l&&l.at);if(!at||now-at>LAMP_MS||now-at<-300000)return;list.push({key:e.pid+':'+at,n:e.name,t:txt(l.t,16),at:at});});});
+  list.sort(function(a,b){return b.at-a.at;});list=list.slice(0,14);
+  list.forEach(function(l){seen[l.key]=1;var ex=LANTERNS.get(l.key);if(ex){ex.expire=l.at+LAMP_MS;ex.n=l.n;}else{addLantern(l.key,l.n,l.t,Math.min(l.at,now-RISE_MS));LANTERNS.get(l.key).expire=l.at+LAMP_MS;}});
+  LANTERNS.forEach(function(v,k){if(!seen[k]&&(v.expire||now-v.born>60000))LANTERNS.delete(k);});
+  $('#scene').dataset.lamps=LANTERNS.size;
 }
-function drawSmoke(dt){
-  for(var i=P.length-1;i>=0;i--){var p=P[i];p.age+=dt;if(p.age>=p.life){P.splice(i,1);continue;}var t=p.age/p.life;p.vy*=1-.12*dt;p.y+=p.vy*dt;p.x+=(p.vx+Math.sin(p.ph+p.age*p.fr)*p.amp*(.25+t))*dt;var r=p.r0+p.grow*t,a=p.a0*(t<.12?t/.12:Math.pow(1-t,1.3));ctx.globalAlpha=a;ctx.drawImage(SMOKE,p.x-r,p.y-r,r*2,r*2);}
-  ctx.globalAlpha=1;
-}
-function drawLanterns(now){
-  LANTERNS.forEach(function(l){
-    var age=now-l.born,k=Math.max(0,Math.min(1,age/RISE_MS)),e=1-Math.pow(1-k,3);
-    var x=400+(l.tx-400)*e,y=300+(l.ty-300)*e,s=.55+.45*e;
-    if(k>=1){x+=Math.sin(now/1700+l.seed*9)*2.4;y+=Math.sin(now/1150+l.seed*7)*3.6;}
-    var alpha=1;if(l.expire){var left=l.expire-now;if(left<60000)alpha=Math.max(0,left/60000);}
-    l.x=x;l.y=y;if(alpha<=0)return;
-    ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.globalAlpha=alpha;
-    ctx.drawImage(LGLOW,-34,-34,68,68);
-    ctx.beginPath();ctx.moveTo(-10,-13);ctx.quadraticCurveTo(0,-18,10,-13);ctx.lineTo(8,11);ctx.quadraticCurveTo(0,13.5,-8,11);ctx.closePath();
-    var g=ctx.createLinearGradient(0,-16,0,12);g.addColorStop(0,'#f8cf7a');g.addColorStop(.55,'#ec7a3c');g.addColorStop(1,'#c9432c');ctx.fillStyle=g;ctx.fill();
-    ctx.strokeStyle='rgba(110,35,18,.35)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-15.5);ctx.lineTo(0,12);ctx.moveTo(-5,-14.5);ctx.lineTo(-4,11.6);ctx.moveTo(5,-14.5);ctx.lineTo(4,11.6);ctx.stroke();
-    ctx.globalAlpha=alpha*(.75+.25*Math.sin(now/140+l.seed*30));ctx.fillStyle='#ffe29a';ctx.beginPath();ctx.ellipse(0,13,3,1.8,0,0,6.2832);ctx.fill();
-    ctx.restore();
-  });
-  ctx.globalAlpha=1;
-}
+function drawLanterns(now){LANTERNS.forEach(function(l){
+  var age=now-l.born,k=Math.max(0,Math.min(1,age/RISE_MS)),e=1-Math.pow(1-k,3),x=400+(l.tx-400)*e,y=300+(l.ty-300)*e,s=.55+.45*e;
+  if(k>=1){x+=Math.sin(now/1700+l.seed*9)*2.4;y+=Math.sin(now/1150+l.seed*7)*3.6;}
+  var alpha=1;if(l.expire){var left=l.expire-now;if(left<60000)alpha=Math.max(0,left/60000);}
+  l.x=x;l.y=y;if(alpha<=0)return;
+  ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.globalAlpha=alpha;ctx.drawImage(LGLOW,-34,-34,68,68);
+  ctx.beginPath();ctx.moveTo(-10,-13);ctx.quadraticCurveTo(0,-18,10,-13);ctx.lineTo(8,11);ctx.quadraticCurveTo(0,13.5,-8,11);ctx.closePath();
+  var g=ctx.createLinearGradient(0,-16,0,12);g.addColorStop(0,'#f8cf7a');g.addColorStop(.55,'#ec7a3c');g.addColorStop(1,'#c9432c');ctx.fillStyle=g;ctx.fill();
+  ctx.strokeStyle='rgba(110,35,18,.35)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-15.5);ctx.lineTo(0,12);ctx.moveTo(-5,-14.5);ctx.lineTo(-4,11.6);ctx.moveTo(5,-14.5);ctx.lineTo(4,11.6);ctx.stroke();
+  ctx.globalAlpha=alpha*(.75+.25*Math.sin(now/140+l.seed*30));ctx.fillStyle='#ffe29a';ctx.beginPath();ctx.ellipse(0,13,3,1.8,0,0,6.2832);ctx.fill();ctx.restore();});ctx.globalAlpha=1;}
+
+/* petals & sparks */
 function burstPetals(n){if(REDUCED)n=Math.round(n/3);for(var i=0;i<n;i++)PETALS.push({x:Math.random()*W,y:-20-Math.random()*220,vy:26+Math.random()*40,vx:(Math.random()-.5)*20,rot:Math.random()*6.28,vr:(Math.random()-.5)*3,s:3+Math.random()*4,c:Math.random()<.5?'#f2b6a0':'#f0d38a',age:0,life:6+Math.random()*3});}
 function drawPetals(dt){for(var i=PETALS.length-1;i>=0;i--){var p=PETALS[i];p.age+=dt;if(p.age>p.life||p.y>H+20){PETALS.splice(i,1);continue;}p.y+=p.vy*dt;p.x+=(p.vx+Math.sin(p.age*2+p.rot)*14)*dt;p.rot+=p.vr*dt;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.globalAlpha=Math.max(0,Math.min(1,p.life-p.age));ctx.fillStyle=p.c;ctx.beginPath();ctx.ellipse(0,0,p.s,p.s*.55,0,0,6.2832);ctx.fill();ctx.restore();}ctx.globalAlpha=1;}
-var lastT=0,raf=0,lastRebuild=0;
+function drawSparks(dt){if(!SPARKS.length)return;ctx.save();ctx.globalCompositeOperation='lighter';for(var i=SPARKS.length-1;i>=0;i--){var p=SPARKS[i];p.age+=dt;if(p.age>=p.life){SPARKS.splice(i,1);continue;}p.vy+=30*dt;p.vx*=1-.8*dt;p.vy*=1-.8*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;ctx.globalAlpha=1-p.age/p.life;ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,6.2832);ctx.fill();}ctx.restore();ctx.globalAlpha=1;}
+
+/* sky: god rays, dust, fireflies, clouds */
+var PHASES={dawn:{sky:'url(#gSkyDawn)',shade:.12,ray:'255,214,186',ra:.11,label:'晨'},day:{sky:'url(#gSkyDay)',shade:0,ray:'255,238,196',ra:.13,label:'昼'},dusk:{sky:'url(#gSkyDusk)',shade:.18,ray:'255,170,112',ra:.09,label:'暮'},night:{sky:'url(#gSkyNight)',shade:.36,ray:'',ra:0,label:'夜'}};
+var SKY_ORDER=['auto','day','dusk','night','dawn'];
+function phaseNow(){if(S.skyMode!=='auto')return S.skyMode;var h=new Date().getHours();return h>=5&&h<8?'dawn':h>=8&&h<17?'day':h>=17&&h<19?'dusk':'night';}
+function applySky(){var p=phaseNow();if(p===S.phase)return;S.phase=p;var P2=PHASES[p];$('#skyL').setAttribute('fill',P2.sky);$('#skyR').setAttribute('fill',P2.sky);
+  $('#stars').setAttribute('opacity',p==='night'?1:p==='dusk'?.35:0);$('#nightShade').setAttribute('opacity',P2.shade);$('#scene').dataset.phase=p;
+  $('#skyBtn').textContent='天象：'+(S.skyMode==='auto'?'自动（'+P2.label+'）':P2.label);}
+function buildStars(){var g=$('#stars'),s='',rnd=mulberry(20260928);for(var i=0;i<46;i++){var left=i%2===0,x=left?120+rnd()*128:552+rnd()*128,y=112+rnd()*226,r=.6+rnd()*1.1;s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r.toFixed(2)+'" fill="#fffbe6"'+(rnd()<.45?' class="tw" style="animation-delay:-'+(rnd()*3).toFixed(2)+'s"':'')+'/>';}
+  s+='<circle cx="640" cy="152" r="14" fill="#f6efd2"/><circle cx="646" cy="147" r="12.6" fill="url(#gSkyNight)"/>';g.innerHTML=s;}
+var SHAFTS=[[[126,150],[242,140],[470,600],[285,600]],[[150,210],[244,205],[380,600],[250,600]],[[558,140],[674,150],[515,600],[330,600]],[[556,205],[650,210],[550,600],[420,600]]];
+function drawGodRays(now){var P2=PHASES[S.phase];if(!P2||!P2.ra)return;ctx.save();ctx.globalCompositeOperation='lighter';
+  SHAFTS.forEach(function(sh,i){var a=P2.ra*(.75+.25*Math.sin(now/2300+i*1.7));var g=ctx.createLinearGradient(0,140,0,600);g.addColorStop(0,'rgba('+P2.ray+','+a+')');g.addColorStop(1,'rgba('+P2.ray+',0)');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(sh[0][0],sh[0][1]);ctx.lineTo(sh[1][0],sh[1][1]);ctx.lineTo(sh[2][0],sh[2][1]);ctx.lineTo(sh[3][0],sh[3][1]);ctx.closePath();ctx.fill();});
+  if(!DUST.length)for(var i=0;i<(SMALL?14:26);i++)DUST.push({x:130+Math.random()*540,y:160+Math.random()*380,vx:(Math.random()-.5)*4,vy:-2-Math.random()*3,ph:Math.random()*6.28});
+  DUST.forEach(function(d){d.x+=d.vx*.016;d.y+=d.vy*.016;if(d.y<140){d.y=560;d.x=130+Math.random()*540;}var tw=.35+.35*Math.sin(now/600+d.ph);ctx.fillStyle='rgba('+P2.ray+','+tw+')';ctx.fillRect(d.x,d.y,1.3,1.3);});
+  ctx.restore();}
+function drawFireflies(now,dt){if(S.phase!=='night')return;if(!FLIES.length)for(var i=0;i<(SMALL?9:14);i++)FLIES.push({x:120+Math.random()*560,y:140+Math.random()*340,ph:Math.random()*6.28,sp:.3+Math.random()*.5});
+  ctx.save();ctx.globalCompositeOperation='lighter';FLIES.forEach(function(f){f.x+=Math.cos(now/2000*f.sp+f.ph)*12*dt;f.y+=Math.sin(now/1600*f.sp+f.ph*1.3)*9*dt;if(f.x<110)f.x=690;if(f.x>690)f.x=110;if(f.y<120)f.y=480;if(f.y>500)f.y=130;
+    var a=.25+.75*Math.max(0,Math.sin(now/700*f.sp+f.ph));ctx.globalAlpha=a;ctx.drawImage(FFLY,f.x-7,f.y-7,14,14);});ctx.restore();ctx.globalAlpha=1;}
+function drawClouds(dt){if(!CLOUDS.length)for(var i=0;i<(SMALL?2:3);i++)CLOUDS.push({x:Math.random()*W,y:26+Math.random()*70,v:5+Math.random()*7,s:.8+Math.random()*.6});
+  var na=S.phase==='night'?.45:1;CLOUDS.forEach(function(c){c.x+=c.v*dt;if(c.x>W+120)c.x=-120;ctx.globalAlpha=.1*na;for(var k=0;k<4;k++)ctx.drawImage(CLOUD,c.x+(k-1.5)*34*c.s-60*c.s,c.y+(k%2?-8:4)*c.s-30*c.s,120*c.s,60*c.s);});ctx.globalAlpha=1;}
+
+/* cranes */
+function spawnCrane(y,dir,delay){setTimeout(function(){if(CRANES.length>9)return;dir=dir||(Math.random()<.5?1:-1);CRANES.push({x:dir>0?-50:W+50,y:y||(64+Math.random()*80),v:62+Math.random()*22,dir:dir,s:.8+Math.random()*.25,ph:Math.random()*6.28});},delay||0);}
+function spawnFlock(){var dir=Math.random()<.5?1:-1;for(var i=0;i<6;i++)spawnCrane(90+Math.abs(i-2.5)*14,dir,i*260);}
+function drawCranes(now,dt){for(var i=CRANES.length-1;i>=0;i--){var c=CRANES[i];c.x+=c.dir*c.v*dt;if(c.x<-80||c.x>W+80){CRANES.splice(i,1);continue;}
+  var flap=Math.sin(now/170+c.ph),yy=c.y+Math.sin(now/800+c.ph)*4;ctx.save();ctx.translate(c.x,yy);ctx.scale(c.dir*c.s,c.s);ctx.globalAlpha=.92;
+  ctx.fillStyle='#d9d3c6';ctx.beginPath();ctx.moveTo(-3,0);ctx.quadraticCurveTo(0,-12*flap,6,-24*flap);ctx.quadraticCurveTo(7,-8*flap,5,1);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#f6f2e8';ctx.beginPath();ctx.ellipse(0,0,11,3.8,0,0,6.2832);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-1,0);ctx.quadraticCurveTo(3,-16*flap,10,-30*flap);ctx.quadraticCurveTo(10,-12*flap,7,1);ctx.closePath();ctx.fill();
+  ctx.strokeStyle='#1d1a18';ctx.lineWidth=2.2;ctx.beginPath();ctx.moveTo(8,-24*flap);ctx.lineTo(10,-30*flap);ctx.stroke();
+  ctx.strokeStyle='#f6f2e8';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(9,-1);ctx.quadraticCurveTo(15,-4,21,-3.5);ctx.stroke();
+  ctx.fillStyle='#d9362b';ctx.beginPath();ctx.arc(21.5,-4,1.6,0,6.2832);ctx.fill();
+  ctx.strokeStyle='#e8c070';ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(22.5,-3.6);ctx.lineTo(27,-2.6);ctx.stroke();
+  ctx.strokeStyle='#2a2320';ctx.lineWidth=1.1;ctx.beginPath();ctx.moveTo(-9,1);ctx.lineTo(-21,3);ctx.moveTo(-9,2);ctx.lineTo(-21,5);ctx.stroke();
+  ctx.fillStyle='#1d1a18';ctx.beginPath();ctx.moveTo(-10,-1);ctx.lineTo(-16,-3.5);ctx.lineTo(-14,2);ctx.closePath();ctx.fill();ctx.restore();}ctx.globalAlpha=1;}
+
+/* flying sword */
+var SWORD_PATH=[[880,70],[650,110],[520,160],[430,108],[330,128],[268,222],[300,332],[400,372],[505,330],[540,228],[470,140],[330,80],[190,62],[70,40],[-90,26]];
+function cm(p0,p1,p2,p3,t){var t2=t*t,t3=t2*t;return [.5*(2*p1[0]+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),.5*(2*p1[1]+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)];}
+function pathAt(u){var P2=SWORD_PATH,n=P2.length-1,f=Math.max(0,Math.min(.9999,u))*n,i=Math.floor(f),t=f-i;return cm(P2[Math.max(0,i-1)],P2[i],P2[i+1],P2[Math.min(n,i+2)],t);}
+function launchSword(){if(SWORDS.length>2)return;SWORDS.push({s:performance.now(),d:3600,trail:[],rang:false});swordSound();bumpStat('swords');}
+function drawSwords(now){for(var i=SWORDS.length-1;i>=0;i--){var sw=SWORDS[i],u=(now-sw.s)/sw.d;if(u>=1){SWORDS.splice(i,1);continue;}
+  var e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2,p=pathAt(e),q=pathAt(Math.min(.9999,e+.004)),ang=Math.atan2(q[1]-p[1],q[0]-p[0]);
+  sw.trail.push(p);if(sw.trail.length>24)sw.trail.shift();
+  if(!sw.rang&&e>12/14-.012){sw.rang=true;ringBell();bigBell(true);sparkBurst(190,62,26,'#bfe8ff');}
+  if(Math.random()<.6)spark(p[0],p[1],(Math.random()-.5)*30,(Math.random()-.5)*30,.5,1.2,'#cdeeff');
+  ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';
+  for(var k=1;k<sw.trail.length;k++){var a=k/sw.trail.length;ctx.strokeStyle='rgba(150,220,255,'+(a*.55)+')';ctx.lineWidth=a*10;ctx.beginPath();ctx.moveTo(sw.trail[k-1][0],sw.trail[k-1][1]);ctx.lineTo(sw.trail[k][0],sw.trail[k][1]);ctx.stroke();}
+  ctx.drawImage(SGLOW,p[0]-32,p[1]-32,64,64);ctx.restore();
+  ctx.save();ctx.translate(p[0],p[1]);ctx.rotate(ang);var g=ctx.createLinearGradient(-14,0,26,0);g.addColorStop(0,'#a9dcff');g.addColorStop(1,'#ffffff');ctx.fillStyle=g;
+  ctx.beginPath();ctx.moveTo(26,0);ctx.lineTo(-14,-2.8);ctx.lineTo(-14,2.8);ctx.closePath();ctx.fill();
+  ctx.fillStyle='#e8c070';ctx.fillRect(-17,-6.5,3,13);ctx.fillStyle='#7a3b22';ctx.fillRect(-27,-1.7,10,3.4);ctx.fillStyle='#e8c070';ctx.beginPath();ctx.arc(-28,0,2.3,0,6.2832);ctx.fill();ctx.restore();}}
+
+/* fireworks */
+var FW_COLORS=['#ffd36b','#ff6b6b','#7fe0ff','#c89bff','#8fffa0','#ffffff','#ff9d4d'];
+function fireworksShow(n){bumpStat('fw');for(var i=0;i<n;i++)setTimeout(launchRocket,i*(240+Math.random()*220));}
+function launchRocket(){ROCKETS.push({x:170+Math.random()*460,y:560,vx:(Math.random()-.5)*24,vy:-(330+Math.random()*90),ty:56+Math.random()*120,c:FW_COLORS[Math.floor(Math.random()*FW_COLORS.length)]});launchSound();}
+function explode(r){var n=SMALL?48:78,ring=Math.random()<.35;for(var i=0;i<n;i++){var a=Math.random()*6.283,sp=(ring?120:60+Math.random()*90)*(.7+Math.random()*.4);FWP.push({x:r.x,y:r.y,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,age:0,life:1.1+Math.random()*1,c:Math.random()<.2?'#ffffff':r.c});}boomSound();}
+function drawFireworks(dt){if(!ROCKETS.length&&!FWP.length)return;ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineCap='round';
+  for(var i=ROCKETS.length-1;i>=0;i--){var r=ROCKETS[i];r.x+=r.vx*dt;r.y+=r.vy*dt;r.vy+=110*dt;spark(r.x,r.y,(Math.random()-.5)*20,20,.35,1,'#ffd9a0');
+    ctx.fillStyle='#fff3cf';ctx.beginPath();ctx.arc(r.x,r.y,1.8,0,6.2832);ctx.fill();if(r.y<=r.ty||r.vy>=-30){explode(r);ROCKETS.splice(i,1);}}
+  for(var j=FWP.length-1;j>=0;j--){var p=FWP[j];p.age+=dt;if(p.age>=p.life){FWP.splice(j,1);continue;}p.vx*=1-1.3*dt;p.vy=p.vy*(1-1.3*dt)+55*dt;var ox=p.x,oy=p.y;p.x+=p.vx*dt;p.y+=p.vy*dt;
+    var a=(1-p.age/p.life)*(.7+.3*Math.sin(p.age*40));ctx.globalAlpha=Math.max(0,a);ctx.strokeStyle=p.c;ctx.lineWidth=1.8;ctx.beginPath();ctx.moveTo(ox-p.vx*.03,oy-p.vy*.03);ctx.lineTo(p.x,p.y);ctx.stroke();}
+  ctx.restore();ctx.globalAlpha=1;}
+
+/* lightning, tribulation, milestone */
+function bolt(x0,y0,x1,y1,disp,depth){var pts=[[x0,y0],[x1,y1]];for(var i=0;i<depth;i++){var np=[pts[0]];for(var j=1;j<pts.length;j++){var a=pts[j-1],b=pts[j];np.push([(a[0]+b[0])/2+(Math.random()-.5)*disp,(a[1]+b[1])/2+(Math.random()-.5)*disp*.35],b);}pts=np;disp*=.56;}
+  var branches=[];for(var k=0;k<3;k++){var idx=Math.floor(pts.length*(.25+Math.random()*.5)),s=pts[idx];branches.push(boltSimple(s[0],s[1],s[0]+(Math.random()-.5)*160,s[1]+60+Math.random()*90));}return {main:pts,br:branches};}
+function boltSimple(x0,y0,x1,y1){var pts=[[x0,y0],[x1,y1]],disp=50;for(var i=0;i<4;i++){var np=[pts[0]];for(var j=1;j<pts.length;j++){var a=pts[j-1],b=pts[j];np.push([(a[0]+b[0])/2+(Math.random()-.5)*disp,(a[1]+b[1])/2+(Math.random()-.5)*disp*.3],b);}pts=np;disp*=.55;}return pts;}
+function strokePts(pts){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);for(var i=1;i<pts.length;i++)ctx.lineTo(pts[i][0],pts[i][1]);ctx.stroke();}
+function drawBolt(b,a){ctx.save();ctx.globalCompositeOperation='lighter';ctx.lineJoin='round';ctx.lineCap='round';
+  [[14,'rgba(110,150,255,'+(.14*a)+')'],[6,'rgba(170,200,255,'+(.4*a)+')'],[2,'rgba(255,255,255,'+(.95*a)+')']].forEach(function(s){ctx.lineWidth=s[0];ctx.strokeStyle=s[1];strokePts(b.main);});
+  ctx.lineWidth=1.4;ctx.strokeStyle='rgba(210,225,255,'+(.7*a)+')';b.br.forEach(strokePts);ctx.restore();}
+function strike(){var b=bolt(200+Math.random()*400,-10,400+(Math.random()-.5)*50,540,140,7);addFx(760,function(t,ms){drawBolt(b,1-t);if(ms<150){ctx.fillStyle='rgba(235,240,255,'+(.62*(1-ms/150))+')';ctx.fillRect(0,0,W,H);}});
+  thunder();restart($('#scene'),'shake');sparkBurst(400,540,40,'#cfe0ff');bumpStat('strikes');}
+function drawStorm(dark,ms){if(dark<=0)return;ctx.fillStyle='rgba(8,6,20,'+(dark*.58)+')';ctx.fillRect(0,0,W,H);
+  ctx.save();ctx.globalAlpha=dark*.9;for(var i=0;i<8;i++){var x=(i*120+ms*.02*(i%2?1:-1))%1000-100,y=10+(i%3)*22;var g=ctx.createRadialGradient(x,y,0,x,y,120);g.addColorStop(0,'rgba(28,24,40,.95)');g.addColorStop(1,'rgba(28,24,40,0)');ctx.fillStyle=g;ctx.fillRect(x-120,y-120,240,240);}ctx.restore();}
+function drawBeam(a,ms){if(a<=0)return;ctx.save();ctx.globalCompositeOperation='lighter';var w=46+18*Math.sin(ms/110);var g=ctx.createLinearGradient(0,0,0,560);g.addColorStop(0,'rgba(255,230,150,0)');g.addColorStop(.35,'rgba(255,222,130,'+(.32*a)+')');g.addColorStop(1,'rgba(255,244,196,'+(.65*a)+')');ctx.fillStyle=g;
+  ctx.beginPath();ctx.moveTo(400-w*.35,0);ctx.lineTo(400+w*.35,0);ctx.lineTo(400+w*1.2,560);ctx.lineTo(400-w*1.2,560);ctx.closePath();ctx.fill();
+  var r=(ms%900)/900;ctx.strokeStyle='rgba(255,226,140,'+(a*(1-r)*.8)+')';ctx.lineWidth=3;ctx.beginPath();ctx.ellipse(400,552,40+r*170,12+r*46,0,0,6.2832);ctx.stroke();ctx.restore();
+  if(Math.random()<.8)spark(400+(Math.random()-.5)*70,548,(Math.random()-.5)*20,-60-Math.random()*90,1.2,1.6,'#ffe29a');}
+function playTribulation(name,r){
+  var realm=REALMS[r]||REALMS[1],times=[],bolts=[],fired={},n=2+Math.min(4,r);for(var i=0;i<n;i++)times.push(850+i*(1700/n));bumpStat('trib');
+  addFx(5400,function(t,ms){var dark=ms<850?ms/850:ms<3000?1:ms<4300?1-(ms-3000)/1300:0;drawStorm(dark,ms);
+    times.forEach(function(tm,k){if(ms>=tm&&!fired[k]){fired[k]=1;bolts.push({b:bolt(80+Math.random()*640,-10,340+Math.random()*120,300+Math.random()*250,150,7),born:ms});thunder();restart($('#scene'),'shake');}});
+    bolts.forEach(function(x){var age=ms-x.born;if(age<460)drawBolt(x.b,1-age/460);if(age<150){ctx.fillStyle='rgba(235,240,255,'+(.55*(1-age/150))+')';ctx.fillRect(0,0,W,H);}});
+    if(ms>2900){var bt=Math.min(1,(ms-2900)/450),fade=ms>4700?Math.max(0,1-(ms-4700)/700):1;drawBeam(bt*fade,ms);}});
+  setTimeout(function(){chime();showBanner(name+' 渡劫成功',realm.t+' · '+realm.n,false);ring(400,552,96,28,true);setTimeout(function(){ring(400,552,96,28,true);},300);burstPetals(50);},3000);
+}
+function playMilestone(label){bumpStat('milestones');
+  addFx(4400,function(t,ms){var a=t<.15?t/.15:t>.7?(1-t)/.3:1;ctx.save();ctx.globalCompositeOperation='lighter';ctx.translate(400,238);ctx.rotate(ms/3000);
+    var len=200+640*Math.min(1,ms/900);for(var i=0;i<24;i++){ctx.rotate(Math.PI*2/24);var g=ctx.createLinearGradient(0,0,len,0);g.addColorStop(0,'rgba(255,225,140,'+(.34*a)+')');g.addColorStop(1,'rgba(255,225,140,0)');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(len,-28);ctx.lineTo(len,28);ctx.lineTo(0,4);ctx.closePath();ctx.fill();}
+    ctx.restore();var rr=ms*.55;ctx.strokeStyle='rgba(255,220,130,'+Math.max(0,.65-ms/2400)+')';ctx.lineWidth=4;ctx.beginPath();ctx.arc(400,238,rr,0,6.2832);ctx.stroke();});
+  spawnFlock();burstPetals(80);chime();bigBell(true);showBanner('合寺功德',label,false);}
+function runFx(now){for(var i=FX.length-1;i>=0;i--){var f=FX[i],ms=now-f.s,t=ms/f.d;if(t>=1){FX.splice(i,1);continue;}f.draw(t,ms);}}
+
+/* frame */
+var lastT=0,raf=0,lastRebuild=0,nextCrane=performance.now()+12000;
+var TILT={x:0,y:0,tx:0,ty:0,on:false,gyro:false,applied:''};
 function frame(ts){
   raf=requestAnimationFrame(frame);
   var dt=lastT?Math.min(.05,(ts-lastT)/1000):.016;lastT=ts;var now=Date.now();
-  if(now-lastRebuild>4000){lastRebuild=now;rebuildSticks();rebuildLanterns();mark('merit');}
+  if(now-lastRebuild>4000){lastRebuild=now;rebuildSticks();rebuildLanterns();mark('merit');applySky();}
+  if(ts>nextCrane){nextCrane=ts+45000+Math.random()*60000;if(!REDUCED)spawnCrane();}
   ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.clearRect(0,0,W,H);
-  drawLanterns(now);drawSticks(now);emit(dt);drawSmoke(dt);drawPetals(dt);
+  drawGodRays(now);drawClouds(dt);drawCranes(ts,dt);drawLanterns(now);drawSticks(now);emit(dt);drawSmoke(dt);drawFireflies(now,dt);
+  if(ts<S.auraUntil&&Math.random()<.9){var a=Math.random()*6.283;spark(248+Math.cos(a)*44,362+Math.sin(a)*26,Math.cos(a)*20,-30-Math.random()*30,.7,1.6,'#ffd36b');}
+  drawSwords(ts);drawFireworks(dt);drawSparks(dt);runFx(ts);drawPetals(dt);
+  if(!REDUCED&&(TILT.on||TILT.gyro||Math.abs(TILT.x)>.002||Math.abs(TILT.y)>.002)){TILT.x+=(TILT.tx-TILT.x)*.08;TILT.y+=(TILT.ty-TILT.y)*.08;
+    var tr='perspective(1100px) rotateY('+(TILT.x*6).toFixed(2)+'deg) rotateX('+(-TILT.y*4).toFixed(2)+'deg) scale(1.015)';if(tr!==TILT.applied){TILT.applied=tr;$('#tilt').style.transform=tr;var gl=$('.glare');gl.style.setProperty('--gx',(50+TILT.x*35)+'%');gl.style.setProperty('--gy',(40+TILT.y*30)+'%');}}
 }
 
-/* ---------- scene helpers ---------- */
+/* ================= DOM helpers ================= */
 function buildRays(){var g=$('#rays'),s='';for(var i=0;i<48;i++){var a=i*Math.PI*2/48,r1=118,r2=i%2?130:137;s+='<line x1="'+(400+Math.cos(a)*r1).toFixed(1)+'" y1="'+(238+Math.sin(a)*r1).toFixed(1)+'" x2="'+(400+Math.cos(a)*r2).toFixed(1)+'" y2="'+(238+Math.sin(a)*r2).toFixed(1)+'"/>';}g.innerHTML=s;}
 function restart(el,cls){el.classList.remove(cls);void el.getBoundingClientRect();el.classList.add(cls);}
-function floater(x,y,text,cls){var el=document.createElement('span');el.className='floater'+(cls?' '+cls:'');el.textContent=text;el.style.left=(x/W*100)+'%';el.style.top=(y/H*100)+'%';$('#floaters').appendChild(el);setTimeout(function(){el.remove();},1500);}
+function floater(x,y,text,cls){var el=document.createElement('span');el.className='floater'+(cls?' '+cls:'');el.textContent=text;el.style.left=(x/W*100)+'%';el.style.top=(y/H*100)+'%';$('#floaters').appendChild(el);setTimeout(function(){el.remove();},1900);}
 function ring(cx,cy,rx,ry,big){var e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');e.setAttribute('cx',cx);e.setAttribute('cy',cy);e.setAttribute('rx',rx);e.setAttribute('ry',ry);e.setAttribute('class','ripple'+(big?' big':''));$('#fx').appendChild(e);setTimeout(function(){e.remove();},1900);}
 function ripple(){ring(400,556,96,28);}
 function nameEl(name){var b=document.createElement('b');b.textContent=name||'一位香客';return b;}
-function toast(node){var box=$('#toasts'),el=document.createElement('div');el.className='toast';if(typeof node==='string')el.textContent=node;else el.appendChild(node);box.appendChild(el);while(box.children.length>3)box.firstElementChild.remove();setTimeout(function(){el.classList.add('out');setTimeout(function(){el.remove();},450);},4200);}
-function toastWho(name,text){var f=document.createDocumentFragment();f.appendChild(nameEl(name));f.appendChild(document.createTextNode(' '+text));toast(f);}
+function toast(node,bad){var box=$('#toasts'),el=document.createElement('div');el.className='toast'+(bad?' bad':'');if(typeof node==='string')el.textContent=node;else el.appendChild(node);box.appendChild(el);while(box.children.length>4)box.firstElementChild.remove();setTimeout(function(){el.classList.add('out');setTimeout(function(){el.remove();},450);},bad?7000:4200);}
+function toastWho(name,text,bad){var f=document.createDocumentFragment();f.appendChild(nameEl(name));f.appendChild(document.createTextNode(' '+text));toast(f,bad);}
 function hint(t){$('#hint').textContent=t;}
 function throttled(key,ms){var now=Date.now(),t=S.throttle.get(key)||0;if(now-t<ms)return false;S.throttle.set(key,now);return true;}
+function showBanner(small,big,bad){var b=$('#banner');$('#bannerSmall').textContent=small||'';$('#bannerBig').textContent=big||'';b.classList.toggle('bad',!!bad);restart(b,'show');}
 var dmLanes=[0,0,0,0,0];
-function showDm(name,text,mine){
-  var box=$('#danmaku');if(box.children.length>16)return;
-  var el=document.createElement('div');el.className='dm'+(mine?' mine':'');el.appendChild(nameEl(name));el.appendChild(document.createTextNode(text));
+function showDm(name,text,mine){var box=$('#danmaku');if(box.children.length>16)return;var el=document.createElement('div');el.className='dm'+(mine?' mine':'');el.appendChild(nameEl(name));el.appendChild(document.createTextNode(text));
   var now=Date.now(),lane=0,best=Infinity;for(var i=0;i<dmLanes.length;i++){if(dmLanes[i]<best){best=dmLanes[i];lane=i;}}dmLanes[lane]=Math.max(now,dmLanes[lane])+2600;
-  el.style.top=(9+lane*8.4)+'%';box.appendChild(el);
-  el.style.setProperty('--d',(-(box.clientWidth+el.offsetWidth+24))+'px');void el.offsetWidth;el.classList.add('go');
-  setTimeout(function(){el.remove();},9800);
-}
-function renderOfferings(){
-  var now=Date.now(),list=[];
-  entries().forEach(function(e){var id=e[0],d=e[1],o=d.offer;if(o&&OFFERS[o.k]&&o.at&&now-o.at<OFFER_MS)list.push({n:id===S.pid?(S.name||'你'):d.n,k:o.k,at:o.at});});
+  el.style.top=(9+lane*8.4)+'%';box.appendChild(el);el.style.setProperty('--d',(-(box.clientWidth+el.offsetWidth+24))+'px');void el.offsetWidth;el.classList.add('go');setTimeout(function(){el.remove();},9800);}
+function renderOfferings(){var now=Date.now(),list=[];
+  entries().forEach(function(e){if(e.fraud)return;var o=e.d.offer;if(o&&OFFERS[o.k]&&tstamp(o.at)&&now-o.at<OFFER_MS)list.push({n:e.name,k:o.k,at:o.at});});
   list.sort(function(a,b){return b.at-a.at;});list=list.slice(0,8);
   var slots=[150,550,182,582,214,614,246,646],g=$('#offerings');while(g.firstChild)g.removeChild(g.firstChild);
   list.forEach(function(o,i){var ns='http://www.w3.org/2000/svg',u=document.createElementNS(ns,'use');u.setAttribute('href','#o-'+o.k);u.setAttribute('x',slots[i]-13);u.setAttribute('y',527);u.setAttribute('width',26);u.setAttribute('height',26);
-    var t=document.createElementNS(ns,'title');t.textContent=o.n+' 供上的'+OFFERS[o.k];var gg=document.createElementNS(ns,'g');gg.appendChild(t);gg.appendChild(u);g.appendChild(gg);});
+    var t=document.createElementNS(ns,'title');t.textContent=o.n+' 供上的'+OFFERS[o.k];var gg=document.createElementNS(ns,'g');gg.appendChild(t);gg.appendChild(u);g.appendChild(gg);});}
+
+/* ================= my ledger ================= */
+function today(){var k=todayKey();if(!S.mine.days[k])S.mine.days[k]=emptyDay();return S.mine.days[k];}
+function earn(f,n){var b=today(),room=CAPS[f]-b[f],got=Math.max(0,Math.min(n,room));b[f]+=got;return got;}
+function myTot(){return dayScan({days:S.mine.days,at:Date.now()}).tot;}
+function myMerit(){if(S.mine.expelled||S.frauds.has(ID.pid))return 0;return Math.max(0,meritFromTot(myTot())+(S.mine.vowed?99:0)-cnt(S.mine.penalty));}
+function todayMerit(){var b=S.mine.days[todayKey()];return b?meritFromTot(b):0;}
+function meDoc(){var m=S.mine;return {pid:ID.pid,n:S.name||'香客',at:Date.now(),days:m.days,penalty:m.penalty,cheats:m.cheats,expelled:m.expelled,banUntil:m.banUntil,vowed:m.vowed,rituals:m.rituals,wishes:m.wishes,lampList:m.lampList,offer:m.offer,log:m.log};}
+function myBody(){var m=S.mine,now=Date.now(),days={};Object.keys(m.days).sort().slice(-400).forEach(function(k){if(k>=SEASON_DAY)days[k]=m.days[k];});
+  return {pid:ID.pid,n:S.name||'香客',at:now,days:days,penalty:cnt(m.penalty),cheats:cnt(m.cheats),expelled:!!m.expelled,banUntil:tstamp(m.banUntil),vowed:!!m.vowed,
+    rituals:m.rituals.filter(function(t){return now-t<BURN_MS;}).slice(-RITUAL_KEEP),wishes:m.wishes.slice(0,WISH_KEEP),lampList:m.lampList.filter(function(l){return now-l.at<LAMP_MS;}).slice(-LAMP_KEEP),
+    offer:m.offer&&now-m.offer.at<OFFER_MS?m.offer:null,log:m.log.slice(-LOG_KEEP),lastSignAt:m.lastSignAt,lastSignNo:m.lastSignNo,lastBellAt:m.lastBellAt,lastSwordAt:m.lastSwordAt,lastFwAt:m.lastFwAt};}
+function saveLocal(){LS.set('gs.mine3.'+ROOM,S.mine);}
+function loadLocal(){var m=LS.get('gs.mine3.'+ROOM,null);if(m&&typeof m==='object'){
+  if(m.days&&typeof m.days==='object')Object.keys(m.days).forEach(function(k){if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&k>=SEASON_DAY){var b=emptyDay();FIELDS.forEach(function(f){b[f]=Math.min(CAPS[f],cnt(m.days[k][f]));});S.mine.days[k]=b;}});
+  ['penalty','cheats'].forEach(function(k){S.mine[k]=cnt(m[k]);});S.mine.expelled=!!m.expelled;S.mine.banUntil=tstamp(m.banUntil);S.mine.vowed=!!m.vowed;
+  ['lastSignAt','lastBellAt','lastSwordAt','lastFwAt'].forEach(function(k){S.mine[k]=tstamp(m[k]);});S.mine.lastSignNo=Number.isInteger(m.lastSignNo)?m.lastSignNo:-1;
+  if(Array.isArray(m.rituals))S.mine.rituals=m.rituals.map(tstamp).filter(Boolean).slice(-RITUAL_KEEP);
+  if(Array.isArray(m.wishes))S.mine.wishes=m.wishes.filter(function(w){return w&&typeof w.t==='string';}).map(function(w){return {t:txt(w.t,30),at:tstamp(w.at)};}).slice(0,WISH_KEEP);
+  if(Array.isArray(m.lampList))S.mine.lampList=m.lampList.filter(function(l){return l&&tstamp(l.at);}).map(function(l){return {t:txt(l.t,16),at:tstamp(l.at)};}).slice(-LAMP_KEEP);
+  if(m.offer&&OFFERS[m.offer.k])S.mine.offer={k:m.offer.k,at:tstamp(m.offer.at)};
+  if(Array.isArray(m.log))S.mine.log=m.log.filter(function(l){return l&&LOG_KINDS[l.k];}).slice(-LOG_KEEP);}}
+function mergeMine(d){
+  var m=S.mine;if(d.days&&typeof d.days==='object')Object.keys(d.days).forEach(function(k){if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<SEASON_DAY)return;var b=m.days[k]||(m.days[k]=emptyDay());FIELDS.forEach(function(f){var v=cnt(d.days[k][f]);if(v>b[f]&&v<=CAPS[f])b[f]=v;});});
+  if(cnt(d.penalty)>m.penalty)m.penalty=cnt(d.penalty);if(cnt(d.cheats)>m.cheats)m.cheats=cnt(d.cheats);if(d.expelled)m.expelled=true;if(tstamp(d.banUntil)>m.banUntil)m.banUntil=tstamp(d.banUntil);if(d.vowed)m.vowed=true;
+  ['lastSignAt','lastBellAt','lastSwordAt','lastFwAt'].forEach(function(k){if(tstamp(d[k])>m[k])m[k]=tstamp(d[k]);});}
+
+/* ================= people (verified docs) ================= */
+function cleanDoc(d){return {pid:d.pid,n:txt(d.n,12)||'香客',at:tstamp(d.at),days:d.days,penalty:cnt(d.penalty),cheats:cnt(d.cheats),expelled:!!d.expelled,banUntil:tstamp(d.banUntil),vowed:!!d.vowed,
+  rituals:Array.isArray(d.rituals)?d.rituals.slice(-RITUAL_KEEP).map(tstamp).filter(Boolean):[],
+  wishes:Array.isArray(d.wishes)?d.wishes.slice(0,WISH_KEEP).filter(function(w){return w&&typeof w.t==='string';}).map(function(w){return {t:txt(w.t,30),at:tstamp(w.at)};}):[],
+  lampList:Array.isArray(d.lampList)?d.lampList.slice(-LAMP_KEEP).filter(function(l){return l&&tstamp(l.at);}).map(function(l){return {t:txt(l.t,16),at:tstamp(l.at)};}):[],
+  offer:d.offer&&OFFERS[d.offer.k]&&tstamp(d.offer.at)?{k:d.offer.k,at:tstamp(d.offer.at)}:null,
+  log:Array.isArray(d.log)?d.log.slice(-LOG_KEEP).filter(function(l){return l&&LOG_KINDS[l.k];}).map(function(l){return {k:l.k,at:tstamp(l.at),no:Number.isInteger(l.no)?l.no:-1,t:txt(l.t,30),c:Number(l.c)||0,r:Number.isInteger(l.r)?l.r:-1,o:OFFERS[l.o]?l.o:''};}):[]};}
+function entries(){
+  var out=[],me=false;
+  S.docs.forEach(function(x,pid){
+    if(pid===ID.pid){me=true;var d=meDoc();out.push({pid:pid,d:d,name:S.name||'你',me:true,fraud:S.frauds.has(pid),expelled:S.mine.expelled,merit:myMerit()});return;}
+    var fr=S.frauds.has(pid)||!!x.scan.viol;out.push({pid:pid,d:x.d,name:x.d.n,me:false,fraud:fr,expelled:x.d.expelled,merit:(fr||x.d.expelled)?0:Math.max(0,meritFromTot(x.scan.tot)+(x.d.vowed?99:0)-x.d.penalty)});});
+  if(!me&&ID.ok)out.push({pid:ID.pid,d:meDoc(),name:S.name||'你',me:true,fraud:S.frauds.has(ID.pid),expelled:S.mine.expelled,merit:myMerit()});
+  return out;
+}
+function nameOf(pid){if(pid===ID.pid)return S.name||'你';var x=S.docs.get(pid);return x?x.d.n:'某位香客';}
+function cacheEnv(pid,env){var c=LS.get('gs.env3.'+ROOM,{});if(!c||typeof c!=='object')c={};c[pid]=env;var ks=Object.keys(c);if(ks.length>120)delete c[ks[0]];LS.set('gs.env3.'+ROOM,c);}
+
+/* fraud handling: evidence is the accused's own signed documents */
+function convict(pid,kind,reason,live){
+  if(S.frauds.has(pid))return false;S.frauds.set(pid,{kind:kind,reason:reason,at:Date.now()});bumpStat('frauds');
+  var name=nameOf(pid);
+  if(pid===ID.pid){S.mine.expelled=true;saveLocal();}
+  if(live!==false&&S.struck<4){S.struck++;setTimeout(function(){S.struck=Math.max(0,S.struck-1);},10000);strike();showBanner(name+' 作弊，证据确凿','天雷劈下',true);restart($('#scene'),'cursed');}
+  toastWho(name,'作弊被天道查实（'+reason+'），天雷劈下，逐出山门！',true);
+  mark('merit','rank','ledger','present','wishes','offer');rebuildSticks();rebuildLanterns();
+  return true;
+}
+function reportFraud(pid,kind,envA,envB,reason){
+  if(S.proofs.has(pid))return;
+  var fresh=convict(pid,kind,reason,true);if(!fresh)return;
+  setTimeout(function(){if(S.proofs.has(pid)||!ID.ok)return;var body={pid:ID.pid,acc:pid,kind:kind,a:envA,b:envB||'',reason:reason,at:Date.now()};
+    signEnv(body).then(function(env){S.proofs.set(pid,env);if(S.mq&&S.mq.connected())S.mq.publish(PREFIX+'f/'+pid,env,true);});},300+Math.random()*1800);
+}
+function checkProof(topicPid,payload){
+  return openEnv(payload).then(function(o){
+    if(!o||o.d.acc!==topicPid)return;var d=o.d;
+    return openEnv(typeof d.a==='string'?d.a:'').then(function(A){
+      if(!A||A.pid!==topicPid)return;
+      if(d.kind==='cap'){var v=dayScan(A.d).viol;if(!v)return;S.proofs.set(topicPid,payload);convict(topicPid,'cap',v,true);return;}
+      if(d.kind==='rate')return openEnv(typeof d.b==='string'?d.b:'').then(function(B){if(!B||B.pid!==topicPid)return;var older=A.d.at<B.d.at?A.d:B.d,newer=older===A.d?B.d:A.d;var v=rateViolation(older,newer);if(!v)return;S.proofs.set(topicPid,payload);convict(topicPid,'rate',v,true);});
+    });
+  });
+}
+function acceptDoc(o,fromCache){
+  var pid=o.pid,d=cleanDoc(o.d),prev=S.docs.get(pid);
+  if(prev&&d.at<=prev.d.at)return false;
+  var scan=dayScan(o.d);
+  S.docs.set(pid,{d:d,env:o.env,raw:o.d,scan:scan});if(!fromCache)cacheEnv(pid,o.env);
+  if(pid===ID.pid)mergeMine(o.d);
+  if(scan.viol)reportFraud(pid,'cap',o.env,'',scan.viol);
+  else if(prev&&!fromCache){var rv=rateViolation(prev.raw,o.d);if(rv)reportFraud(pid,'rate',prev.env,o.env,rv);}
+  return true;
 }
 
-/* ---------- data model ---------- */
-function cleanPerson(d){
-  var o={n:txt(d.n,12)||'香客',incense:cnt(d.incense),bows:cnt(d.bows),muyu:cnt(d.muyu),signs:cnt(d.signs),bells:cnt(d.bells),lamps:cnt(d.lamps),offers:cnt(d.offers),bonus:cnt(d.bonus),vowed:!!d.vowed,
-    penalty:cnt(d.penalty),cheats:cnt(d.cheats),banUntil:tstamp(d.banUntil),rituals:[],wishes:[],lampList:[],offer:null,log:[]};
-  if(Array.isArray(d.rituals))o.rituals=d.rituals.slice(-RITUAL_KEEP).map(tstamp).filter(Boolean);
-  if(Array.isArray(d.wishes))d.wishes.slice(0,WISH_KEEP).forEach(function(w){if(w&&typeof w==='object'){var t=txt(w.t,30);if(t)o.wishes.push({t:t,at:tstamp(w.at)});}});
-  if(Array.isArray(d.lampList))d.lampList.slice(-LAMP_KEEP).forEach(function(l){if(l&&typeof l==='object'&&tstamp(l.at))o.lampList.push({t:txt(l.t,16),at:tstamp(l.at)});});
-  if(d.offer&&typeof d.offer==='object'&&OFFERS[d.offer.k]&&tstamp(d.offer.at))o.offer={k:d.offer.k,at:tstamp(d.offer.at)};
-  if(Array.isArray(d.log))d.log.slice(-LOG_KEEP).forEach(function(l){if(l&&typeof l==='object'&&LOG_KINDS[l.k]){o.log.push({k:l.k,at:tstamp(l.at),no:Number.isInteger(l.no)?l.no:-1,t:txt(l.t,30),c:cnt(l.c),r:Number.isInteger(l.r)?l.r:-1,o:OFFERS[l.o]?l.o:''});}});
-  return o;
-}
-function cleanStatus(s){
-  if(!s)return null;
-  return {machine:s.machine==='passed'?'passed':'pending',selftest:s.selftest==='visible'?'visible':'missing',
-    manual:(s.manual==='passed'||s.manual==='returned')?s.manual:'pending',
-    submittedAt:/^\d{4}-\d{2}-\d{2}$/.test(s.submittedAt||'')?s.submittedAt:'',version:txt(s.version,20),modapi:txt(s.modapi,40),note:txt(s.note,60),by:txt(s.by,12),at:tstamp(s.at)};
-}
-function meDoc(){var m=S.mine;return {n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,bells:m.bells,lamps:m.lamps,offers:m.offers,bonus:m.bonus,vowed:m.vowed,
-  penalty:m.penalty,cheats:m.cheats,banUntil:m.banUntil,rituals:m.rituals,wishes:m.wishes,lampList:m.lampList,offer:m.offer,log:m.log};}
-function entries(){var out=[],hasMe=false;S.people.forEach(function(d,id){if(id===S.pid){out.push([id,meDoc()]);hasMe=true;}else out.push([id,d]);});if(!hasMe)out.push([S.pid,meDoc()]);return out;}
-function meritOf(d){return Math.max(0,cnt(d.incense)*3+cnt(d.bows)+cnt(d.muyu)+cnt(d.bells)*2+cnt(d.lamps)*9+cnt(d.offers)*5+cnt(d.bonus)+(d.vowed?99:0)-cnt(d.penalty));}
-function lastRitual(){var rs=S.mine.rituals;return rs.length?Math.max.apply(null,rs):0;}
-function lastLamp(){var l=S.mine.lampList;return l.length?l[l.length-1].at:0;}
-function mergeMine(r){
-  var m=S.mine,now=Date.now(),d=cleanPerson(r);
-  ['incense','bows','muyu','signs','bells','lamps','offers','bonus','penalty','cheats'].forEach(function(k){if(d[k]>m[k])m[k]=d[k];});
-  if(d.banUntil>m.banUntil)m.banUntil=d.banUntil;
-  var rsa=tstamp(r.lastSignAt);if(rsa>m.lastSignAt){m.lastSignAt=rsa;if(Number.isInteger(r.lastSignNo))m.lastSignNo=r.lastSignNo;}
-  var rba=tstamp(r.lastBellAt);if(rba>m.lastBellAt)m.lastBellAt=rba;
-  var set={};m.rituals.concat(d.rituals).forEach(function(t){if(t&&now-t<BURN_MS)set[t]=1;});
-  m.rituals=Object.keys(set).map(Number).sort(function(a,b){return a-b;}).slice(-RITUAL_KEEP);
-  var ws={};m.wishes.concat(d.wishes).forEach(function(w){if(S.removed.has(w.at))return;ws[w.at+'|'+w.t]=w;});
-  m.wishes=Object.keys(ws).map(function(k){return ws[k];}).sort(function(a,b){return b.at-a.at;}).slice(0,WISH_KEEP);
-  var ls={};m.lampList.concat(d.lampList).forEach(function(l){ls[l.at]=l;});
-  m.lampList=Object.keys(ls).map(function(k){return ls[k];}).sort(function(a,b){return a.at-b.at;}).slice(-LAMP_KEEP);
-  if(d.offer&&(!m.offer||d.offer.at>m.offer.at))m.offer=d.offer;
-  var lg={};m.log.concat(d.log).forEach(function(l){lg[l.at+'|'+l.k]=l;});
-  m.log=Object.keys(lg).map(function(k){return lg[k];}).sort(function(a,b){return a.at-b.at;}).slice(-LOG_KEEP);
-  if(d.vowed)m.vowed=true;
-}
-function myBody(){var m=S.mine,now=Date.now();return JSON.stringify({v:2,n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,bells:m.bells,lamps:m.lamps,offers:m.offers,bonus:m.bonus,
-  penalty:m.penalty,cheats:m.cheats,banUntil:m.banUntil,
-  lastSignAt:m.lastSignAt,lastSignNo:m.lastSignNo,lastBellAt:m.lastBellAt,
-  rituals:m.rituals.filter(function(t){return now-t<BURN_MS;}).slice(-RITUAL_KEEP),wishes:m.wishes.slice(0,WISH_KEEP),
-  lampList:m.lampList.filter(function(l){return now-l.at<LAMP_MS;}).slice(-LAMP_KEEP),offer:m.offer&&now-m.offer.at<OFFER_MS?m.offer:null,
-  vowed:!!m.vowed,log:m.log.slice(-LOG_KEEP),at:now});}
-function saveLocal(){LS.set('gs.mine.'+ROOM,S.mine);}
-function loadLocal(){var m=LS.get('gs.mine.'+ROOM,null);if(m&&typeof m==='object')mergeMine(m);}
-
-/* ---------- network ---------- */
+/* ================= network ================= */
 var pubTimer=0;
 function queueSave(delay){saveLocal();S.dirty=true;clearTimeout(pubTimer);pubTimer=setTimeout(publishMine,delay==null?800:delay);}
-function publishMine(){if(!S.dirty||!S.synced||!S.mq||!S.mq.connected())return;if(S.mq.publish(PREFIX+'p/'+S.pid,myBody(),true))S.dirty=false;}
-function publishHere(){if(!S.mq||!S.mq.connected())return;S.mq.publish(PREFIX+'h/'+S.tab,JSON.stringify({p:S.pid,n:S.name||'香客',act:S.myAct.act,at:Date.now()}),true);}
-function emitEv(k,extra){if(!S.mq||!S.mq.connected())return;var e={p:S.pid,n:S.name||'香客',k:k,at:Date.now()};if(extra)for(var x in extra)e[x]=extra[x];S.mq.publish(PREFIX+'e',JSON.stringify(e),false);}
+function canPublish(){return ID.ok&&!S.passive&&S.mq&&S.mq.connected();}
+function publishMine(){if(!S.dirty||!S.synced||!canPublish())return;S.dirty=false;var body=myBody();
+  signEnv(body).then(function(env){if(S.mq&&S.mq.connected()){S.mq.publish(PREFIX+'p/'+ID.pid,env,true);var prev=S.docs.get(ID.pid);if(!prev||body.at>prev.d.at){S.docs.set(ID.pid,{d:cleanDoc(body),env:env,raw:body,scan:dayScan(body)});cacheEnv(ID.pid,env);}}else S.dirty=true;});}
+function publishHere(){if(!canPublish())return;signEnv({pid:ID.pid,tab:S.tab,n:S.name||'香客',act:S.myAct.act,at:Date.now()}).then(function(env){if(S.mq&&S.mq.connected())S.mq.publish(PREFIX+'h/'+S.tab,env,true);});}
+function emitEv(k,extra){if(!canPublish())return;var e={pid:ID.pid,n:S.name||'香客',k:k,at:Date.now()};if(extra)for(var x in extra)e[x]=extra[x];signEnv(e).then(function(env){if(S.mq&&S.mq.connected())S.mq.publish(PREFIX+'e',env,false);});}
 function logAndEmit(k,extra){var l={k:k,at:Date.now(),no:-1,t:'',c:0,r:-1,o:''};if(extra)for(var x in extra)l[x]=extra[x];S.mine.log.push(l);S.mine.log=S.mine.log.slice(-LOG_KEEP);emitEv(k,extra);mark('ledger');}
 function setConn(c){S.conn=c;mark('conn');}
 function connect(){
-  if(S.mq&&S.mq.connected())return;
-  clearTimeout(S.retryT);setConn('connecting');
+  if(S.mq&&S.mq.connected())return;clearTimeout(S.retryT);setConn('connecting');
   if(S.mq){var old=S.mq;S.mq=null;try{old.end();}catch(e){}}
-  var mq=MiniMqtt(BROKER,{clientId:'gs_'+S.pid.slice(0,8)+'_'+rid(6),keepalive:45,will:{topic:PREFIX+'h/'+S.tab,payload:'',retain:true},
+  var mq=MiniMqtt(BROKER,{clientId:'gs_'+(ID.pid||'anon').slice(0,8)+'_'+rid(6),keepalive:45,will:{topic:PREFIX+'h/'+S.tab,payload:'',retain:true},
     onConnect:function(){if(S.mq!==mq)return;S.retry=0;setConn('online');mq.subscribe(PREFIX+'#');publishHere();
-      setTimeout(function(){if(S.mq!==mq)return;S.synced=true;S.dirty=true;publishMine();readyRealm();},1600);},
-    onMessage:onMsg,
-    onClose:function(){if(S.mq!==mq)return;S.synced=false;setConn('offline');scheduleRetry();}});
+      setTimeout(function(){if(S.mq!==mq)return;S.synced=true;S.dirty=true;publishMine();readyRealm();setTimeout(function(){S.totalPrimed=true;},2500);},1800);},
+    onMessage:onMsg,onClose:function(){if(S.mq!==mq)return;S.synced=false;setConn('offline');scheduleRetry();}});
   S.mq=mq;
 }
 function scheduleRetry(){clearTimeout(S.retryT);var d=Math.min(30000,1500*Math.pow(2,S.retry++));S.retryT=setTimeout(connect,d);}
+function heal(topic,env){setTimeout(function(){if(S.mq&&S.mq.connected())S.mq.publish(topic,env,true);},800+Math.random()*2200);}
+var PIDRE=/^[a-z0-9]{12}$/;
 function onMsg(topic,payload,retained){
-  if(topic.indexOf(PREFIX)!==0||payload.length>12000)return;
+  if(topic.indexOf(PREFIX)!==0||payload.length>60000||!HAS_CRYPTO)return;
   var parts=topic.slice(PREFIX.length).split('/'),kind=parts[0],id=parts[1]||'';
-  if(kind==='p'&&/^[a-z0-9]{6,16}$/.test(id)){
-    if(!payload){S.people.delete(id);}
-    else{var d=parseJSON(payload);if(!d)return;if(S.people.size>300&&!S.people.has(id))return;
-      if(id===S.pid)mergeMine(d);
-      S.people.set(id,cleanPerson(d));}
-    rebuildSticks();rebuildLanterns();mark('merit','wishes','ledger','actions','offer','rank','present');
+  if(kind==='p'&&PIDRE.test(id)){
+    if(!payload){var c=S.docs.get(id);if(c)heal(topic,c.env);return;}
+    openEnv(payload).then(function(o){if(!o||o.pid!==id)return;if(acceptDoc(o,false)){rebuildSticks();rebuildLanterns();mark('merit','wishes','ledger','actions','offer','rank','present');}});
   }else if(kind==='h'&&/^[a-z0-9]{6,16}$/.test(id)){
-    if(!payload)S.here.delete(id);
-    else{var h=parseJSON(payload);if(!h)return;
-      var hp=/^[a-z0-9]{6,16}$/.test(h.p||'')?h.p:'',isNew=!S.here.has(id);
-      S.here.set(id,{p:hp,n:txt(h.n,12)||'香客',act:ACT_TEXT[h.act]?h.act:'idle',at:tstamp(h.at),seen:Date.now()});
-      if(isNew&&!retained&&hp&&hp!==S.pid&&throttled('join'+hp,60000))toastWho(txt(h.n,12)||'香客','进殿了');}
-    mark('present');
+    if(!payload){S.here.delete(id);mark('present');return;}
+    openEnv(payload).then(function(o){if(!o||o.d.tab!==id)return;var isNew=!S.here.has(id);
+      S.here.set(id,{p:o.pid,n:txt(o.d.n,12)||'香客',act:ACT_TEXT[o.d.act]?o.d.act:'idle',at:tstamp(o.d.at)});
+      if(isNew&&!retained&&o.pid!==ID.pid&&throttled('join'+o.pid,60000))toastWho(txt(o.d.n,12)||'香客','进殿了');mark('present');});
   }else if(kind==='e'&&!parts[1]){
-    if(retained)return;var ev=parseJSON(payload);if(!ev||ev.p===S.pid)return;onEvent(ev);
+    if(retained||!payload)return;openEnv(payload).then(function(o){if(!o||o.pid===ID.pid)return;onEvent(o.d,o.pid);});
   }else if(kind==='s'&&!parts[1]){
-    S.status=payload?cleanStatus(parseJSON(payload)):null;mark('status');
+    if(!payload){if(S.statusEnv)heal(topic,S.statusEnv);return;}
+    openEnv(payload).then(function(o){if(!o)return;var st=cleanStatus(o.d);if(S.status&&st.at<=S.status.at)return;S.status=st;S.statusEnv=payload;mark('status');});
+  }else if(kind==='f'&&PIDRE.test(id)){
+    if(!payload){var pe=S.proofs.get(id);if(pe)heal(topic,pe);return;}
+    checkProof(id,payload);
   }
 }
-function onEvent(ev){
-  var name=txt(ev.n,12)||'香客',k=ev.k,p=/^[a-z0-9]{6,16}$/.test(ev.p||'')?ev.p:'';
-  if(k==='bow'){ripple();if(throttled('bow'+p,2500))toastWho(name,'叩首');
-    var now=Date.now();S.otherBows.push({p:p,n:name,at:now});S.otherBows=S.otherBows.slice(-10);
-    if(now-S.myLastBow<3000)grantTongxin(name);}
+function onEvent(ev,pid){
+  var name=txt(ev.n,12)||'香客',k=ev.k,fr=S.frauds.has(pid);
+  if(fr&&k!=='cheat')return;
+  if(k==='bow'){ripple();if(throttled('bow'+pid,2500))toastWho(name,'叩首');var now=Date.now();S.otherBows.push({p:pid,n:name,at:now});S.otherBows=S.otherBows.slice(-10);if(now-S.myLastBow<3000)grantTongxin(name);}
   else if(k==='muyu'){var c=Math.min(4,cnt(ev.c)||1);for(var i=0;i<c;i++)setTimeout(function(){floater(248+(Math.random()-.5)*44,334,'+1','other');},i*120);}
   else if(k==='incense')toastWho(name,'上了三炷香');
   else if(k==='bow3'){ripple();toastWho(name,'行三叩首礼');}
   else if(k==='muyu108')toastWho(name,'敲满木鱼 '+num(ev.c)+' 下');
   else if(k==='sign'){var s=SIGNS[Number.isInteger(ev.no)?ev.no:-1];toastWho(name,s?('求得'+s.n+' · '+lvlName(s)):'求了一签');}
   else if(k==='wish'){var t=txt(ev.t,30);toastWho(name,t?('挂上许愿牌「'+t+'」'):'挂上一块许愿牌');}
-  else if(k==='vow'){toastWho(name,'前来还愿');burstPetals(80);}
+  else if(k==='vow'){toastWho(name,'前来还愿');burstPetals(80);fireworksShow(4);}
   else if(k==='status')toastWho(name,'更新了审核进度');
-  else if(k==='bell'){ringBell();bigBell();if(throttled('bell'+p,4000))toastWho(name,'撞响了大钟');}
-  else if(k==='lamp'){var lt=txt(ev.t,16);if(p&&tstamp(ev.at))addLantern(p+':'+tstamp(ev.at),name,lt,Date.now());toastWho(name,lt?('放了一盏天灯「'+lt+'」'):'放了一盏天灯');}
-  else if(k==='offer'){toastWho(name,'供上一份'+(OFFERS[ev.o]||'供品'));}
+  else if(k==='bell'){ringBell();bigBell();if(throttled('bell'+pid,4000))toastWho(name,'撞响了大钟');}
+  else if(k==='lamp'){var lt=txt(ev.t,16),at=tstamp(ev.at);if(at)addLantern(pid+':'+at,name,lt,Date.now());toastWho(name,lt?('放了一盏天灯「'+lt+'」'):'放了一盏天灯');}
+  else if(k==='offer')toastWho(name,'供上一份'+(OFFERS[ev.o]||'供品'));
   else if(k==='dm'){var dt=txt(ev.t,20);if(dt)showDm(name,dt,false);}
-  else if(k==='rise'){var r=REALMS[Number.isInteger(ev.r)?ev.r:-1];if(r){toastWho(name,'突破至「'+r.n+'」！');burstPetals(36);}}
-  else if(k==='cheat'){var why=txt(ev.t,30);toastWho(name,'用连点器走火入魔'+(why?'（'+why+'）':'')+'，功德 -'+num(ev.c));restart($('#scene'),'cursed');}
+  else if(k==='rise'){var r=Number.isInteger(ev.r)?ev.r:-1;if(REALMS[r]){playTribulation(name,r);toastWho(name,'渡劫成功，突破至「'+REALMS[r].n+'」！');}}
+  else if(k==='sword'){launchSword();if(throttled('sword'+pid,5000))toastWho(name,'御剑绕殿一周');}
+  else if(k==='fw'){fireworksShow(6);if(throttled('fw'+pid,5000))toastWho(name,'放了一场烟花');}
+  else if(k==='cheat'){var why=txt(ev.t,30);strike();restart($('#scene'),'cursed');showBanner(name+' 用连点器被抓',ev.x?'逐出山门':'天雷劈下',true);
+    toastWho(name,'用连点器被抓（'+(why||'连点器')+'），天雷劈下'+(ev.x?'，逐出山门！':'，功德 -'+num(ev.c)),true);}
 }
 
-/* ---------- actions ---------- */
-function setAct(act){
-  S.myAct={act:act,at:Date.now()};
-  if(throttled('here',act==='muyu'?900:250))publishHere();
-  clearTimeout(setAct.t);if(act!=='idle')setAct.t=setTimeout(function(){setAct('idle');},5000);
-  mark('present');
-}
-function readyRealm(){if(S.realmReady){S.lastRealm=Math.max(S.lastRealm,realmOf(meritOf(S.mine)));return;}S.lastRealm=realmOf(meritOf(S.mine));S.realmReady=true;}
-function checkRise(){
-  if(!S.realmReady)return;var r=realmOf(meritOf(S.mine));
-  if(r>S.lastRealm){S.lastRealm=r;logAndEmit('rise',{r:r});chime();burstPetals(70);floater(400,210,'突破！'+REALMS[r].n,'big');hint('恭喜突破至「'+REALMS[r].n+'」！全殿都收到了喜报。');}
-}
-function afterMerit(delay){queueSave(delay);checkRise();mark('merit','rank','actions');}
-function doIncense(){
-  var now=Date.now(),left=INCENSE_CD-(now-lastRitual());
-  if(left>0){hint('香火正旺，'+Math.ceil(left/1000)+' 秒后可以再上。');return;}
-  S.mine.rituals=S.mine.rituals.filter(function(t){return now-t<BURN_MS;}).concat([now]).slice(-RITUAL_KEEP);
-  S.mine.incense++;whoosh();setAct('incense');rebuildSticks();floater(400,190,'+3 功德');
-  hint('香已点燃。请到蒲团前叩首三次。');logAndEmit('incense');afterMerit(250);
-}
-function doBow(){
-  if(S.bowLock)return;S.bowLock=true;setTimeout(function(){S.bowLock=false;},REDUCED?300:950);
-  var now=Date.now();if(now-S.bowAt>20000)S.bowStreak=0;S.bowAt=now;S.bowStreak++;S.myLastBow=now;
-  S.mine.bows++;bell();setAct('bow');emitEv('bow');
-  restart($('#stageInner'),'bowing');restart($('#cushionBody'),'press');ripple();floater(400,512,'+1 功德');
-  var partner=null;S.otherBows.forEach(function(b){if(now-b.at<3000&&b.p!==S.pid)partner=b;});
-  if(partner)grantTongxin(partner.n);
-  var n=S.bowStreak;
-  if(n>=3){hint('三叩首 · 礼成');S.bowStreak=0;S.bowDoneAt=now;logAndEmit('bow3');setTimeout(function(){if(Date.now()-S.bowDoneAt>=1300)hint('礼成。可以撞钟、放天灯，或者求一签。');},1500);}
-  else hint(n===1?'一叩首':'二叩首');
-  afterMerit();
-}
-function grantTongxin(name){
-  var now=Date.now();if(now-S.lastBonusAt<3000)return;S.lastBonusAt=now;
-  S.mine.bonus+=5;logAndEmit('tongxin',{t:name});
-  ring(400,556,96,28,true);setTimeout(function(){ring(400,556,96,28,true);},220);floater(400,470,'同心叩首 +5','big');
-  toast('同心叩首！与 '+name+' 同时下拜，功德 +5');afterMerit();
-}
-var muyuTimer=0,TAPS=[];
-/* 连点器检测：返回判定理由，没问题返回 null。只看亲手敲的木鱼。 */
+/* ================= anti-clicker (strict) ================= */
+var TAPS=[];
 function antiCheat(e){
   var now=performance.now(),i,n;
-  TAPS.push({t:now,x:e&&typeof e.clientX==='number'?e.clientX:null,y:e&&typeof e.clientY==='number'?e.clientY:null,
-    touch:!!(e&&e.pointerType==='touch'),trusted:!(e&&e.isTrusted===false)});
+  if(document.hidden)return '页面在后台还在敲';
+  TAPS.push({t:now,x:e&&typeof e.clientX==='number'?e.clientX:null,y:e&&typeof e.clientY==='number'?e.clientY:null,touch:!!(e&&e.pointerType==='touch'),trusted:!(e&&e.isTrusted===false)});
   if(TAPS.length>120)TAPS.shift();
   if(!S.streakStart||now-S.lastTapPerf>2000){S.streakStart=now;S.streakTaps=0;}
   S.lastTapPerf=now;S.streakTaps++;n=TAPS.length;
   var untrusted=0;for(i=0;i<n;i++)if(!TAPS[i].trusted&&now-TAPS[i].t<10000)untrusted++;
-  if(untrusted>=3)return '脚本代点';
+  if(untrusted>=2)return '脚本代点';
   var in2=0;for(i=0;i<n;i++)if(now-TAPS[i].t<2000)in2++;
-  if(in2>=32)return '手速超凡，2 秒敲了 '+in2+' 下';
-  if(n>=41){var iv=[],sum=0;for(i=n-40;i<n;i++){var d=TAPS[i].t-TAPS[i-1].t;iv.push(d);sum+=d;}
-    var mean=sum/40;if(mean<300){var v=0;iv.forEach(function(x){v+=(x-mean)*(x-mean);});if(Math.sqrt(v/40)/mean<.025)return '节奏整齐得不像人';}}
-  if(n>=40){var l=TAPS.slice(-40),same=l.every(function(r){return r.touch&&r.x!==null&&r.x===l[0].x&&r.y===l[0].y;});
-    if(same&&(l[39].t-l[0].t)/39<350)return '触屏落点纹丝不动';}
-  var dur=now-S.streakStart;if(dur>8*60000&&S.streakTaps/(dur/1000)>5)return '连续八分钟不停手';
+  if(in2>=28)return '手速超凡，2 秒敲了 '+in2+' 下';
+  if(n>=31){var iv=[],sum=0;for(i=n-30;i<n;i++){var d=TAPS[i].t-TAPS[i-1].t;iv.push(d);sum+=d;}var mean=sum/30;
+    if(mean<350){var v=0;iv.forEach(function(x){v+=(x-mean)*(x-mean);});if(Math.sqrt(v/30)/mean<.04)return '节奏整齐得不像人';}}
+  if(n>=30){var l=TAPS.slice(-30),same=l.every(function(r){return r.touch&&r.x!==null&&r.x===l[0].x&&r.y===l[0].y;});if(same&&(l[29].t-l[0].t)/29<400)return '触屏落点纹丝不动';}
+  var dur=now-S.streakStart;if(dur>5*60000&&S.streakTaps/(dur/1000)>4)return '连续五分钟不停手';
   return null;
 }
-function curseFx(){restart($('#scene'),'cursed');restart($('#scene'),'shake');var a=ac();if(a)partials(a,73,[[1,.3,3.2],[1.06,.26,3],[2.13,.1,2.2],[2.9,.05,1.4]]);}
 function punish(why){
-  var now=Date.now(),lv=Math.min(S.mine.cheats,2),fine=[108,324,999][lv],ban=[60,180,600][lv],voided=Math.max(0,S.streakTaps-1);
-  S.mine.cheats++;S.mine.penalty+=fine+voided;S.mine.banUntil=now+ban*1000;
-  TAPS=[];S.streakStart=0;S.streakTaps=0;S.combo=0;
-  if(S.auto)setAuto(false);
-  S.lastRealm=realmOf(meritOf(S.mine));
-  logAndEmit('cheat',{c:fine+voided,t:why});curseFx();
-  $('#penReason').textContent='佛祖看出来了：'+why+'。';
+  var now=Date.now();S.mine.cheats++;var second=S.mine.cheats>=2,tm=todayMerit(),fine=tm+999;
+  if(second){S.mine.expelled=true;var eod=new Date();eod.setHours(23,59,59,999);S.mine.banUntil=eod.getTime();}
+  else{S.mine.penalty+=fine;S.mine.banUntil=now+10*60000;}
+  TAPS=[];S.streakStart=0;S.streakTaps=0;S.combo=0;if(S.auto)setAuto(false);
+  S.lastRealm=realmOf(myMerit());
+  logAndEmit('cheat',{c:second?-1:fine,t:why,x:second?1:0});
+  strike();restart($('#scene'),'cursed');showBanner('天道示警',second?'逐出山门':'天雷劈下',true);
+  $('#penReason').textContent='佛祖看出来了：'+why+'。全殿的人都看到了这道天雷。';
   var ul=$('#penList');ul.textContent='';
-  [['本轮连击作废',voided+' 下'],['另罚功德',String(fine)],['禅定罚坐',(ban>=60?ban/60+' 分钟':ban+' 秒')+'，期间木鱼不计功德']].forEach(function(p){var li=document.createElement('li');li.textContent=p[0]+'：'+p[1];ul.appendChild(li);});
-  $('#penNote').textContent='这是你第 '+S.mine.cheats+' 次走火入魔，'+(S.mine.cheats<3?'再犯罚得更重。':'已经是最重的一档。')+'全殿的人都看到了。';
-  openOverlay('#penaltyOverlay');
-  queueSave(200);mark('merit','rank','actions','present');
+  (second?[['二度作弊','逐出山门，本季功德全部作废'],['禅定罚坐','到今天结束']]:[['今日功德作废',num(tm)],['另罚功德','999'],['禅定罚坐','10 分钟，期间木鱼不计功德']]).forEach(function(p){var li=document.createElement('li');li.textContent=p[0]+'：'+p[1];ul.appendChild(li);});
+  $('#penNote').textContent=second?'你已被逐出山门，功德榜上会一直挂着记录。':'这是第一次。再被抓到一次，直接逐出山门。';
+  openOverlay('#penaltyOverlay');queueSave(200);mark('merit','rank','actions','present');
 }
-function doMuyu(auto,e){
-  var now=Date.now();
+
+/* ================= actions ================= */
+function blocked(){if(S.passive){hint('这座殿在另一个标签页开着，这里只能看。');return true;}if(!ID.ok){hint('你的浏览器不支持数字签名，只能观礼。');return true;}if(S.mine.expelled||S.frauds.has(ID.pid)){hint('你已被逐出山门，本季不能再积功德。');return true;}return false;}
+function setAct(act){S.myAct={act:act,at:Date.now()};if(throttled('here',act==='muyu'?900:250))publishHere();clearTimeout(setAct.t);if(act!=='idle')setAct.t=setTimeout(function(){setAct('idle');},5000);mark('present');}
+function readyRealm(){var r=realmOf(myMerit());if(S.realmReady){S.lastRealm=Math.max(S.lastRealm,r);return;}S.lastRealm=r;S.realmReady=true;}
+function checkRise(){if(!S.realmReady)return;var r=realmOf(myMerit());if(r>S.lastRealm){S.lastRealm=r;logAndEmit('rise',{r:r});playTribulation(S.name||'你',r);hint('雷劫降临……渡劫成功，突破至「'+REALMS[r].n+'」！全殿都看见了。');}}
+function afterMerit(delay){queueSave(delay);checkRise();mark('merit','rank','actions');}
+function gain(f,n,x,y,label){var got=earn(f,n);if(got<n&&got===0){floater(x,y,'今日'+FNAME[f]+'已满','other');hint('今天的'+FNAME[f]+'功德已满 '+CAPS[f]+' 次，明天再来。天道有度，贪多无益。');return 0;}if(label)floater(x,y,label);return got;}
+function doIncense(){if(blocked())return;var now=Date.now(),left=INCENSE_CD-(now-lastRitual());if(left>0){hint('香火正旺，'+Math.ceil(left/1000)+' 秒后可以再上。');return;}
+  S.mine.rituals=S.mine.rituals.filter(function(t){return now-t<BURN_MS;}).concat([now]).slice(-RITUAL_KEEP);gain('in',1,400,190,'+3 功德');
+  whoosh();setAct('incense');rebuildSticks();hint('香已点燃。请到蒲团前叩首三次。');logAndEmit('incense');afterMerit(250);}
+function lastRitual(){var rs=S.mine.rituals;return rs.length?Math.max.apply(null,rs):0;}
+function doBow(){if(blocked()||S.bowLock)return;S.bowLock=true;setTimeout(function(){S.bowLock=false;},REDUCED?300:950);
+  var now=Date.now();if(now-S.bowAt>20000)S.bowStreak=0;S.bowAt=now;S.bowStreak++;S.myLastBow=now;
+  gain('bo',1,400,512,'+1 功德');bell();setAct('bow');emitEv('bow');restart($('#stageInner'),'bowing');restart($('#cushionBody'),'press');ripple();
+  var partner=null;S.otherBows.forEach(function(b){if(now-b.at<3000&&b.p!==ID.pid)partner=b;});if(partner)grantTongxin(partner.n);
+  var n=S.bowStreak;if(n>=3){hint('三叩首 · 礼成');S.bowStreak=0;S.bowDoneAt=now;logAndEmit('bow3');setTimeout(function(){if(Date.now()-S.bowDoneAt>=1300)hint('礼成。可以撞钟、御剑、放烟花，或者求一签。');},1500);}else hint(n===1?'一叩首':'二叩首');afterMerit();}
+function grantTongxin(name){if(blocked())return;var now=Date.now();if(now-S.lastBonusAt<3000)return;S.lastBonusAt=now;var got=earn('bn',5);if(!got)return;logAndEmit('tongxin',{t:name});
+  ring(400,556,96,28,true);setTimeout(function(){ring(400,556,96,28,true);},220);floater(400,470,'同心叩首 +'+got,'big');sparkBurst(400,540,40,'#ffe29a');toast('同心叩首！与 '+name+' 同时下拜，功德 +'+got);afterMerit();}
+var muyuTimer=0,COMBO_WORDS={10:'十连！',20:'二十连！',30:'三十连 · 佛光护体',50:'五十连！！',100:'百连 · 功德无量！！！'};
+function doMuyu(auto,e){var now=Date.now();
   if(auto){tok(true);restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');floater(248+(Math.random()-.5)*34,326,'咚','other');return;}
-  if(S.mine.banUntil>now){tok(true);restart($('#muyuBody'),'knock');floater(248,326,'禅定中 · 不计功德','other');
-    hint('走火入魔，禅定罚坐中：还剩 '+Math.ceil((S.mine.banUntil-now)/1000)+' 秒，木鱼暂不计功德。');return;}
+  if(blocked())return;
+  if(S.mine.banUntil>now){tok(true);restart($('#muyuBody'),'knock');floater(248,326,'禅定中 · 不计功德','bad');hint('禅定罚坐中：还剩 '+Math.ceil((S.mine.banUntil-now)/1000)+' 秒，木鱼暂不计功德。');return;}
   var why=antiCheat(e);if(why){punish(why);return;}
   S.combo=now-S.lastTap<1200?S.combo+1:1;S.lastTap=now;
-  S.mine.muyu++;tok(false);setAct('muyu');
-  restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');
+  var got=earn('mu',1);tok(false);setAct('muyu');restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');
+  if(!got){floater(248,326,'今日木鱼已满','other');hint('今天的木鱼功德已满 '+CAPS.mu+' 下，明天再来。');return;}
   floater(248+(Math.random()-.5)*34,326,S.combo>=5?'功德 +1 · 连击 ×'+S.combo:'功德 +1');
+  if(COMBO_WORDS[S.combo]){floater(248,292,COMBO_WORDS[S.combo],'big');ring(248,365,60,36,true);sparkBurst(248,360,S.combo>=30?60:32,'#ffd36b');}
+  if(S.combo>=30)S.auraUntil=performance.now()+1300;
   S.muyuPending++;if(!muyuTimer)muyuTimer=setTimeout(function(){muyuTimer=0;var c=S.muyuPending;S.muyuPending=0;if(c)emitEv('muyu',{c:c});},600);
-  if(S.mine.muyu%108===0){logAndEmit('muyu108',{c:S.mine.muyu});hint('木鱼又敲满一百零八下，功德记上了。');}
-  afterMerit(1200);
-}
-function setAuto(on){S.auto=on;clearInterval(S.autoT);var b=$('#autoBtn');b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'自动敲木鱼：开':'自动敲木鱼';
-  if(on&&!document.hidden)S.autoT=setInterval(function(){doMuyu(true);},1000);if(on)hint('木鱼自己敲起来了，每秒一下。自动敲只图个响，不计功德。');}
+  var tot=myTot().mu;if(tot%108===0){logAndEmit('muyu108',{c:tot});hint('木鱼又敲满一百零八下，功德记上了。');}
+  afterMerit(1200);}
+function setAuto(on){S.auto=on;clearInterval(S.autoT);var b=$('#autoBtn');b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'自动敲木鱼：开':'自动敲木鱼';if(on&&!document.hidden)S.autoT=setInterval(function(){doMuyu(true);},1000);if(on)hint('木鱼自己敲起来了，每秒一下。自动敲只图个响，不计功德。');}
 function ringBell(){restart($('#bellBody'),'swing');ring(190,62,34,34,true);restart($('#scene'),'shake');}
-function doBell(){
-  var now=Date.now(),left=BELL_CD-(now-S.mine.lastBellAt);
-  if(left>0){hint('钟声还在回荡，'+Math.ceil(left/1000)+' 秒后再撞。');return;}
-  S.mine.lastBellAt=now;S.mine.bells++;bigBell();ringBell();setAct('bell');emitEv('bell');floater(190,110,'+2 功德');
-  hint('咚——钟声传遍全殿。');afterMerit();
-}
-function openLamp(){var left=LAMP_CD-(Date.now()-lastLamp());if(left>0){hint('上一盏天灯刚升空，'+Math.ceil(left/1000)+' 秒后再放。');return;}$('#lampText').value='';openOverlay('#lampOverlay');}
-function submitLamp(text){
-  text=txt(String(text||'').replace(/\s+/g,' '),16);if(!text){$('#lampText').focus();return;}
-  var now=Date.now();S.mine.lampList=S.mine.lampList.concat([{t:text,at:now}]).slice(-LAMP_KEEP);S.mine.lamps++;
-  addLantern(S.pid+':'+now,S.name||'你',text,now);$('#scene').dataset.lamps=LANTERNS.size;
-  whoosh();chime();setAct('lamp');logAndEmit('lamp',{t:text,at:now});closeOverlay();floater(400,260,'+9 功德');
-  hint('天灯升空了，会在大殿上空飘半个时辰。');afterMerit(200);
-}
-function openOffer(){var left=OFFER_CD-(Date.now()-(S.mine.offer?S.mine.offer.at:0));if(left>0){hint('供品刚摆上，'+Math.ceil(left/1000)+' 秒后可以换。');return;}openOverlay('#offerOverlay');}
-function placeOffer(k){
-  if(!OFFERS[k])return;var now=Date.now();S.mine.offer={k:k,at:now};S.mine.offers++;
-  bell();setAct('offer');logAndEmit('offer',{o:k});closeOverlay();renderOfferings();floater(k==='tea'?600:200,520,'+5 功德');
-  hint('供上一份'+OFFERS[k]+'，摆在供桌上三个时辰。');afterMerit(200);mark('offer');
-}
-function sendDm(text){
-  text=txt(String(text||'').replace(/\s+/g,' '),20);if(!text)return;
-  var now=Date.now();if(now-S.lastDm<DM_CD){hint('说慢一点，'+Math.ceil((DM_CD-(now-S.lastDm))/1000)+' 秒后再发。');return;}
-  S.lastDm=now;showDm(S.name||'你',text,true);emitEv('dm',{t:text});$('#dmText').value='';
-}
-function doSign(){
-  var now=Date.now();
-  if(now-S.mine.lastSignAt<SIGN_CD&&S.mine.lastSignNo>=0){openSign(S.mine.lastSignNo,true);return;}
-  rattle();setAct('sign');restart($('#signbox'),'shake');
-  var idx=Math.floor(Math.random()*SIGNS.length);S.mine.lastSignAt=now;S.mine.lastSignNo=idx;S.mine.signs++;
-  setTimeout(function(){restart($('#popStick'),'pop');},REDUCED?0:700);
-  setTimeout(function(){openSign(idx,false);logAndEmit('sign',{no:idx});queueSave(300);mark('merit');},REDUCED?150:1250);
-}
-function openSign(i,again){
-  var s=SIGNS[i];if(!s)return;
-  $('#signNo').textContent=s.n;$('#signLvl').textContent=lvlName(s);
+function doBell(){if(blocked())return;var now=Date.now(),left=BELL_CD-(now-S.mine.lastBellAt);if(left>0){hint('钟声还在回荡，'+Math.ceil(left/1000)+' 秒后再撞。');return;}
+  S.mine.lastBellAt=now;gain('be',1,190,110,'+2 功德');bigBell();ringBell();setAct('bell');emitEv('bell');hint('咚——钟声传遍全殿。');afterMerit();}
+function lastLamp(){var l=S.mine.lampList;return l.length?l[l.length-1].at:0;}
+function openLamp(){if(blocked())return;var left=LAMP_CD-(Date.now()-lastLamp());if(left>0){hint('上一盏天灯刚升空，'+Math.ceil(left/1000)+' 秒后再放。');return;}$('#lampText').value='';openOverlay('#lampOverlay');}
+function submitLamp(text){text=txt(String(text||'').replace(/\s+/g,' '),16);if(!text){$('#lampText').focus();return;}
+  var now=Date.now();S.mine.lampList=S.mine.lampList.concat([{t:text,at:now}]).slice(-LAMP_KEEP);gain('la',1,400,260,'+9 功德');
+  addLantern(ID.pid+':'+now,S.name||'你',text,now);$('#scene').dataset.lamps=LANTERNS.size;
+  whoosh();chime();setAct('lamp');logAndEmit('lamp',{t:text,at:now});closeOverlay();hint('天灯升空了，会在大殿上空飘半个时辰。');afterMerit(200);}
+function openOffer(){if(blocked())return;var left=OFFER_CD-(Date.now()-(S.mine.offer?S.mine.offer.at:0));if(left>0){hint('供品刚摆上，'+Math.ceil(left/1000)+' 秒后可以换。');return;}openOverlay('#offerOverlay');}
+function placeOffer(k){if(!OFFERS[k])return;var now=Date.now();S.mine.offer={k:k,at:now};gain('of',1,200,520,'+5 功德');
+  bell();setAct('offer');logAndEmit('offer',{o:k});closeOverlay();renderOfferings();hint('供上一份'+OFFERS[k]+'，摆在供桌上三个时辰。');afterMerit(200);mark('offer');}
+function doSword(){if(blocked())return;var now=Date.now(),left=SWORD_CD-(now-S.mine.lastSwordAt);if(left>0){hint('飞剑还在回鞘，'+Math.ceil(left/1000)+' 秒后再御。');return;}
+  S.mine.lastSwordAt=now;gain('sw',1,400,150,'+3 功德');launchSword();setAct('sword');logAndEmit('sword');hint('玄天剑出鞘——绕殿一周，钟鸣为号。');afterMerit(300);}
+function doFw(){if(blocked())return;var now=Date.now(),left=FW_CD-(now-S.mine.lastFwAt);if(left>0){hint('烟花还没散尽，'+Math.ceil(left/1000)+' 秒后再放。');return;}
+  S.mine.lastFwAt=now;gain('fw',1,400,120,'+2 功德');fireworksShow(6);setAct('fw');logAndEmit('fw');hint('烟花升空，全殿同赏。');afterMerit(300);}
+function sendDm(text){text=txt(String(text||'').replace(/\s+/g,' '),20);if(!text||blocked())return;var now=Date.now();if(now-S.lastDm<DM_CD){hint('说慢一点，'+Math.ceil((DM_CD-(now-S.lastDm))/1000)+' 秒后再发。');return;}
+  S.lastDm=now;showDm(S.name||'你',text,true);emitEv('dm',{t:text});$('#dmText').value='';}
+function doSign(){if(blocked())return;var now=Date.now();if(now-S.mine.lastSignAt<SIGN_CD&&S.mine.lastSignNo>=0){openSign(S.mine.lastSignNo,true);return;}
+  rattle();setAct('sign');restart($('#signbox'),'shake');var idx=Math.floor(Math.random()*SIGNS.length);S.mine.lastSignAt=now;S.mine.lastSignNo=idx;
+  setTimeout(function(){restart($('#popStick'),'pop');},REDUCED?0:700);setTimeout(function(){openSign(idx,false);logAndEmit('sign',{no:idx});queueSave(300);},REDUCED?150:1250);}
+function openSign(i,again){var s=SIGNS[i];if(!s)return;$('#signNo').textContent=s.n;$('#signLvl').textContent=lvlName(s);
   var poem=$('#signPoem');poem.textContent='';s.poem.forEach(function(l){var sp=document.createElement('span');sp.textContent=l;poem.appendChild(sp);});
-  $('#signJie').textContent=s.jie;
-  $('#signNote').textContent=again?('一事一签。这是你刚才求得的签，'+Math.max(1,Math.ceil((SIGN_CD-(Date.now()-S.mine.lastSignAt))/1000))+' 秒后可以再求。'):'签筒里共 '+SIGNS.length+' 支签。';
-  openOverlay('#signOverlay');
-}
-function openWish(prefill){$('#wishText').value=typeof prefill==='string'?prefill:'';openOverlay('#wishOverlay');}
-function submitWish(text){
-  text=txt(String(text||'').replace(/\s+/g,' '),30);if(!text){$('#wishText').focus();return;}
-  var now=Date.now(),full=S.mine.wishes.length>=WISH_KEEP;
-  S.mine.wishes=[{t:text,at:now}].concat(S.mine.wishes).slice(0,WISH_KEEP);
-  setAct('wish');logAndEmit('wish',{t:text});queueSave(200);closeOverlay();
-  hint(full?'许愿牌挂上了。每人最多 5 块，最早那块已经取下。':'许愿牌挂上了。');mark('wishes');
-}
+  $('#signJie').textContent=s.jie;$('#signNote').textContent=again?('一事一签。这是你刚才求得的签，'+Math.max(1,Math.ceil((SIGN_CD-(Date.now()-S.mine.lastSignAt))/1000))+' 秒后可以再求。'):'签筒里共 '+SIGNS.length+' 支签。';openOverlay('#signOverlay');}
+function openWish(prefill){if(blocked())return;$('#wishText').value=typeof prefill==='string'?prefill:'';openOverlay('#wishOverlay');}
+function submitWish(text){text=txt(String(text||'').replace(/\s+/g,' '),30);if(!text){$('#wishText').focus();return;}
+  var now=Date.now(),full=S.mine.wishes.length>=WISH_KEEP;S.mine.wishes=[{t:text,at:now}].concat(S.mine.wishes).slice(0,WISH_KEEP);
+  setAct('wish');logAndEmit('wish',{t:text});queueSave(200);closeOverlay();hint(full?'许愿牌挂上了。每人最多 5 块，最早那块已经取下。':'许愿牌挂上了。');mark('wishes');}
 function removeWish(at){S.removed.add(at);S.mine.wishes=S.mine.wishes.filter(function(w){return w.at!==at;});queueSave(200);mark('wishes');}
 function curStatus(){return S.status||DEFAULT_STATUS;}
 function isPassed(){return curStatus().manual==='passed';}
-function doVow(){
-  if(S.mine.vowed){hint('你已经还过愿了，再撒一次花。');burstPetals(40);return;}
-  S.mine.vowed=true;bell();burstPetals(110);setAct('vow');logAndEmit('vow');hint('还愿礼成，功德 +99。');afterMerit(200);
-}
+function doVow(){if(blocked())return;if(S.mine.vowed){hint('你已经还过愿了，再放一场烟花。');fireworksShow(4);return;}
+  S.mine.vowed=true;bell();burstPetals(110);fireworksShow(8);setAct('vow');logAndEmit('vow');hint('还愿礼成，功德 +99。');afterMerit(200);}
 
-/* ---------- fortune & certificate ---------- */
-function fortune(){
-  var d=new Date(),day=ymdOf(d),rnd=mulberry(h32(S.pid+'|'+day));
-  var roll=rnd()*100,acc=0,level=LUCK[LUCK.length-1][0];for(var i=0;i<LUCK.length;i++){acc+=LUCK[i][1];if(roll<acc){level=LUCK[i][0];break;}}
+/* ================= fortune & certificate ================= */
+function fortune(){var d=new Date(),day=ymdOf(d),rnd=mulberry(h32((ID.pid||'x')+'|'+day)),roll=rnd()*100,acc=0,level=LUCK[LUCK.length-1][0];
+  for(var i=0;i<LUCK.length;i++){acc+=LUCK[i][1];if(roll<acc){level=LUCK[i][0];break;}}
   function pick(pool,n,avoid){var out=[],guard=0;while(out.length<n&&guard++<200){var v=pool[Math.floor(rnd()*pool.length)];if(out.indexOf(v)<0&&(!avoid||avoid.indexOf(v)<0))out.push(v);}return out;}
-  var yi=pick(YI,3),ji=pick(JI,2,yi);
-  return {day:day,level:level,yi:yi,ji:ji,color:COLORS[Math.floor(rnd()*COLORS.length)],dir:DIRS[Math.floor(rnd()*DIRS.length)],hour:HOURS[Math.floor(rnd()*HOURS.length)],num:1+Math.floor(rnd()*108)};
-}
-function openFortune(){
-  var f=fortune();
-  $('#fDateLine').textContent=f.day+' · '+(S.name||'香客');$('#fLevel').textContent=f.level;
-  $('#fYi').textContent=f.yi.join('、');$('#fJi').textContent=f.ji.join('、');
-  $('#fColor').textContent=f.color;$('#fDir').textContent=f.dir;$('#fHour').textContent=f.hour;$('#fNum').textContent=f.num;
-  $('#fCopy').textContent='复制发群里';openOverlay('#fortuneOverlay');
-}
-function copyText(text,btn,okText){var done=function(){btn.textContent=okText;};try{navigator.clipboard.writeText(text).then(done,function(){btn.textContent='复制失败，请手动截图';});}catch(e){btn.textContent='复制失败，请手动截图';}}
+  var yi=pick(YI,3),ji=pick(JI,2,yi);return {day:day,level:level,yi:yi,ji:ji,color:COLORS[Math.floor(rnd()*COLORS.length)],dir:DIRS[Math.floor(rnd()*DIRS.length)],hour:HOURS[Math.floor(rnd()*HOURS.length)],num:1+Math.floor(rnd()*108)};}
+function openFortune(){var f=fortune();$('#fDateLine').textContent=f.day+' · '+(S.name||'香客');$('#fLevel').textContent=f.level;$('#fYi').textContent=f.yi.join('、');$('#fJi').textContent=f.ji.join('、');
+  $('#fColor').textContent=f.color;$('#fDir').textContent=f.dir;$('#fHour').textContent=f.hour;$('#fNum').textContent=f.num;$('#fCopy').textContent='复制发群里';openOverlay('#fortuneOverlay');}
+function copyText(text,btn,okText){try{navigator.clipboard.writeText(text).then(function(){btn.textContent=okText;},function(){btn.textContent='复制失败，请手动截图';});}catch(e){btn.textContent='复制失败，请手动截图';}}
 function copyFortune(){var f=fortune();copyText('【过审祈福殿 · 今日运势】'+(S.name||'香客')+' '+f.day+'：'+f.level+'｜宜：'+f.yi.join('、')+'｜忌：'+f.ji.join('、')+'｜幸运色：'+f.color+'｜吉方：'+f.dir+'｜吉时：'+f.hour+'｜幸运数：'+f.num,$('#fCopy'),'已复制');}
 function wrapText(g,text,x,y,maxW,lh){var line='',lines=[];Array.from(text).forEach(function(ch){if(g.measureText(line+ch).width>maxW&&line){lines.push(line);line=ch;}else line+=ch;});if(line)lines.push(line);lines.forEach(function(l,i){g.fillText(l,x,y+i*lh);});return y+lines.length*lh;}
-function drawCert(){
-  var c=document.createElement('canvas');c.width=900;c.height=1200;var g=c.getContext('2d');
-  var brush='"Ma Shan Zheng","STKaiti","KaiTi",serif',serif='"Noto Serif SC","Songti SC","SimSun",serif';
-  g.fillStyle='#efe6d2';g.fillRect(0,0,900,1200);
-  var rnd=mulberry(h32(S.pid));for(var i=0;i<2600;i++){g.fillStyle='rgba(120,90,50,'+(rnd()*.06)+')';g.fillRect(rnd()*900,rnd()*1200,1+rnd()*2,1+rnd()*2);}
+function drawCert(){var c=document.createElement('canvas');c.width=900;c.height=1200;var g=c.getContext('2d');var brush='"Ma Shan Zheng","STKaiti","KaiTi",serif',serif='"Noto Serif SC","Songti SC","SimSun",serif';
+  var out=S.mine.expelled||S.frauds.has(ID.pid);
+  g.fillStyle='#efe6d2';g.fillRect(0,0,900,1200);var rnd=mulberry(h32(ID.pid||'x'));for(var i=0;i<2600;i++){g.fillStyle='rgba(120,90,50,'+(rnd()*.06)+')';g.fillRect(rnd()*900,rnd()*1200,1+rnd()*2,1+rnd()*2);}
   var vg=g.createRadialGradient(450,600,300,450,600,780);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(90,60,30,.18)');g.fillStyle=vg;g.fillRect(0,0,900,1200);
-  g.strokeStyle='#9c2a20';g.lineWidth=8;g.strokeRect(34,34,832,1132);g.strokeStyle='#b8923f';g.lineWidth=2;g.strokeRect(52,52,796,1096);
-  [[52,52],[848,52],[52,1148],[848,1148]].forEach(function(p){g.fillStyle='#9c2a20';g.fillRect(p[0]-9,p[1]-9,18,18);});
-  g.textAlign='center';g.fillStyle='#7e2219';g.font='110px '+brush;g.fillText('功德证书',450,210);
-  g.fillStyle='#6f5f4f';g.font='32px '+serif;g.fillText('过审祈福殿 · 殿号 '+ROOM,450,268);
+  g.strokeStyle='#9c2a20';g.lineWidth=8;g.strokeRect(34,34,832,1132);g.strokeStyle='#b8923f';g.lineWidth=2;g.strokeRect(52,52,796,1096);[[52,52],[848,52],[52,1148],[848,1148]].forEach(function(p){g.fillStyle='#9c2a20';g.fillRect(p[0]-9,p[1]-9,18,18);});
+  g.textAlign='center';g.fillStyle='#7e2219';g.font='110px '+brush;g.fillText(out?'罚没通知':'功德证书',450,210);g.fillStyle='#6f5f4f';g.font='32px '+serif;g.fillText('过审祈福殿 · 殿号 '+ROOM,450,268);
   g.strokeStyle='rgba(156,42,32,.4)';g.lineWidth=1.5;g.beginPath();g.moveTo(160,300);g.lineTo(740,300);g.stroke();
-  var m=S.mine,merit=meritOf(S.mine),r=REALMS[realmOf(merit)];
-  g.textAlign='left';g.fillStyle='#2a211c';g.font='36px '+serif;
-  var y=380,body=['兹有香客「'+(S.name||'香客')+'」，',
-    '于过审祈福殿上香 '+m.incense+' 回、叩首 '+m.bows+' 次、敲木鱼 '+m.muyu+' 下、撞钟 '+m.bells+' 响、放天灯 '+m.lamps+' 盏、供奉 '+m.offers+' 回，同心叩首得功德 '+m.bonus+'。',
-    '累计功德 '+num(merit)+'，修为已至「'+r.n+'」。',
-    '特颁此证，以资褒扬。',
-    '愿《非常了不起的修仙模拟》早日过审，上架大卖！'];
-  body.forEach(function(p){y=wrapText(g,p,110,y,680,56)+14;});
-  g.textAlign='center';g.fillStyle='#9c2a20';g.font='150px '+brush;g.fillText(r.n,450,Math.min(y+170,980));
+  var t=myTot(),merit=myMerit(),r=REALMS[realmOf(merit)];g.textAlign='left';g.fillStyle='#2a211c';g.font='36px '+serif;var y=380;
+  var body=out?['香客「'+(S.name||'香客')+'」于本季作弊，被天道查实。','天雷已劈，功德尽数罚没，逐出山门。','望痛改前非，来季再修。']:
+    ['兹有香客「'+(S.name||'香客')+'」，','本季于过审祈福殿上香 '+t.in+' 回、叩首 '+t.bo+' 次、敲木鱼 '+t.mu+' 下、撞钟 '+t.be+' 响、御剑 '+t.sw+' 周、放天灯 '+t.la+' 盏、烟花 '+t.fw+' 场、供奉 '+t.of+' 回。',
+     '累计功德 '+num(merit)+'，修为已至「'+r.n+'」。','特颁此证，以资褒扬。','愿《非常了不起的修仙模拟》早日过审，上架大卖！'];
+  body.forEach(function(p){y=wrapText(g,p,110,y,680,56)+14;});g.textAlign='center';g.fillStyle='#9c2a20';g.font='150px '+brush;g.fillText(out?'罚':r.n,450,Math.min(y+170,980));
   var d=new Date();g.textAlign='right';g.fillStyle='#4a3b30';g.font='30px '+serif;g.fillText('公元 '+d.getFullYear()+' 年 '+(d.getMonth()+1)+' 月 '+d.getDate()+' 日',790,1090);
   g.save();g.translate(210,1030);g.rotate(-.08);g.fillStyle='rgba(176,40,30,.9)';g.fillRect(-78,-78,156,156);g.strokeStyle='#efe6d2';g.lineWidth=4;g.strokeRect(-68,-68,136,136);
-  g.fillStyle='#efe6d2';g.textAlign='center';g.textBaseline='middle';g.font='58px '+brush;g.fillText('过审',0,-30);g.fillText('祈福',0,34);g.restore();
-  return c.toDataURL('image/png');
-}
-function openCert(){
-  var img=$('#certImg');img.removeAttribute('src');openOverlay('#certOverlay');
+  g.fillStyle='#efe6d2';g.textAlign='center';g.textBaseline='middle';g.font='58px '+brush;g.fillText('过审',0,-30);g.fillText('祈福',0,34);g.restore();return c.toDataURL('image/png');}
+function openCert(){var img=$('#certImg');img.removeAttribute('src');openOverlay('#certOverlay');
   var ready=document.fonts&&document.fonts.load?Promise.all([document.fonts.load('110px "Ma Shan Zheng"'),document.fonts.load('36px "Noto Serif SC"')]):Promise.resolve();
-  var timeout=new Promise(function(r){setTimeout(r,2500);});
-  Promise.race([ready,timeout]).catch(function(){}).then(function(){try{var url=drawCert();img.src=url;$('#certSave').href=url;}catch(e){hint('证书生成失败，稍后再试。');}});
-}
+  Promise.race([ready,new Promise(function(r){setTimeout(r,2500);})]).catch(function(){}).then(function(){try{var url=drawCert();img.src=url;$('#certSave').href=url;}catch(e){hint('证书生成失败，稍后再试。');}});}
 
-/* ---------- overlays ---------- */
+/* ================= overlays ================= */
 var lastFocus=null;
 function openOverlay(sel){closeOverlay(true);var o=$(sel);lastFocus=document.activeElement;o.hidden=false;var f=o.querySelector('input:not([readonly]),button.btn-gold,a.btn-gold');if(f)f.focus();}
 function closeOverlay(silent){var any=false;Array.prototype.forEach.call(document.querySelectorAll('.overlay'),function(o){if(!o.hidden)any=true;o.hidden=true;});if(any&&!silent&&lastFocus&&lastFocus.focus)lastFocus.focus();}
 function inviteUrl(){var base=location.href.split('#')[0];return ROOM===ROOM_DEFAULT?base:base+'#'+ROOM;}
-function openInvite(){var url=inviteUrl();$('#inviteLink').value=url;
-  $('#inviteMsg').textContent=/^https?:/.test(url)?'把这个链接发到群里，大家用手机或电脑打开就能一起上香。':'这个页面现在是从本机文件打开的，朋友打不开这个地址。把页面放到网上后，再从这里复制链接。';
-  $('#copyBtn').textContent='复制链接';openOverlay('#inviteOverlay');}
-function copyInvite(){var url=$('#inviteLink').value;var done=function(){$('#copyBtn').textContent='已复制';};
-  try{navigator.clipboard.writeText(url).then(done,function(){selectLink();});}catch(e){selectLink();}}
-function selectLink(){var i=$('#inviteLink');i.focus();i.select();try{if(document.execCommand('copy'))$('#copyBtn').textContent='已复制';else $('#copyBtn').textContent='请长按链接复制';}catch(e){$('#copyBtn').textContent='请长按链接复制';}}
+function openInvite(){var url=inviteUrl();$('#inviteLink').value=url;$('#inviteMsg').textContent=/^https?:/.test(url)?'把这个链接发到群里，大家用手机或电脑打开就能一起上香。':'这个页面现在是从本机文件打开的，朋友打不开这个地址。';$('#copyBtn').textContent='复制链接';openOverlay('#inviteOverlay');}
+function copyInvite(){var url=$('#inviteLink').value;try{navigator.clipboard.writeText(url).then(function(){$('#copyBtn').textContent='已复制';},selectLink);}catch(e){selectLink();}}
+function selectLink(){var i=$('#inviteLink');i.focus();i.select();try{$('#copyBtn').textContent=document.execCommand('copy')?'已复制':'请长按链接复制';}catch(e){$('#copyBtn').textContent='请长按链接复制';}}
 function openName(){$('#nameInput').value=S.name||('香客'+(1000+Math.floor(Math.random()*9000)));openOverlay('#nameOverlay');}
-function submitName(){var n=txt($('#nameInput').value.replace(/\s+/g,' '),12);if(!n){$('#nameInput').focus();return;}
-  S.name=n;LS.set('gs.name',n);closeOverlay();$('#nameShow').textContent=n;publishHere();queueSave(200);mark('present','wishes','ledger','rank');hint('欢迎进殿，'+n+'。先上三炷香吧。');}
+function submitName(){var n=txt($('#nameInput').value.replace(/\s+/g,' '),12);if(!n){$('#nameInput').focus();return;}S.name=n;LS.set('gs.name',n);closeOverlay();$('#nameShow').textContent=n;publishHere();queueSave(200);mark('present','wishes','ledger','rank');hint('欢迎进殿，'+n+'。先上三炷香吧。');}
 
-/* ---------- rendering ---------- */
+/* ================= rendering ================= */
 var need={},rq=0;
 function mark(){for(var i=0;i<arguments.length;i++)need[arguments[i]]=1;if(!rq)rq=requestAnimationFrame(flushRender);}
-function flushRender(){rq=0;var n=need;need={};
-  if(n.merit)renderMerit();if(n.actions)renderActions();if(n.wishes)renderWishes();if(n.ledger)renderLedger();if(n.present||n.conn)renderPresent();if(n.status)renderStatus();if(n.offer)renderOfferings();if(n.rank)renderRank();}
+function flushRender(){rq=0;var n=need;need={};if(n.merit)renderMerit();if(n.actions)renderActions();if(n.wishes)renderWishes();if(n.ledger)renderLedger();if(n.present||n.conn)renderPresent();if(n.status)renderStatus();if(n.offer)renderOfferings();if(n.rank)renderRank();}
+var meritShown=0,meritAnim=0;
+function setMeritNum(v){var from=meritShown;if(from===v)return;cancelAnimationFrame(meritAnim);if(REDUCED||Math.abs(v-from)>60000){meritShown=v;$('#meritNum').textContent=num(v);return;}
+  var t0=performance.now();(function step(t){var k=Math.min(1,(t-t0)/700),e=1-Math.pow(1-k,3),val=Math.round(from+(v-from)*e);meritShown=val;$('#meritNum').textContent=num(val);if(k<1)meritAnim=requestAnimationFrame(step);})(t0);}
 function renderMerit(){
-  var total=0;entries().forEach(function(e){total+=meritOf(e[1]);});
-  var i=0;while(i<MILESTONES.length-1&&total>=MILESTONES[i][0])i++;
+  var total=0;entries().forEach(function(e){total+=e.merit;});
+  if(S.totalPrimed){MILESTONES.forEach(function(m){if(S.lastTotal<m[0]&&total>=m[0]&&!S.celebrated[m[0]]){S.celebrated[m[0]]=1;playMilestone(m[1]);}});}else MILESTONES.forEach(function(m){if(total>=m[0])S.celebrated[m[0]]=1;});
+  S.lastTotal=total;var i=0;while(i<MILESTONES.length-1&&total>=MILESTONES[i][0])i++;
   var next=MILESTONES[i],prev=i?MILESTONES[i-1][0]:0,pct=total>=next[0]?100:(total-prev)/(next[0]-prev)*100;
-  $('#meritNum').textContent=num(total);$('#meritBar').style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
+  setMeritNum(total);$('#meritBar').style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
   $('#meritNext').textContent=total>=MILESTONES[MILESTONES.length-1][0]?'功德无量，审核必过':('距「'+next[1]+'」还差 '+num(next[0]-total));
-  var mine=meritOf(S.mine),ri=realmOf(mine);$('#meritMine').textContent=num(mine);
-  var mr=$('#myRealm');mr.textContent='';mr.appendChild(realmChip(ri));
-  $('#stickCount').textContent=num(STICKS.length);
-  var m=S.mine;$('#myStats').textContent='上香 '+num(m.incense)+' · 叩首 '+num(m.bows)+' · 木鱼 '+num(m.muyu)+' · 撞钟 '+num(m.bells)+' · 天灯 '+num(m.lamps)+' · 供品 '+num(m.offers)+(m.bonus?' · 同心 '+num(m.bonus):'');
-}
-function renderActions(){
-  var passed=isPassed(),w=$('#actWish'),now=Date.now();
-  w.classList.toggle('primary',passed);$('#wishLbl').textContent=passed?'还愿':'许愿';
-  $('#wishSub').textContent=passed?(S.mine.vowed?'已还愿':'功德 +99'):'挂许愿牌';
+  var mine=myMerit(),ri=realmOf(mine);$('#meritMine').textContent=num(mine);var mr=$('#myRealm');mr.textContent='';mr.appendChild(S.mine.expelled||S.frauds.has(ID.pid)?badChip('逐出山门'):realmChip(ri));
+  $('#todayMerit').textContent=num(todayMerit());$('#todayCap').textContent=num(DAY_CAP);
+  var t=myTot();$('#myStats').textContent='本季：上香 '+t.in+' · 叩首 '+t.bo+' · 木鱼 '+t.mu+' · 撞钟 '+t.be+' · 御剑 '+t.sw+' · 天灯 '+t.la+' · 烟花 '+t.fw+' · 供品 '+t.of+(t.bn?' · 同心 '+t.bn:'');}
+function renderActions(){var passed=isPassed(),w=$('#actWish'),now=Date.now();
+  w.classList.toggle('primary',passed);$('#wishLbl').textContent=passed?'还愿':'许愿';$('#wishSub').textContent=passed?(S.mine.vowed?'已还愿':'功德 +99'):'挂许愿牌';
   w.querySelector('.ico-wish').toggleAttribute('hidden',passed);w.querySelector('.ico-vow').toggleAttribute('hidden',!passed);
-  var left=INCENSE_CD-(now-lastRitual());
-  $('#incenseSub').textContent=left>0?('香火正旺 '+Math.ceil(left/1000)+'s'):'点三炷';$('#actIncense').setAttribute('aria-disabled',left>0?'true':'false');
+  function cd(id,subId,left,busy,idle){$(subId).textContent=left>0?(busy+' '+Math.ceil(left/1000)+'s'):idle;$(id).setAttribute('aria-disabled',left>0?'true':'false');}
+  cd('#actIncense','#incenseSub',INCENSE_CD-(now-lastRitual()),'香火正旺','点三炷');
   var done=now-S.bowDoneAt<4000;$('#bowSub').textContent=done?'礼成':(S.bowStreak===1?'一叩':S.bowStreak===2?'二叩':'三叩为礼');
-  var banLeft=S.mine.banUntil-now;$('#muyuSub').textContent=banLeft>0?('禅定 '+Math.ceil(banLeft/1000)+'s'):'功德 +1';$('#actMuyu').setAttribute('aria-disabled',banLeft>0?'true':'false');
-  var bl=BELL_CD-(now-S.mine.lastBellAt);$('#bellSub').textContent=bl>0?('余音 '+Math.ceil(bl/1000)+'s'):'全殿都听见';$('#actBell').setAttribute('aria-disabled',bl>0?'true':'false');
-  var ll=LAMP_CD-(now-lastLamp());$('#lampSub').textContent=ll>0?('升空中 '+Math.ceil(ll/1000)+'s'):'写下心愿';$('#actLamp').setAttribute('aria-disabled',ll>0?'true':'false');
-  var ol=OFFER_CD-(now-(S.mine.offer?S.mine.offer.at:0));$('#offerSub').textContent=ol>0?('已摆上 '+Math.ceil(ol/1000)+'s'):(S.mine.offer&&now-S.mine.offer.at<OFFER_MS?('换掉'+OFFERS[S.mine.offer.k]):'摆上供桌');
-}
-function renderWishes(){
-  var list=[];
-  entries().forEach(function(e){var id=e[0],d=e[1];(d.wishes||[]).forEach(function(w){list.push({id:id,n:d.n,t:w.t,at:w.at});});});
-  list.sort(function(a,b){return b.at-a.at;});
-  var box=$('#tags');box.textContent='';$('#wishEmpty').hidden=list.length>0;
-  list.slice(0,30).forEach(function(w){
-    var li=document.createElement('li');li.className='tag';
-    var p=document.createElement('p');p.textContent=w.t;
-    var f=document.createElement('footer'),nm=document.createElement('span'),tm=document.createElement('time');
-    nm.textContent=w.id===S.pid?(S.name||'你'):(w.n||'香客');tm.textContent=ago(w.at);f.appendChild(nm);f.appendChild(tm);
-    if(w.id===S.pid){var rm=document.createElement('button');rm.type='button';rm.className='rm';rm.textContent='取下';rm.addEventListener('click',function(){removeWish(w.at);});f.appendChild(rm);}
-    li.appendChild(p);li.appendChild(f);box.appendChild(li);
-  });
-  $('#wishCount').textContent=list.length?('已挂 '+list.length+' 块 · 每人最多 5 块'):'每人最多挂 5 块';
-}
-function renderLedger(){
-  var items=[];
-  entries().forEach(function(e){var id=e[0],d=e[1];(d.log||[]).forEach(function(l){if(FEED_TEXT[l.k])items.push({n:id===S.pid?(S.name||'你'):d.n,k:l.k,at:l.at,no:l.no,t:l.t,c:l.c,r:l.r,o:l.o});});});
-  items.sort(function(a,b){return b.at-a.at;});items=items.slice(0,FEED_LIMIT);
-  var ol=$('#ledger');ol.textContent='';$('#ledgerEmpty').hidden=items.length>0;
-  items.forEach(function(it){var li=document.createElement('li'),sp=document.createElement('span'),tm=document.createElement('time');
-    sp.appendChild(nameEl(it.n));sp.appendChild(document.createTextNode(' '+FEED_TEXT[it.k](it)));tm.textContent=ago(it.at);
-    li.appendChild(sp);li.appendChild(tm);ol.appendChild(li);});
-}
-function renderRank(){
-  var rows=entries().map(function(e){return {id:e[0],n:e[0]===S.pid?(S.name||'你'):e[1].n,m:meritOf(e[1]),x:cnt(e[1].cheats)};}).filter(function(r){return r.m>0||r.x>0||r.id===S.pid;});
-  rows.sort(function(a,b){return b.m-a.m;});
-  var ol=$('#rank');ol.textContent='';var shown=rows.slice(0,10),meIdx=-1;rows.forEach(function(r,i){if(r.id===S.pid)meIdx=i;});
-  if(meIdx>=10)shown.push(rows[meIdx]);
-  $('#rankEmpty').hidden=rows.some(function(r){return r.m>0;});
-  shown.forEach(function(r){var i=rows.indexOf(r),li=document.createElement('li');if(r.id===S.pid)li.className='me';
-    var no=document.createElement('span');no.className='no';no.textContent=i+1;
-    var who=document.createElement('span');who.className='who';var nm=document.createElement('span');nm.textContent=r.n+(r.id===S.pid?'（你）':'');who.appendChild(nm);who.appendChild(realmChip(realmOf(r.m)));
-    if(r.x>0){var bad=document.createElement('span');bad.className='realm badge-bad';bad.textContent='入魔×'+r.x;who.appendChild(bad);}
-    var pts=document.createElement('span');pts.className='pts';pts.textContent=num(r.m);
-    li.appendChild(no);li.appendChild(who);li.appendChild(pts);ol.appendChild(li);});
-}
-function renderPresent(){
-  var now=Date.now(),byPid=new Map();
-  S.here.forEach(function(h,tab){
-    var age=now-h.at,fresh=age<90000&&age>-120000;
-    if(age>600000&&!S.cleared.has(tab)&&S.mq&&S.mq.connected()){S.cleared.add(tab);S.mq.publish(PREFIX+'h/'+tab,'',true);}
-    if(!fresh||!h.p||h.p===S.pid)return;var prev=byPid.get(h.p);if(!prev||h.at>prev.at)byPid.set(h.p,h);
-  });
-  var list=[{p:S.pid,n:S.name||'你',act:S.myAct.act,at:S.myAct.at,me:true}];byPid.forEach(function(h){list.push(h);});
-  var box=$('#present');box.textContent='';
-  list.forEach(function(p){
-    var li=document.createElement('li');li.className='person'+(p.me?' me':'');
+  cd('#actMuyu','#muyuSub',S.mine.banUntil-now,'禅定','功德 +1');
+  cd('#actBell','#bellSub',BELL_CD-(now-S.mine.lastBellAt),'余音','全殿都听见');
+  cd('#actLamp','#lampSub',LAMP_CD-(now-lastLamp()),'升空中','写下心愿');
+  cd('#actSword','#swordSub',SWORD_CD-(now-S.mine.lastSwordAt),'回鞘','玄天剑绕殿');
+  cd('#actFw','#fwSub',FW_CD-(now-S.mine.lastFwAt),'未散','点亮殿顶');
+  var ol=OFFER_CD-(now-(S.mine.offer?S.mine.offer.at:0));$('#offerSub').textContent=ol>0?('已摆上 '+Math.ceil(ol/1000)+'s'):(S.mine.offer&&now-S.mine.offer.at<OFFER_MS?('换掉'+OFFERS[S.mine.offer.k]):'摆上供桌');}
+function renderWishes(){var list=[];entries().forEach(function(e){if(e.fraud)return;(e.d.wishes||[]).forEach(function(w){list.push({id:e.pid,n:e.name,t:w.t,at:w.at});});});
+  list.sort(function(a,b){return b.at-a.at;});var box=$('#tags');box.textContent='';$('#wishEmpty').hidden=list.length>0;
+  list.slice(0,30).forEach(function(w){var li=document.createElement('li');li.className='tag';var p=document.createElement('p');p.textContent=w.t;var f=document.createElement('footer'),nm=document.createElement('span'),tm=document.createElement('time');
+    nm.textContent=w.n||'香客';tm.textContent=ago(w.at);f.appendChild(nm);f.appendChild(tm);
+    if(w.id===ID.pid){var rm=document.createElement('button');rm.type='button';rm.className='rm';rm.textContent='取下';rm.addEventListener('click',function(){removeWish(w.at);});f.appendChild(rm);}
+    li.appendChild(p);li.appendChild(f);box.appendChild(li);});
+  $('#wishCount').textContent=list.length?('已挂 '+list.length+' 块 · 每人最多 5 块'):'每人最多挂 5 块';}
+function renderLedger(){var items=[];
+  entries().forEach(function(e){(e.d.log||[]).forEach(function(l){if(FEED_TEXT[l.k])items.push({n:e.name,k:l.k,at:l.at,no:l.no,t:l.t,c:l.c,r:l.r,o:l.o,bad:l.k==='cheat'});});});
+  S.frauds.forEach(function(f,pid){items.push({n:nameOf(pid),k:'__fraud',at:f.at,t:f.reason,bad:true});});
+  items.sort(function(a,b){return b.at-a.at;});items=items.slice(0,FEED_LIMIT);var ol=$('#ledger');ol.textContent='';$('#ledgerEmpty').hidden=items.length>0;
+  items.forEach(function(it){var li=document.createElement('li'),sp=document.createElement('span'),tm=document.createElement('time');if(it.bad)li.className='bad';
+    sp.appendChild(nameEl(it.n));sp.appendChild(document.createTextNode(' '+(it.k==='__fraud'?'作弊被天道查实（'+it.t+'），天雷劈下，逐出山门':FEED_TEXT[it.k](it))));tm.textContent=ago(it.at);li.appendChild(sp);li.appendChild(tm);ol.appendChild(li);});}
+function renderRank(){var rows=entries().filter(function(r){return r.merit>0||r.me||r.fraud||r.expelled||cnt(r.d.cheats)>0;});
+  rows.sort(function(a,b){var ao=a.fraud||a.expelled?1:0,bo=b.fraud||b.expelled?1:0;return ao-bo||b.merit-a.merit;});
+  var ol=$('#rank');ol.textContent='';var shown=rows.slice(0,12),meIdx=-1;rows.forEach(function(r,i){if(r.me)meIdx=i;});if(meIdx>=12)shown.push(rows[meIdx]);
+  $('#rankEmpty').hidden=rows.length>0;
+  shown.forEach(function(r){var i=rows.indexOf(r),out=r.fraud||r.expelled,li=document.createElement('li');li.className=(r.me?'me':'')+(out?' out':'');
+    var no=document.createElement('span');no.className='no';no.textContent=out?'—':(i+1);
+    var who=document.createElement('span');who.className='who';var nm=document.createElement('span');nm.textContent=r.name+(r.me?'（你）':'');who.appendChild(nm);
+    if(out)who.appendChild(badChip(r.fraud?'作弊 · 遭天雷':'逐出山门'));else{who.appendChild(realmChip(realmOf(r.merit)));if(cnt(r.d.cheats)>0)who.appendChild(badChip('被抓×'+cnt(r.d.cheats)));}
+    var pts=document.createElement('span');pts.className='pts';pts.textContent=out?'罚没':num(r.merit);li.appendChild(no);li.appendChild(who);li.appendChild(pts);ol.appendChild(li);});}
+function renderPresent(){var now=Date.now(),byPid=new Map();
+  S.here.forEach(function(h,tab){var age=now-h.at,fresh=age<90000&&age>-120000;if(age>600000&&!S.cleared.has(tab)&&S.mq&&S.mq.connected()){S.cleared.add(tab);S.mq.publish(PREFIX+'h/'+tab,'',true);}
+    if(!fresh||!h.p||h.p===ID.pid)return;var prev=byPid.get(h.p);if(!prev||h.at>prev.at)byPid.set(h.p,h);});
+  var list=[{p:ID.pid||'me',n:S.name||'你',act:S.myAct.act,at:S.myAct.at,me:true}];byPid.forEach(function(h){list.push(h);});list=list.slice(0,30);
+  var box=$('#present');box.textContent='';var ents={};entries().forEach(function(e){ents[e.pid]=e;});
+  list.forEach(function(p){var li=document.createElement('li');li.className='person'+(p.me?' me':'');
     var av=document.createElement('span');av.className='av';av.style.background='hsl('+hue(p.p)+' 55% 68%)';av.textContent=Array.from(p.n||'香')[0];
-    var nm=document.createElement('span');nm.className='nm';nm.textContent=p.n||'香客';
-    var doc=p.me?meDoc():S.people.get(p.p),chip=realmChip(realmOf(doc?meritOf(doc):0));
-    var busy=p.act!=='idle'&&now-p.at<6500&&ACT_TEXT[p.act],banned=doc&&doc.banUntil>now;
-    var d=document.createElement('span');d.className='doing'+(banned?' banned':busy?' busy':'');d.textContent=(p.me?'你 · ':'')+(banned?'走火入魔 · 禅定罚坐':(busy||'静坐'));
-    li.appendChild(av);li.appendChild(nm);li.appendChild(chip);li.appendChild(d);box.appendChild(li);
-  });
-  var pill=$('#connPill');pill.dataset.conn=S.conn;
-  $('#connText').textContent=S.conn==='online'?('联机中 · 殿中 '+list.length+' 人'):S.conn==='connecting'?'连接中…':'断线了，正在重连…';
-}
+    var nm=document.createElement('span');nm.className='nm';nm.textContent=p.n||'香客';var e=ents[p.p],out=e&&(e.fraud||e.expelled);
+    var chip=out?badChip('逐出'):realmChip(realmOf(e?e.merit:0));var banned=e&&e.d.banUntil>now,busy=p.act!=='idle'&&now-p.at<6500&&ACT_TEXT[p.act];
+    var d=document.createElement('span');d.className='doing'+(out||banned?' banned':busy?' busy':'');d.textContent=(p.me?'你 · ':'')+(out?'已逐出山门':banned?'禅定罚坐':(busy||'静坐'));
+    li.appendChild(av);li.appendChild(nm);li.appendChild(chip);li.appendChild(d);box.appendChild(li);});
+  var pill=$('#connPill');pill.dataset.conn=S.conn;$('#connText').textContent=S.conn==='online'?('联机中 · 殿中 '+list.length+' 人'):S.conn==='connecting'?'连接中…':'断线了，正在重连…';}
+function cleanStatus(s){if(!s)return null;return {machine:s.machine==='passed'?'passed':'pending',selftest:s.selftest==='visible'?'visible':'missing',manual:(s.manual==='passed'||s.manual==='returned')?s.manual:'pending',
+  submittedAt:/^\d{4}-\d{2}-\d{2}$/.test(s.submittedAt||'')?s.submittedAt:'',version:txt(s.version,20),modapi:txt(s.modapi,40),note:txt(s.note,60),n:txt(s.n,12),at:tstamp(s.at)};}
 function ymd(s){var m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s||''));return m?new Date(+m[1],+m[2]-1,+m[3]):null;}
 function setStage(id,cls,text,sub){var el=$(id);el.querySelector('.v').className='v '+cls;el.querySelector('.vt').textContent=text;el.querySelector('.sub').textContent=sub||'';}
-function renderStatus(){
-  var st=curStatus();
+function renderStatus(){var st=curStatus();
   setStage('#stMachine',st.machine==='passed'?'ok':'wait',st.machine==='passed'?'已通过':'进行中','');
   setStage('#stSelf',st.selftest==='visible'?'ok':'wait',st.selftest==='visible'?'手机端已现身':'已发布 · 手机端未现身',st.selftest==='visible'?'可以开始手机自测':st.note);
   var d=ymd(st.submittedAt),days=null;if(d){var t0=new Date();t0=new Date(t0.getFullYear(),t0.getMonth(),t0.getDate());days=Math.max(0,Math.round((t0-d)/864e5));}
-  var today=new Date(),holiday=(today.getMonth()===8&&today.getDate()>=25)||(today.getMonth()===9&&today.getDate()<=8);
-  if(st.manual==='passed')setStage('#stManual','ok','已通过！','请众施主前来还愿');
-  else if(st.manual==='returned')setStage('#stManual','bad','被退回','按审核意见改好，再提一次');
+  var today2=new Date(),holiday=(today2.getMonth()===8&&today2.getDate()>=25)||(today2.getMonth()===9&&today2.getDate()<=8);
+  if(st.manual==='passed')setStage('#stManual','ok','已通过！','请众施主前来还愿');else if(st.manual==='returned')setStage('#stManual','bad','被退回','按审核意见改好，再提一次');
   else setStage('#stManual','wait','审核中',(days!=null?('已等 '+days+' 天 · '):'')+'官方一般 3 个工作日'+(holiday?'，国庆长假可能顺延':''));
-  var bits=[];if(st.version)bits.push('提审版本 '+st.version);if(st.modapi)bits.push('modAPI '+st.modapi);if(st.by&&st.at)bits.push(st.by+' '+ago(st.at)+'更新');
-  $('#stVersion').textContent=bits.join(' · ');
-  if(isPassed()&&!S.sawPassed){S.sawPassed=true;burstPetals(S.statusPrimed?100:40);hint('人审通过了！点「还愿」谢过诸佛。');}
-  S.statusPrimed=true;
-  if(!$('#statusEdit').open){$('#fSelf').value=st.selftest;$('#fManual').value=st.manual;$('#fDate').value=st.submittedAt||'';$('#fVer').value=st.version||'';$('#fNote').value=st.note||'';}
-  mark('actions');
-}
+  var bits=[];if(st.version)bits.push('提审版本 '+st.version);if(st.modapi)bits.push('modAPI '+st.modapi);if(st.n&&st.at)bits.push(st.n+' '+ago(st.at)+'更新');$('#stVersion').textContent=bits.join(' · ');
+  if(isPassed()&&!S.sawPassed){S.sawPassed=true;burstPetals(S.statusPrimed?100:40);if(S.statusPrimed)fireworksShow(10);hint('人审通过了！点「还愿」谢过诸佛。');}
+  S.statusPrimed=true;if(!$('#statusEdit').open){$('#fSelf').value=st.selftest;$('#fManual').value=st.manual;$('#fDate').value=st.submittedAt||'';$('#fVer').value=st.version||'';$('#fNote').value=st.note||'';}mark('actions');}
 
-/* ---------- wiring ---------- */
+/* ================= tab lock & tilt ================= */
+var LOCK='gs.lock3.'+ROOM;
+function lockTick(){var now=Date.now(),l=LS.get(LOCK,null);
+  if(l&&l.tab!==S.tab&&now-l.at<9000){if(!S.passive){S.passive=true;$('#passiveNote').hidden=false;}return;}
+  LS.set(LOCK,{tab:S.tab,at:now});if(S.passive){S.passive=false;$('#passiveNote').hidden=true;S.dirty=true;publishMine();publishHere();}}
+function tiltFromPointer(e){var r=$('#scene').getBoundingClientRect();TILT.tx=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-.5)*2));TILT.ty=Math.max(-1,Math.min(1,((e.clientY-r.top)/r.height-.5)*2));TILT.on=true;$('#scene').classList.add('tilting');}
+function onOrient(e){if(e.gamma==null)return;TILT.tx=Math.max(-1,Math.min(1,e.gamma/25));TILT.ty=Math.max(-1,Math.min(1,((e.beta||45)-45)/25));}
+function setGyro(on){var b=$('#tiltBtn');if(on){var go=function(){window.addEventListener('deviceorientation',onOrient);TILT.gyro=true;b.setAttribute('aria-pressed','true');b.textContent='体感视差：开';$('#scene').classList.add('tilting');hint('倾斜手机，大殿会跟着转。电脑上移动鼠标也行。');};
+    if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==='function')DeviceOrientationEvent.requestPermission().then(function(r){if(r==='granted')go();else hint('没有拿到体感权限，可以在系统设置里允许「动作与方向」。');}).catch(function(){hint('这个浏览器不给体感权限。');});else go();}
+  else{window.removeEventListener('deviceorientation',onOrient);TILT.gyro=false;TILT.tx=TILT.ty=0;b.setAttribute('aria-pressed','false');b.textContent='体感视差';}}
+
+/* ================= wiring ================= */
 function scenePoint(e){var r=$('#scene').getBoundingClientRect();return {x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
 function bind(){
-  $('#actIncense').addEventListener('click',doIncense);
-  $('#actBow').addEventListener('click',doBow);
-  $('#actMuyu').addEventListener('click',function(e){doMuyu(false,e);});
-  $('#actSign').addEventListener('click',doSign);
-  $('#actWish').addEventListener('click',function(){if(isPassed())doVow();else openWish();});
-  $('#actBell').addEventListener('click',doBell);
-  $('#actLamp').addEventListener('click',openLamp);
-  $('#actOffer').addEventListener('click',openOffer);
-  $('#actFortune').addEventListener('click',openFortune);
-  $('#actCert').addEventListener('click',openCert);
+  $('#actIncense').addEventListener('click',doIncense);$('#actBow').addEventListener('click',doBow);$('#actMuyu').addEventListener('click',function(e){doMuyu(false,e);});
+  $('#actSign').addEventListener('click',doSign);$('#actWish').addEventListener('click',function(){if(isPassed())doVow();else openWish();});
+  $('#actBell').addEventListener('click',doBell);$('#actLamp').addEventListener('click',openLamp);$('#actOffer').addEventListener('click',openOffer);
+  $('#actSword').addEventListener('click',doSword);$('#actFw').addEventListener('click',doFw);
+  $('#fortuneBtn').addEventListener('click',openFortune);$('#certBtn').addEventListener('click',openCert);
+  $('#skyBtn').addEventListener('click',function(){S.skyMode=SKY_ORDER[(SKY_ORDER.indexOf(S.skyMode)+1)%SKY_ORDER.length];S.phase='';applySky();FLIES.length=0;DUST.length=0;});
+  $('#tiltBtn').addEventListener('click',function(){setGyro(!TILT.gyro);});
   $('#wishOpen2').addEventListener('click',function(){openWish();});
-  $('#hotBurner').addEventListener('click',doIncense);
-  $('#hotCushion').addEventListener('click',doBow);
-  $('#hotSign').addEventListener('click',doSign);
-  $('#hotBell').addEventListener('click',doBell);
+  $('#hotBurner').addEventListener('click',doIncense);$('#hotCushion').addEventListener('click',doBow);$('#hotSign').addEventListener('click',doSign);$('#hotBell').addEventListener('click',doBell);
   $('#hotMuyu').addEventListener('pointerdown',function(e){e.preventDefault();doMuyu(false,e);});
-  $('#scene').addEventListener('click',function(e){
-    if(e.target.closest&&e.target.closest('.hot'))return;var pt=scenePoint(e),best=null,bd=30*30;
-    LANTERNS.forEach(function(l){if(l.x==null)return;var dx=l.x-pt.x,dy=l.y-pt.y,d2=dx*dx+dy*dy;if(d2<bd){bd=d2;best=l;}});
-    if(best)toastWho(best.n,best.t?('的天灯：「'+best.t+'」'):'放的天灯');
-  });
-  $('#soundBtn').addEventListener('click',toggleSound);
-  $('#ambBtn').addEventListener('click',function(){setAmb(!S.amb);});
-  $('#autoBtn').addEventListener('click',function(){setAuto(!S.auto);});
-  $('#nameBtn').addEventListener('click',openName);
-  $('#inviteBtn').addEventListener('click',openInvite);
-  $('#copyBtn').addEventListener('click',copyInvite);
-  $('#fCopy').addEventListener('click',copyFortune);
+  var sc=$('#scene');
+  sc.addEventListener('pointermove',function(e){if(e.pointerType==='mouse')tiltFromPointer(e);});
+  sc.addEventListener('pointerleave',function(){TILT.on=false;if(!TILT.gyro){TILT.tx=TILT.ty=0;sc.classList.remove('tilting');}});
+  sc.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.hot'))return;var pt=scenePoint(e),best=null,bd=30*30;
+    LANTERNS.forEach(function(l){if(l.x==null)return;var dx=l.x-pt.x,dy=l.y-pt.y,d2=dx*dx+dy*dy;if(d2<bd){bd=d2;best=l;}});if(best)toastWho(best.n,best.t?('的天灯：「'+best.t+'」'):'放的天灯');});
+  $('#soundBtn').addEventListener('click',toggleSound);$('#ambBtn').addEventListener('click',function(){setAmb(!S.amb);});$('#autoBtn').addEventListener('click',function(){setAuto(!S.auto);});
+  $('#nameBtn').addEventListener('click',openName);$('#inviteBtn').addEventListener('click',openInvite);$('#copyBtn').addEventListener('click',copyInvite);$('#fCopy').addEventListener('click',copyFortune);
   $('#nameForm').addEventListener('submit',function(e){e.preventDefault();submitName();});
   $('#wishForm').addEventListener('submit',function(e){e.preventDefault();submitWish($('#wishText').value);});
   $('#lampForm').addEventListener('submit',function(e){e.preventDefault();submitLamp($('#lampText').value);});
@@ -1496,42 +1639,31 @@ function bind(){
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!(!S.name&&!$('#nameOverlay').hidden))closeOverlay();});
   [['#presets',PRESETS,function(t){$('#wishText').value=t;$('#wishText').focus();}],['#presets2',PRESETS,function(t){openWish(t);}],['#lampPresets',LAMP_PRESETS,function(t){$('#lampText').value=t;$('#lampText').focus();}]].forEach(function(p){
     var box=$(p[0]);p[1].forEach(function(t){var b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',function(){p[2](t);});box.appendChild(b);});});
-  var grid=$('#offerGrid');Object.keys(OFFERS).forEach(function(k){var b=document.createElement('button');b.type='button';b.dataset.k=k;
-    b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#o-'+k+'"></use></svg>';var s=document.createElement('span');s.textContent=OFFERS[k];b.appendChild(s);
-    b.addEventListener('click',function(){placeOffer(k);});grid.appendChild(b);});
-  $('#statusForm').addEventListener('submit',function(e){
-    e.preventDefault();var msg=$('#fMsg');
-    if(!S.mq||!S.mq.connected()){msg.textContent='还没连上，稍后再存';return;}
-    var cur=curStatus();
-    var b={machine:cur.machine||'passed',selftest:$('#fSelf').value,manual:$('#fManual').value,submittedAt:$('#fDate').value||'',version:txt($('#fVer').value,20),
-      modapi:cur.modapi||'',note:txt($('#fNote').value,60),by:S.name||'香客',at:Date.now()};
-    S.mq.publish(PREFIX+'s',JSON.stringify(b),true);emitEv('status');
-    S.status=cleanStatus(b);msg.textContent='已保存';setTimeout(function(){$('#statusEdit').open=false;msg.textContent='';mark('status');},900);
-  });
-  document.addEventListener('visibilitychange',function(){
-    if(document.hidden){cancelAnimationFrame(raf);raf=0;clearInterval(S.autoT);}
-    else{if(!raf){lastT=0;raf=requestAnimationFrame(frame);}if(S.auto)setAuto(true);if(!S.mq||!S.mq.connected()){S.retry=0;connect();}else publishHere();}
-  });
+  var grid=$('#offerGrid');Object.keys(OFFERS).forEach(function(k){var b=document.createElement('button');b.type='button';b.dataset.k=k;b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#o-'+k+'"></use></svg>';
+    var s=document.createElement('span');s.textContent=OFFERS[k];b.appendChild(s);b.addEventListener('click',function(){placeOffer(k);});grid.appendChild(b);});
+  $('#statusForm').addEventListener('submit',function(e){e.preventDefault();var msg=$('#fMsg');if(!canPublish()){msg.textContent='还没连上，稍后再存';return;}var cur=curStatus();
+    var b={pid:ID.pid,machine:cur.machine||'passed',selftest:$('#fSelf').value,manual:$('#fManual').value,submittedAt:$('#fDate').value||'',version:txt($('#fVer').value,20),modapi:cur.modapi||'',note:txt($('#fNote').value,60),n:S.name||'香客',at:Date.now()};
+    signEnv(b).then(function(env){S.mq.publish(PREFIX+'s',env,true);S.statusEnv=env;emitEv('status');S.status=cleanStatus(b);msg.textContent='已保存';setTimeout(function(){$('#statusEdit').open=false;msg.textContent='';mark('status');},900);});});
+  document.addEventListener('visibilitychange',function(){if(document.hidden){cancelAnimationFrame(raf);raf=0;clearInterval(S.autoT);}
+    else{if(!raf){lastT=0;raf=requestAnimationFrame(frame);}if(S.auto)setAuto(true);if(!S.mq||!S.mq.connected()){S.retry=0;connect();}else publishHere();applySky();}});
   window.addEventListener('online',function(){if(!S.mq||!S.mq.connected()){S.retry=0;connect();}});
-  window.addEventListener('pagehide',function(){try{if(S.mq&&S.mq.connected()){publishMine();S.mq.publish(PREFIX+'h/'+S.tab,'',true);S.mq.end();}}catch(e){}});
+  window.addEventListener('pagehide',function(){try{var l=LS.get(LOCK,null);if(l&&l.tab===S.tab)localStorage.removeItem(LOCK);}catch(e){}try{if(S.mq&&S.mq.connected()){publishMine();S.mq.publish(PREFIX+'h/'+S.tab,'',true);S.mq.end();}}catch(e){}});
 }
-function tick(){
-  mark('actions');
-  var s=Math.floor(Date.now()/1000);
-  if(s%3===0)mark('present');
-  if(s%25===0)publishHere();
-  if(s%30===0)mark('wishes','ledger','status','offer');
-}
+function tick(){mark('actions');var s=Math.floor(Date.now()/1000);if(s%3===0){mark('present');lockTick();}if(s%25===0)publishHere();if(s%30===0)mark('wishes','ledger','status','offer','rank');}
 
-buildRays();loadLocal();bind();paintSound();
-S.lastRealm=realmOf(meritOf(S.mine));setTimeout(function(){if(!S.realmReady)readyRealm();},6000);
-$('#nameShow').textContent=S.name||'未留名';
-$('#roomLine').textContent='殿号 '+ROOM+' · 联机服务：EMQX 公共 MQTT 服务器（消息公开，请勿写隐私）';
+/* ================= boot ================= */
+$('#rulesLine').textContent='殿规：所有存档和操作都有数字签名，谁也冒充不了谁。每项功德每日有上限（木鱼 '+CAPS.mu+'、上香 '+CAPS.in+'、叩首 '+CAPS.bo+'、撞钟 '+CAPS.be+'……一天最多 '+num(DAY_CAP)+'）。账上超出上限、或前后两份存档涨得不可能那么快，就被天道查实作弊：证据公开、全殿通报、天雷劈下、逐出山门。连点器（脚本代点、2 秒 28 下以上、节奏整齐得不像人、触屏定点、五分钟不停手）第一次作废当天功德并罚 999，第二次逐出山门。自动敲木鱼只图个响，不计功德。';
+$('#roomLine').textContent='殿号 '+ROOM+' · 本季开殿于 '+SEASON_LABEL+' · 联机服务：EMQX 公共 MQTT 服务器（消息公开，请勿写隐私）';
+buildRays();buildStars();applySky();bind();paintSound();loadLocal();lockTick();
+$('#nameShow').textContent=S.name||'未留名';$('#scene').dataset.stats=JSON.stringify(S.stat);
 rebuildSticks();rebuildLanterns();mark('merit','actions','wishes','ledger','present','status','conn','offer','rank');
-raf=requestAnimationFrame(frame);
-setInterval(tick,1000);
-connect();
-if(!S.name)setTimeout(openName,500);
+raf=requestAnimationFrame(frame);setInterval(tick,1000);
+initIdentity().then(function(){
+  $('#scene').dataset.pid=ID.pid;
+  var c=LS.get('gs.env3.'+ROOM,{});var jobs=[];if(c&&typeof c==='object')Object.keys(c).forEach(function(pid){if(PIDRE.test(pid)&&typeof c[pid]==='string')jobs.push(openEnv(c[pid]).then(function(o){if(o&&o.pid===pid)acceptDoc(o,true);}));});
+  return Promise.all(jobs);
+}).then(function(){rebuildSticks();rebuildLanterns();mark('merit','wishes','ledger','offer','rank','present');connect();setTimeout(function(){if(!S.realmReady)readyRealm();},7000);if(!S.name)setTimeout(openName,500);})
+.catch(function(){$('#cryptoNote').hidden=false;connect();if(!S.name)setTimeout(openName,500);});
 })();
 </script>
 </body>
