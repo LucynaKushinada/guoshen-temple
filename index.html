@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#1f1411">
 <meta name="format-detection" content="telephone=no">
-<meta name="description" content="和朋友一起在线上香、叩首、敲木鱼、求签许愿，为《非常了不起的修仙模拟》祈求早日过审。">
+<meta name="description" content="和朋友一起在线上香、叩首、撞钟、放天灯、摆供品、求签许愿，为《非常了不起的修仙模拟》祈求早日过审。">
 <title>过审祈福殿</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -33,7 +33,6 @@ button{touch-action:manipulation}
 :focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .brush{font-family:var(--f-brush);font-weight:400}
-
 .page{max-width:1180px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left));
   padding-block:max(14px,env(safe-area-inset-top)) max(40px,env(safe-area-inset-bottom));display:grid;gap:18px}
 
@@ -43,13 +42,12 @@ button{touch-action:manipulation}
 .brand p{margin:8px 0 0;color:var(--ash-2);font-size:14px;max-width:62ch}
 .tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .pill{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:13px;color:var(--ash-2);font-variant-numeric:tabular-nums}
-.pill b{color:var(--ash);font-weight:600}
 .dotc{width:7px;height:7px;border-radius:50%;background:var(--amber);flex:none}
 .pill[data-conn="online"] .dotc{background:var(--jade);box-shadow:0 0 0 3px rgba(143,195,166,.18)}
 .pill[data-conn="offline"] .dotc{background:var(--danger)}
 .btn-ghost{background:transparent;border:1px solid var(--line);color:var(--ash);border-radius:999px;padding:5px 13px;font-size:13px;cursor:pointer;transition:border-color .2s}
 .btn-ghost:hover{border-color:var(--gold)}
-.btn-gold{background:linear-gradient(180deg,#f0d38a,#c99a45);border:0;color:#2a1a12;border-radius:999px;padding:8px 20px;font-weight:600;cursor:pointer;letter-spacing:.08em}
+.btn-gold{background:linear-gradient(180deg,#f0d38a,#c99a45);border:0;color:#2a1a12;border-radius:999px;padding:8px 20px;font-weight:600;cursor:pointer;letter-spacing:.08em;text-decoration:none;display:inline-block}
 
 /* progress */
 .progress{display:grid;gap:8px}
@@ -72,20 +70,17 @@ button{touch-action:manipulation}
 .edit select,.edit input,.panel input{background:var(--hall);border:1px solid var(--line);border-radius:6px;padding:7px 9px;color:var(--ash);font-size:16px;width:100%}
 .edit .row{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .edit .row small{color:var(--ash-3)}
-@media (max-width:640px){
-  .stage{flex-basis:100%;padding:8px 14px}
-  .stage + .stage{border-left:0;border-top:1px solid var(--line)}
-  .hall{order:1}.progress{order:2}.lower{order:3}.foot{order:4}
-}
 
 /* hall */
 .hall{display:grid;justify-items:center;gap:12px}
-.scene,.merit,.actions,.hint{width:100%;max-width:880px}
+.scene,.merit,.actions,.hint,.dm-bar,.chips{width:100%;max-width:880px}
 @supports (width:min(1px,max(1px,calc(1svh * 2)))){
-  .scene,.merit,.actions,.hint{width:min(100%,880px,max(300px,calc((100svh - 340px) * 4 / 3)))}
+  .scene,.merit,.actions,.hint,.dm-bar,.chips{width:min(100%,880px,max(300px,calc((100svh - 340px) * 4 / 3)))}
 }
 .scene{position:relative;aspect-ratio:4/3;border-radius:12px;overflow:hidden;background:#150c0a;
   box-shadow:0 34px 60px -34px rgba(0,0,0,.8),inset 0 0 0 1px rgba(216,178,92,.2);touch-action:manipulation;user-select:none;-webkit-user-select:none}
+.scene.shake{animation:jolt .5s ease-out}
+@keyframes jolt{15%{transform:translate(2px,-1px)}30%{transform:translate(-2px,1px)}45%{transform:translate(1.5px,1px)}60%{transform:translate(-1px,-1px)}80%{transform:translate(.5px,0)}}
 .stage-inner{position:absolute;inset:0;transform-origin:50% 100%}
 .stage-inner svg,.stage-inner canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .stage-inner canvas{pointer-events:none}
@@ -99,7 +94,7 @@ button{touch-action:manipulation}
 .glow{transform-box:fill-box;transform-origin:center;animation:breathe 3.2s ease-in-out infinite}
 @keyframes breathe{50%{opacity:.72}}
 .hot{cursor:pointer}
-.hot:hover #muyuBody,.hot:hover #cushionBody,.hot:hover #signbox,.hot:hover .burner-body{filter:brightness(1.14)}
+.hot:hover #muyuBody,.hot:hover #cushionBody,.hot:hover #signbox,.hot:hover .burner-body,.hot:hover #bellBody{filter:brightness(1.14)}
 #muyuBody{transform-box:fill-box;transform-origin:50% 100%}
 #muyuBody.knock{animation:knock .18s ease-out}
 @keyframes knock{40%{transform:scale(1.05,.92)}}
@@ -107,23 +102,33 @@ button{touch-action:manipulation}
 #mallet.knock{animation:mallet .18s ease-out}
 @keyframes mallet{40%{transform:rotate(-16deg)}}
 #signbox{transform-box:view-box;transform-origin:545px 386px}
-#signbox.shake{animation:shake .9s ease-in-out}
-@keyframes shake{10%{transform:rotate(-9deg)}25%{transform:rotate(8deg)}40%{transform:rotate(-8deg)}55%{transform:rotate(7deg)}70%{transform:rotate(-5deg)}85%{transform:rotate(3deg)}100%{transform:none}}
+#signbox.shake{animation:sshake .9s ease-in-out}
+@keyframes sshake{10%{transform:rotate(-9deg)}25%{transform:rotate(8deg)}40%{transform:rotate(-8deg)}55%{transform:rotate(7deg)}70%{transform:rotate(-5deg)}85%{transform:rotate(3deg)}100%{transform:none}}
 #popStick{opacity:0}
 #popStick.pop{animation:pop 1.3s ease-out forwards}
 @keyframes pop{0%{opacity:0;transform:translateY(0)}25%{opacity:1;transform:translateY(-28px)}80%{opacity:1;transform:translateY(-28px)}100%{opacity:0;transform:translateY(-28px)}}
 #cushionBody{transform-box:fill-box;transform-origin:50% 100%}
 #cushionBody.press{animation:press .9s ease-out}
 @keyframes press{30%{transform:scale(1.02,.88)}}
+#bellBody{transform-box:view-box;transform-origin:190px 20px}
+#bellBody.swing{animation:swing 2.6s ease-out}
+@keyframes swing{12%{transform:rotate(8deg)}30%{transform:rotate(-6deg)}48%{transform:rotate(4deg)}66%{transform:rotate(-2.4deg)}84%{transform:rotate(1.2deg)}100%{transform:none}}
 .ripple{fill:none;stroke:#f0d38a;stroke-width:2;transform-box:fill-box;transform-origin:center;animation:ripple 1.2s ease-out forwards}
+.ripple.big{stroke-width:3;animation-duration:1.8s}
 @keyframes ripple{from{opacity:.9;transform:scale(.45)}to{opacity:0;transform:scale(1.6)}}
-.floaters{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.floaters,.danmaku{position:absolute;inset:0;pointer-events:none;overflow:hidden}
 .floater{position:absolute;transform:translate(-50%,-50%);font-weight:900;color:var(--gold-hi);text-shadow:0 0 14px rgba(240,200,110,.65);
   animation:float 1.3s ease-out forwards;font-size:clamp(13px,2.1vw,19px);white-space:nowrap;font-variant-numeric:tabular-nums}
 .floater.other{color:#e9dcc4;opacity:.75;font-weight:600;text-shadow:none}
+.floater.big{font-size:clamp(16px,2.8vw,24px)}
 @keyframes float{from{opacity:0;transform:translate(-50%,-20%)}15%{opacity:1}to{opacity:0;transform:translate(-50%,-240%)}}
-.toasts{position:absolute;left:10px;bottom:10px;display:grid;gap:6px;max-width:min(64%,340px);pointer-events:none}
-.toast{background:rgba(22,13,11,.8);border:1px solid var(--line);color:var(--ash);padding:5px 10px;border-radius:6px;font-size:13px;line-height:1.45;animation:tin .3s ease-out;transition:opacity .4s}
+.dm{position:absolute;left:100%;white-space:nowrap;font-size:clamp(13px,2.2vw,17px);color:#fff4d6;text-shadow:0 1px 3px rgba(0,0,0,.95),0 0 12px rgba(240,200,110,.4);will-change:transform}
+.dm.go{animation:dmfly 9s linear forwards}
+.dm b{color:var(--gold-hi);margin-right:.45em;font-weight:600}
+.dm.mine{color:#ffe3a1}
+@keyframes dmfly{to{transform:translateX(var(--d,-1200px))}}
+.toasts{position:absolute;left:10px;bottom:10px;display:grid;gap:6px;max-width:min(66%,360px);pointer-events:none}
+.toast{background:rgba(22,13,11,.82);border:1px solid var(--line);color:var(--ash);padding:5px 10px;border-radius:6px;font-size:13px;line-height:1.45;animation:tin .3s ease-out;transition:opacity .4s}
 .toast.out{opacity:0}
 .toast b{color:var(--gold-hi);font-weight:600}
 @keyframes tin{from{opacity:0;transform:translateY(6px)}}
@@ -139,7 +144,7 @@ button{touch-action:manipulation}
 .m-next{font-size:13px;color:var(--ash-2)}
 .aside{font-size:13px;color:var(--ash-2);text-align:right;font-variant-numeric:tabular-nums;line-height:1.7}
 .aside b{color:var(--ash);font-weight:600}
-@media (max-width:600px){.merit{grid-template-columns:1fr}.aside{text-align:left}}
+.realm{display:inline-block;font-size:11px;line-height:1;padding:3px 5px;border-radius:4px;border:1px solid currentColor;white-space:nowrap;font-weight:600;vertical-align:1px}
 
 /* actions */
 .actions{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
@@ -153,12 +158,20 @@ button{touch-action:manipulation}
 .act.primary{background:linear-gradient(180deg,#c3463a,#8f271f);border-color:rgba(240,211,138,.55)}
 .act.primary svg{stroke:var(--gold-hi)}
 .act.primary small{color:#f3d7c4}
+.actions.second .act{min-height:66px;background:linear-gradient(180deg,#2f1e18,#241611)}
 .act[aria-disabled="true"]{filter:saturate(.5) brightness(.85)}
+.dm-bar{display:flex;gap:8px}
+.dm-bar input{flex:1;min-width:0;background:var(--hall-2);border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-size:16px;color:var(--ash)}
+.dm-bar input::placeholder{color:var(--ash-3)}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.chip{background:transparent;border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:13px;color:var(--ash-2);cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--gold);color:var(--gold-hi);background:rgba(216,178,92,.12)}
 .hint{margin:0;color:var(--ash-2);font-size:14px;text-align:center;min-height:1.6em}
-@media (max-width:520px){.act{min-height:64px;padding:8px 2px}.act small{display:none}.act b{font-size:14px;letter-spacing:.04em}}
+@media (max-width:520px){.act{min-height:62px;padding:8px 2px}.act small{display:none}.act b{font-size:14px;letter-spacing:.04em}.actions.second .act{min-height:58px}}
 
 /* lower */
 .lower{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:24px;align-items:start;margin-top:6px}
+.col{display:grid;gap:24px;align-content:start;min-width:0}
 @media (max-width:900px){.lower{grid-template-columns:1fr}}
 .sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:10px;flex-wrap:wrap}
 .sec-head h2{font-family:var(--f-brush);font-weight:400;font-size:30px;line-height:1.1;color:var(--gold-hi);margin:0;letter-spacing:.08em}
@@ -179,10 +192,19 @@ button{touch-action:manipulation}
 .empty p{margin:0 0 10px;color:var(--ash-2)}
 .presets{display:flex;flex-wrap:wrap;gap:8px}
 .presets button{background:rgba(180,55,43,.16);border:1px solid rgba(207,74,60,.5);color:#f3d7c4;border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer}
+.rank{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.rank li{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px 12px;background:var(--hall-2);border:1px solid var(--line);border-radius:8px}
+.rank li.me{border-color:var(--line-2);background:linear-gradient(90deg,rgba(216,178,92,.1),var(--hall-2))}
+.rank .no{font-weight:900;color:var(--ash-3);font-variant-numeric:tabular-nums;text-align:center;font-size:15px}
+.rank li:nth-child(1) .no{color:#f0d38a}.rank li:nth-child(2) .no{color:#d8d8d8}.rank li:nth-child(3) .no{color:#d59a6a}
+.rank .who{display:flex;align-items:center;gap:6px;min-width:0}
+.rank .who span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.rank .pts{font-weight:600;font-variant-numeric:tabular-nums;color:var(--gold-hi)}
+.rank-empty{margin:0;color:var(--ash-3);font-size:14px}
 .present{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
-.person{display:flex;align-items:center;gap:8px;background:var(--hall-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-size:13px;max-width:100%}
+.person{display:flex;align-items:center;gap:7px;background:var(--hall-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px 4px 4px;font-size:13px;max-width:100%}
 .person .av{width:24px;height:24px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;font-weight:600;color:#2a1a12}
-.person .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:9em}
+.person .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:8em}
 .person .doing{color:var(--ash-3);font-size:12px;white-space:nowrap}
 .person .doing.busy{color:var(--gold)}
 .person.me{border-color:var(--line-2)}
@@ -204,7 +226,7 @@ button{touch-action:manipulation}
 .panel{width:min(100%,440px);max-height:calc(100% - 24px);overflow:auto;background:var(--hall-2);border:1px solid var(--line-2);border-radius:12px;padding:20px;display:grid;gap:12px;box-shadow:0 30px 60px -20px rgba(0,0,0,.8)}
 .panel h3{font-family:var(--f-brush);font-weight:400;font-size:28px;margin:0;color:var(--gold-hi);letter-spacing:.08em}
 .panel .lbl{font-size:13px;color:var(--ash-2)}
-.panel .row{display:flex;justify-content:flex-end;gap:10px;align-items:center}
+.panel .row{display:flex;justify-content:flex-end;gap:10px;align-items:center;flex-wrap:wrap}
 .panel .desc{margin:0;font-size:13.5px;color:var(--ash-2)}
 .sign{display:flex;gap:22px;justify-content:center;align-items:flex-start}
 .stick{writing-mode:vertical-rl;display:flex;gap:10px;align-items:center;background:linear-gradient(90deg,#b98e52,#e8cb92 45%,#c49a5c);color:#4a170f;
@@ -217,10 +239,39 @@ button{touch-action:manipulation}
 .jie b{font-family:var(--f-brush);font-weight:400;font-size:19px;color:var(--gold)}
 .sign-note{margin:0;font-size:12.5px;color:var(--ash-3)}
 .linkbox{width:100%;background:var(--hall);border:1px solid var(--line);border-radius:6px;padding:8px 10px;color:var(--ash);font-size:14px}
+.offer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:10px}
+.offer-grid button{display:grid;justify-items:center;gap:2px;padding:10px 6px 8px;background:var(--hall);border:1px solid var(--line);border-radius:10px;cursor:pointer;color:var(--ash);font-size:14px}
+.offer-grid button:hover{border-color:var(--gold)}
+.offer-grid svg{width:44px;height:44px}
+.fortune{display:grid;gap:10px}
+.fortune .date{text-align:center;color:var(--ash-3);font-size:13px;margin:0}
+.fortune .lv{font-family:var(--f-brush);font-size:56px;color:var(--gold-hi);text-align:center;line-height:1.05;margin:0}
+.fortune dl{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;margin:0}
+.fortune dt{color:var(--ash-3);font-size:13.5px}
+.fortune dd{margin:0}
+.yi{color:var(--jade)} .ji{color:var(--danger)}
+.cert-img{width:100%;border-radius:6px;display:block;background:var(--paper);min-height:120px}
+.cert-note{margin:0;font-size:12.5px;color:var(--ash-3);text-align:center}
+.panel.pen{border-color:rgba(227,117,100,.7);background:linear-gradient(180deg,#3a1512,var(--hall-2))}
+.panel.pen h3{color:#ff9a80;font-size:40px}
+.pen-list{margin:0;padding-left:1.2em;display:grid;gap:4px}
+.pen-list li::marker{color:var(--danger)}
+.badge-bad{color:var(--danger)}
+.person .doing.banned{color:var(--danger)}
+.scene.cursed::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 55%,rgba(150,15,8,0),rgba(150,15,8,.6));animation:curse 1.8s ease-out forwards}
+@keyframes curse{0%{opacity:0}12%{opacity:1}100%{opacity:0}}
+.rules{margin:0;font-size:12.5px;color:var(--ash-3);text-align:center;max-width:62ch;justify-self:center}
 
+@media (max-width:640px){
+  .stage{flex-basis:100%;padding:8px 14px}
+  .stage + .stage{border-left:0;border-top:1px solid var(--line)}
+  .hall{order:1}.progress{order:2}.lower{order:3}.foot{order:4}
+  .merit{grid-template-columns:1fr}.aside{text-align:left}
+}
 @media (prefers-reduced-motion:reduce){
   .rays,.flame,.glow,.tag{animation:none!important}
   .stage-inner.bowing{animation:dim .6s ease}
+  .scene.shake{animation:none}
   @keyframes dim{50%{filter:brightness(.7)}}
 }
 </style>
@@ -236,7 +287,6 @@ button{touch-action:manipulation}
       <span class="pill" id="connPill" data-conn="connecting"><i class="dotc" aria-hidden="true"></i><span id="connText">连接中…</span></span>
       <button type="button" class="btn-ghost" id="nameBtn">法号：<span id="nameShow">香客</span></button>
       <button type="button" class="btn-ghost" id="inviteBtn">邀请朋友</button>
-      <button type="button" class="btn-ghost" id="soundBtn" aria-pressed="true">声音：开</button>
     </div>
   </header>
 
@@ -294,6 +344,13 @@ button{touch-action:manipulation}
             <radialGradient id="gCushion" cx=".5" cy=".32" r=".72"><stop offset="0" stop-color="#d4ad64"/><stop offset=".7" stop-color="#94703a"/><stop offset="1" stop-color="#5a421e"/></radialGradient>
             <linearGradient id="gFloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1d120e"/><stop offset="1" stop-color="#0d0806"/></linearGradient>
             <path id="petal" d="M0,0 C-19,-16 -17,-44 0,-64 C17,-44 19,-16 0,0Z"/>
+            <symbol id="o-apple" viewBox="-12 -12 24 24"><ellipse cx="0" cy="9" rx="10" ry="2.2" fill="#c9a45a" opacity=".85"/><circle cx="0" cy="2" r="7.5" fill="#c9362b"/><circle cx="-2.6" cy="-.6" r="2.2" fill="#fff" opacity=".25"/><path d="M0 -5 q1 -3 2.5 -4" stroke="#5a3a1a" stroke-width="1.2" fill="none"/><path d="M1.5 -6.5 q4 -2 5 1 q-3 1.5 -5 -1z" fill="#6aa84f"/></symbol>
+            <symbol id="o-peach" viewBox="-12 -12 24 24"><ellipse cx="0" cy="9" rx="10" ry="2.2" fill="#c9a45a" opacity=".85"/><path d="M0 8 C-8 7 -9 -1 -4 -5 C-2 -6.5 0 -6 0 -8 C0 -6 2 -6.5 4 -5 C9 -1 8 7 0 8Z" fill="#f2a39a"/><path d="M0 8 C-3 3 -2 -3 0 -8" stroke="#e0706a" stroke-width="1" fill="none"/><path d="M0 -8 q-5 -2 -7 1 q4 2 7 -1z" fill="#6aa84f"/></symbol>
+            <symbol id="o-orange" viewBox="-12 -12 24 24"><ellipse cx="0" cy="9" rx="10" ry="2.2" fill="#c9a45a" opacity=".85"/><circle cx="0" cy="2" r="7.5" fill="#f0922f"/><circle cx="-2.4" cy="-.5" r="2" fill="#fff" opacity=".25"/><path d="M0 -5.5 q3 -3 6 -2 q-2 3 -6 2z" fill="#6aa84f"/></symbol>
+            <symbol id="o-bun" viewBox="-12 -12 24 24"><ellipse cx="0" cy="9" rx="10" ry="2.2" fill="#c9a45a" opacity=".85"/><path d="M-9 8 C-9 -3 -4 -6 0 -6 C4 -6 9 -3 9 8Z" fill="#f4ecdc"/><path d="M-9 8 C-5 6 5 6 9 8" stroke="#d8cbb0" fill="none"/><circle cx="0" cy="-2.5" r="1.4" fill="#d9493b"/></symbol>
+            <symbol id="o-tea" viewBox="-12 -12 24 24"><ellipse cx="0" cy="9" rx="9" ry="2" fill="#c9a45a" opacity=".85"/><path d="M-7 -1 H7 L5.5 8 H-5.5Z" fill="#e7dfcf"/><ellipse cx="0" cy="-1" rx="7" ry="1.8" fill="#b79a4f"/><path d="M-2 -4 q-2 -3 0 -6 M2 -4 q2 -3 0 -6" stroke="#d6d0c4" stroke-width="1" fill="none" opacity=".7"/></symbol>
+            <symbol id="o-lamp" viewBox="-12 -12 24 24"><ellipse cx="0" cy="9" rx="10" ry="2.2" fill="#c9a45a" opacity=".85"/><path d="M0 7 C-3 3 -3 -1 0 -4 C3 -1 3 3 0 7Z" fill="#f2b6a0"/><path d="M0 7 C-6 6 -8 1 -7 -1 C-4 0 -2 3 0 7Z M0 7 C6 6 8 1 7 -1 C4 0 2 3 0 7Z" fill="#e7968a"/><path d="M0 -4 C-1.5 -6 -1 -8 0 -10 C1 -8 1.5 -6 0 -4Z" fill="#ffd36b"/></symbol>
+            <symbol id="o-flower" viewBox="-12 -12 24 24"><ellipse cx="0" cy="9" rx="8" ry="2" fill="#c9a45a" opacity=".85"/><path d="M0 8 V-1" stroke="#5f8f3f" stroke-width="1.4"/><path d="M0 4 q-4 -2 -5 1 q3 1 5 -1z" fill="#6aa84f"/><g fill="#d9493b"><circle cx="0" cy="-5" r="2.6"/><circle cx="-2.6" cy="-3" r="2.6"/><circle cx="2.6" cy="-3" r="2.6"/><circle cx="-1.6" cy="0" r="2.6"/><circle cx="1.6" cy="0" r="2.6"/></g><circle cx="0" cy="-2.2" r="1.6" fill="#f0d38a"/></symbol>
           </defs>
           <rect width="800" height="600" fill="url(#gWall)"/>
           <rect width="800" height="600" fill="url(#gAura)"/>
@@ -345,8 +402,29 @@ button{touch-action:manipulation}
             <text x="63" y="168">机</text><text x="63" y="210">审</text><text x="63" y="252">已</text><text x="63" y="294">过</text><text x="63" y="336">千</text><text x="63" y="378">重</text><text x="63" y="420">浪</text>
             <text x="737" y="168">人</text><text x="737" y="210">审</text><text x="737" y="252">只</text><text x="737" y="294">隔</text><text x="737" y="336">一</text><text x="737" y="378">层</text><text x="737" y="420">纱</text>
           </g>
+          <g id="hotBell" class="hot">
+            <title>大钟：撞一下，全殿都听得见</title>
+            <line x1="190" y1="18" x2="190" y2="31" stroke="#8c6a2e" stroke-width="2"/>
+            <g id="bellBody">
+              <path d="M184 32 a6 6 0 0 1 12 0" fill="none" stroke="#b8924f" stroke-width="3"/>
+              <path d="M173 40 C173 34 178 32 190 32 C202 32 207 34 207 40 L211 79 C212 85 216 88 222 90 L158 90 C164 88 168 85 169 79 Z" fill="url(#gBronze)"/>
+              <path d="M172 50 H208 M170 72 H210" stroke="#e2bd6e" stroke-opacity=".5" stroke-width="1.2"/>
+              <g fill="#e2bd6e" opacity=".6"><circle cx="180" cy="58" r="1.8"/><circle cx="190" cy="58" r="1.8"/><circle cx="200" cy="58" r="1.8"/><circle cx="185" cy="64" r="1.8"/><circle cx="195" cy="64" r="1.8"/></g>
+              <ellipse cx="190" cy="90" rx="32" ry="3.5" fill="#4a3518"/>
+            </g>
+            <rect x="150" y="16" width="80" height="84" fill="transparent"/>
+          </g>
           <rect x="0" y="520" width="800" height="80" fill="url(#gFloor)"/>
           <line x1="0" y1="520" x2="800" y2="520" stroke="#d8b25c" stroke-opacity=".16"/>
+          <g>
+            <ellipse cx="200" cy="580" rx="74" ry="6" fill="#000" opacity=".35"/>
+            <rect x="130" y="552" width="142" height="7" rx="2" fill="url(#gWood)"/>
+            <rect x="137" y="559" width="6" height="19" fill="#3b1f15"/><rect x="259" y="559" width="6" height="19" fill="#3b1f15"/>
+            <ellipse cx="600" cy="580" rx="74" ry="6" fill="#000" opacity=".35"/>
+            <rect x="528" y="552" width="142" height="7" rx="2" fill="url(#gWood)"/>
+            <rect x="535" y="559" width="6" height="19" fill="#3b1f15"/><rect x="657" y="559" width="6" height="19" fill="#3b1f15"/>
+          </g>
+          <g id="offerings"></g>
           <rect x="140" y="386" width="520" height="14" rx="2" fill="url(#gWood)"/>
           <rect x="140" y="386" width="520" height="2" fill="#c89d58" opacity=".6"/>
           <path d="M150 400 H650 V512 Q600 520 550 512 Q500 520 450 512 Q400 520 350 512 Q300 520 250 512 Q200 520 150 512Z" fill="url(#gCloth)"/>
@@ -451,6 +529,7 @@ button{touch-action:manipulation}
         </svg>
         <canvas id="smoke" aria-hidden="true"></canvas>
       </div>
+      <div class="danmaku" id="danmaku" aria-hidden="true"></div>
       <div class="floaters" id="floaters" aria-hidden="true"></div>
       <div class="toasts" id="toasts" role="status" aria-live="polite"></div>
     </div>
@@ -458,7 +537,7 @@ button{touch-action:manipulation}
     <div class="merit">
       <div class="m-main"><span class="label">合寺功德</span><b class="num" id="meritNum">0</b></div>
       <div class="m-bar"><div class="bar"><i id="meritBar"></i></div><span class="m-next" id="meritNext">距「小有功德」还差 108</span></div>
-      <div class="aside">你的功德 <b id="meritMine">0</b> · 炉中香火 <b id="stickCount">1</b> 炷<br><span id="myStats">上香 0 · 叩首 0 · 木鱼 0 · 求签 0</span></div>
+      <div class="aside">你的功德 <b id="meritMine">0</b> <span id="myRealm"></span> · 炉中香火 <b id="stickCount">1</b> 炷<br><span id="myStats">上香 0 · 叩首 0 · 木鱼 0</span></div>
     </div>
 
     <div class="actions" role="group" aria-label="礼佛">
@@ -472,7 +551,7 @@ button{touch-action:manipulation}
       </button>
       <button type="button" class="act" id="actMuyu">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 15c0-4.4 3.8-7 8.5-7s8.5 2.6 8.5 7c0 2.6-3.8 4-8.5 4s-8.5-1.4-8.5-4z"/><path d="M6 15.2c3.2 1.8 8.8 1.8 12 0"/><path d="M17 8.2l2.6-4"/><circle cx="20.2" cy="3.4" r="1.3"/></svg>
-        <b>木鱼</b><small>功德 +1</small>
+        <b>木鱼</b><small id="muyuSub">功德 +1</small>
       </button>
       <button type="button" class="act" id="actSign">
         <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="10" width="10" height="11" rx="1.5"/><path d="M9 10V4.5M11.5 10V2.5M14 10V4M16 10V5.5"/></svg>
@@ -484,24 +563,66 @@ button{touch-action:manipulation}
         <b id="wishLbl">许愿</b><small id="wishSub">挂许愿牌</small>
       </button>
     </div>
+    <div class="actions second" role="group" aria-label="更多">
+      <button type="button" class="act" id="actBell">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v2M8 6.5C8 5 9.6 4 12 4s4 1 4 2.5L17 17H7z"/><path d="M5 17h14M10.5 20h3"/></svg>
+        <b>撞钟</b><small id="bellSub">全殿都听见</small>
+      </button>
+      <button type="button" class="act" id="actLamp">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5c0-1 1.8-2 4-2s4 1 4 2l-1 12H9z"/><path d="M9.5 17h5M12 17v2.5M11 21.5h2"/></svg>
+        <b>放天灯</b><small id="lampSub">写下心愿</small>
+      </button>
+      <button type="button" class="act" id="actOffer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17h18M5 17c0 2 3 3 7 3s7-1 7-3"/><circle cx="9" cy="13" r="3"/><circle cx="15" cy="13" r="3"/><circle cx="12" cy="9" r="3"/></svg>
+        <b>供品</b><small id="offerSub">摆上供桌</small>
+      </button>
+      <button type="button" class="act" id="actFortune">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M8.5 8h7M8.5 12h7M8.5 16h4"/></svg>
+        <b>运势</b><small>今日宜忌</small>
+      </button>
+      <button type="button" class="act" id="actCert">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="3" width="16" height="13" rx="1.5"/><path d="M8 7.5h8M8 11h5"/><circle cx="15" cy="17.5" r="2.8"/><path d="M13.6 19.8L13 22.5l2-1 2 1-.6-2.7"/></svg>
+        <b>证书</b><small>功德证书</small>
+      </button>
+    </div>
+    <form class="dm-bar" id="dmForm" autocomplete="off">
+      <label class="sr" for="dmText">弹幕祈福</label>
+      <input id="dmText" maxlength="20" placeholder="说句祈福的话，让它飘过大殿">
+      <button type="submit" class="btn-gold">发送</button>
+    </form>
+    <div class="chips">
+      <button type="button" class="chip" id="autoBtn" aria-pressed="false">自动敲木鱼</button>
+      <button type="button" class="chip" id="ambBtn" aria-pressed="false">禅音</button>
+      <button type="button" class="chip" id="soundBtn" aria-pressed="true">声音：开</button>
+    </div>
     <p class="hint" id="hint" aria-live="polite">先上三炷香，再到蒲团前叩首三次。心诚则灵。</p>
+    <p class="rules">殿规：木鱼只认亲手敲。脚本代点、2 秒超过 32 下、节奏整齐得不像人、触屏落点纹丝不动、连续八分钟不停手，都算走火入魔——本轮连击作废、另罚功德、禅定罚坐，全殿通报。自动敲木鱼只图个响，不计功德。</p>
   </section>
 
   <section class="lower">
-    <div>
-      <div class="sec-head"><h2>许愿墙</h2><span class="note" id="wishCount">每人最多挂 5 块</span><button type="button" class="btn-ghost" id="wishOpen2">挂许愿牌</button></div>
-      <div class="wall">
-        <ul class="tags" id="tags"></ul>
-        <div class="empty" id="wishEmpty"><p>墙上还没有许愿牌，挂上第一块吧：</p><div class="presets" id="presets2"></div></div>
+    <div class="col">
+      <div>
+        <div class="sec-head"><h2>许愿墙</h2><span class="note" id="wishCount">每人最多挂 5 块</span><button type="button" class="btn-ghost" id="wishOpen2">挂许愿牌</button></div>
+        <div class="wall">
+          <ul class="tags" id="tags"></ul>
+          <div class="empty" id="wishEmpty"><p>墙上还没有许愿牌，挂上第一块吧：</p><div class="presets" id="presets2"></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="sec-head"><h2>功德榜</h2><span class="note">修为按个人功德：凡人 → 炼气 → 筑基 → 金丹 → 元婴 → 化神</span></div>
+        <ol class="rank" id="rank"></ol>
+        <p class="rank-empty" id="rankEmpty">还没有人积下功德。</p>
       </div>
     </div>
-    <aside>
-      <div class="sec-head"><h2>殿中香客</h2><span class="note">此刻开着这页的人</span></div>
-      <ul class="present" id="present"></ul>
-      <div class="ledger">
-        <h3>功德簿</h3>
-        <ol id="ledger"></ol>
-        <p class="ledger-empty" id="ledgerEmpty">功德簿还空着，上第一炷香吧。</p>
+    <aside class="col">
+      <div>
+        <div class="sec-head"><h2>殿中香客</h2><span class="note">此刻开着这页的人</span></div>
+        <ul class="present" id="present"></ul>
+        <div class="ledger">
+          <h3>功德簿</h3>
+          <ol id="ledger"></ol>
+          <p class="ledger-empty" id="ledgerEmpty">功德簿还空着，上第一炷香吧。</p>
+        </div>
       </div>
     </aside>
   </section>
@@ -511,7 +632,7 @@ button{touch-action:manipulation}
 <div class="overlay" id="nameOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="nameTitle">
   <form class="panel" id="nameForm">
     <h3 id="nameTitle">报上法号</h3>
-    <p class="desc">进殿前留个名字，朋友们在功德簿和许愿墙上看到的就是它。</p>
+    <p class="desc">进殿前留个名字，朋友们在功德簿、功德榜和许愿墙上看到的就是它。</p>
     <label class="lbl" for="nameInput">法号，12 字以内</label>
     <input id="nameInput" maxlength="12" autocomplete="nickname" placeholder="例如：炼气一层">
     <div class="row"><button type="submit" class="btn-gold">进殿</button></div>
@@ -528,6 +649,26 @@ button{touch-action:manipulation}
   </form>
 </div>
 
+<div class="overlay" id="lampOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="lampTitle">
+  <form class="panel" id="lampForm">
+    <h3 id="lampTitle">放一盏天灯</h3>
+    <p class="desc">天灯会升上大殿上空，飘半个时辰（30 分钟），殿里的人点一下天灯就能看到你写的字。</p>
+    <label class="lbl" for="lampText">灯上写一句，16 字以内</label>
+    <input id="lampText" maxlength="16" autocomplete="off" placeholder="愿人审早过">
+    <div class="presets" id="lampPresets"></div>
+    <div class="row"><button type="button" class="btn-ghost" data-close>先不放</button><button type="submit" class="btn-gold">放飞</button></div>
+  </form>
+</div>
+
+<div class="overlay" id="offerOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="offerTitle">
+  <div class="panel">
+    <h3 id="offerTitle">摆一份供品</h3>
+    <p class="desc">供品摆在供桌上三个时辰（3 小时），殿里的人都看得到。每人同时只摆一份，新的会换下旧的。</p>
+    <div class="offer-grid" id="offerGrid"></div>
+    <div class="row"><button type="button" class="btn-ghost" data-close>先不摆</button></div>
+  </div>
+</div>
+
 <div class="overlay" id="signOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="signNo">
   <div class="panel">
     <div class="sign">
@@ -537,6 +678,43 @@ button{touch-action:manipulation}
     <p class="jie"><b>解曰</b><span id="signJie"></span></p>
     <p class="sign-note" id="signNote"></p>
     <div class="row"><button type="button" class="btn-gold" data-close>收下此签</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="fortuneOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="fortuneTitle">
+  <div class="panel fortune">
+    <h3 id="fortuneTitle">今日运势</h3>
+    <p class="date" id="fDateLine"></p>
+    <p class="lv" id="fLevel"></p>
+    <dl>
+      <dt>宜</dt><dd class="yi" id="fYi"></dd>
+      <dt>忌</dt><dd class="ji" id="fJi"></dd>
+      <dt>幸运色</dt><dd id="fColor"></dd>
+      <dt>吉方</dt><dd id="fDir"></dd>
+      <dt>吉时</dt><dd id="fHour"></dd>
+      <dt>幸运数</dt><dd id="fNum"></dd>
+    </dl>
+    <p class="desc" id="fNote">每人每天一张，明天再来换新的。</p>
+    <div class="row"><button type="button" class="btn-ghost" data-close>好</button><button type="button" class="btn-gold" id="fCopy">复制发群里</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="certOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="certTitle">
+  <div class="panel">
+    <h3 id="certTitle">功德证书</h3>
+    <img class="cert-img" id="certImg" alt="你的功德证书">
+    <p class="cert-note">手机上长按图片保存，电脑上点「保存图片」。</p>
+    <div class="row"><button type="button" class="btn-ghost" data-close>收好</button><a class="btn-gold" id="certSave" download="功德证书.png" href="#">保存图片</a></div>
+  </div>
+</div>
+
+<div class="overlay" id="penaltyOverlay" hidden role="alertdialog" aria-modal="true" aria-labelledby="penTitle">
+  <div class="panel pen">
+    <h3 id="penTitle">走火入魔</h3>
+    <p class="desc" id="penReason"></p>
+    <ul class="pen-list" id="penList"></ul>
+    <p class="desc" id="penNote"></p>
+    <div class="row"><button type="button" class="btn-gold" data-close>弟子知错</button></div>
   </div>
 </div>
 
@@ -624,9 +802,12 @@ var ROOM=(function(){var h=(location.hash||'').replace(/^#/,'').toLowerCase();re
 var PREFIX='guoshen/v1/'+ROOM+'/';
 var DEFAULT_STATUS={machine:'passed',selftest:'missing',manual:'pending',submittedAt:'2026-09-27',version:'0.9.1',modapi:'中国版3.9（基岩版1.21.120）',note:'测试工具 3.9.100.297020 里还搜不到',by:'',at:0};
 var W=800,H=600;
-var BURN_MS=20*60*1000,INCENSE_CD=30*1000,SIGN_CD=60*1000;
-var RITUAL_KEEP=6,WISH_KEEP=5,LOG_KEEP=12,FEED_LIMIT=40;
-var MILESTONES=[[108,'小有功德'],[1080,'功德深厚'],[3600,'福慧双修'],[9999,'功德圆满']];
+var BURN_MS=20*60*1000,INCENSE_CD=30*1000,SIGN_CD=60*1000,BELL_CD=8*1000,LAMP_CD=60*1000,OFFER_CD=60*1000,DM_CD=3000;
+var LAMP_MS=30*60*1000,OFFER_MS=3*3600*1000,RISE_MS=5500;
+var RITUAL_KEEP=6,WISH_KEEP=5,LOG_KEEP=14,FEED_LIMIT=40,LAMP_KEEP=3;
+var MILESTONES=[[108,'小有功德'],[1080,'功德深厚'],[3600,'福慧双修'],[9999,'功德圆满'],[99999,'功德无量']];
+var REALMS=[{m:0,n:'凡人',c:'#b3a58f'},{m:108,n:'炼气',c:'#8fc3a6'},{m:1080,n:'筑基',c:'#86b6e8'},{m:3600,n:'金丹',c:'#f0d38a'},{m:9999,n:'元婴',c:'#e7a1d9'},{m:30000,n:'化神',c:'#ff9d6e'}];
+var OFFERS={apple:'苹果',peach:'寿桃',orange:'橘子',bun:'寿包',tea:'清茶',lamp:'莲花灯',flower:'鲜花'};
 var SIGNS=[
   {n:'第一签',lvl:'上上',poem:['灵根已测天资足','一纸批文破九霄'],jie:'审核如渡劫，此签主雷云散尽，批文将至。'},
   {n:'第二签',lvl:'上上',poem:['千里之行过一半','佳音不日到门前'],jie:'机审已过，人审一般三个工作日，耐心等候。'},
@@ -643,11 +824,28 @@ var SIGNS=[
   {n:'第十三签',lvl:'中平',poem:['山路弯弯十八折','回头已过万重山'],jie:'路虽长，大半已经走完。'},
   {n:'第十四签',lvl:'中平',poem:['今日宜修不宜问','明朝再看站内书'],jie:'今天先修 bug，明天再看审核邮件。'},
   {n:'第十五签',lvl:'中平',poem:['一叶扁舟候潮起','潮来自有顺风时'],jie:'国庆长假将至，审核或许顺延，潮水总会来。'},
-  {n:'第十六签',lvl:'下',poem:['风急云低雷未至','闭关三日再出山'],jie:'下签也是好签：闭关修 bug，出关即过审。'}
+  {n:'第十六签',lvl:'下',poem:['风急云低雷未至','闭关三日再出山'],jie:'下签也是好签：闭关修 bug，出关即过审。'},
+  {n:'第十七签',lvl:'上上',poem:['丹成九转光华现','一朝过审万人传'],jie:'过审之后必有好评，宣传图可以先备好。'},
+  {n:'第十八签',lvl:'上上',poem:['青云直上三千尺','榜首题名在此时'],jie:'上架后有望冲榜，记得去申请推广位。'},
+  {n:'第十九签',lvl:'上吉',poem:['剑气纵横十九州','飞剑一出众妖愁'],jie:'御剑手感是看家本领，玩家一上手就会喜欢。'},
+  {n:'第二十签',lvl:'上吉',poem:['灵脉深处藏玄机','福地洞天待人栖'],jie:'灵脉是亮点，介绍页和视频里多着墨。'},
+  {n:'第二十一签',lvl:'上吉',poem:['妙手回春炼丹成','一炉百草尽精英'],jie:'炼丹玩法稳了，审核员说不定也想多炼几炉。'},
+  {n:'第二十二签',lvl:'中吉',poem:['手札一卷记修行','七十八页道分明'],jie:'修仙手札写得明白，新玩家不会迷路。'},
+  {n:'第二十三签',lvl:'中吉',poem:['清溪镇外悬赏榜','一纸任务一分缘'],jie:'悬赏榜多备几条任务，玩家不愁没事做。'},
+  {n:'第二十四签',lvl:'中吉',poem:['秘境开时风雷动','七星阵里见真章'],jie:'秘境首领已经减负，新手也能过关。'},
+  {n:'第二十五签',lvl:'中吉',poem:['凡人一跃入仙门','灵根一测见天分'],jie:'新手引导顺畅，测灵根那段最抓人。'},
+  {n:'第二十六签',lvl:'中平',poem:['山门未启莫心焦','且将经卷再细瞧'],jie:'趁等审核，把说明文字和截图再过一遍。'},
+  {n:'第二十七签',lvl:'中平',poem:['云遮月色三分暗','风过松林万籁清'],jie:'一时看不清进度，不妨静心等待。'},
+  {n:'第二十八签',lvl:'中平',poem:['炉火未旺添把柴','功夫到处自然来'],jie:'多敲几下木鱼，功德到了自然过。'},
+  {n:'第二十九签',lvl:'中平',poem:['路遇岔口问樵夫','莫向歧途枉费功'],jie:'遇到问题先查官方文档，再去开发者群里问。'},
+  {n:'第三十签',lvl:'中平',poem:['一场秋雨一场凉','添衣之后再登场'],jie:'天凉了，别熬夜赶工，注意身体。'},
+  {n:'第三十一签',lvl:'下',poem:['版本未升先提审','退回邮件已上门'],jie:'下签示警：每次更新记得升版本号，不然机审会拦下来。'},
+  {n:'第三十二签',lvl:'上上',poem:['九九归一功德满','一声钟响万事成'],jie:'去撞一下大钟，好运就来了。'}
 ];
 var PRESETS=['愿网易人审早日通过','愿手机自测早日现身','愿炼气篇上架大卖','愿再也不撞 UUID','愿玩家都玩得开心'];
-var ACT_TEXT={incense:'上香中',bow:'叩首中',muyu:'敲木鱼',sign:'求签中',wish:'许愿中',vow:'还愿中'};
-var LOG_KINDS={incense:1,bow3:1,muyu108:1,sign:1,wish:1,vow:1};
+var LAMP_PRESETS=['愿人审早过','愿自测现身','愿上架大卖','愿永无 bug','愿好评如潮'];
+var ACT_TEXT={incense:'上香中',bow:'叩首中',muyu:'敲木鱼',sign:'求签中',wish:'许愿中',vow:'还愿中',bell:'撞钟中',lamp:'放天灯',offer:'摆供品'};
+var LOG_KINDS={incense:1,bow3:1,muyu108:1,sign:1,wish:1,vow:1,lamp:1,offer:1,rise:1,tongxin:1,cheat:1};
 var FEED_TEXT={
   incense:function(){return '上了三炷香';},
   bow3:function(){return '行三叩首礼';},
@@ -655,8 +853,18 @@ var FEED_TEXT={
   sign:function(it){var s=SIGNS[it.no];return s?('求得'+s.n+' · '+lvlName(s)):'求了一签';},
   wish:function(it){return '挂上许愿牌「'+it.t+'」';},
   vow:function(){return '前来还愿';},
-  status:function(){return '更新了审核进度';}
+  lamp:function(it){return it.t?('放了一盏天灯「'+it.t+'」'):'放了一盏天灯';},
+  offer:function(it){return '供上一份'+(OFFERS[it.o]||'供品');},
+  rise:function(it){var r=REALMS[it.r];return r?('突破至「'+r.n+'」！'):'修为精进';},
+  tongxin:function(it){return '与 '+(it.t||'同道')+' 同心叩首';},
+  cheat:function(it){return '用连点器走火入魔'+(it.t?'（'+it.t+'）':'')+'，功德 -'+num(it.c);}
 };
+var LUCK=[['大吉',15],['中吉',30],['小吉',25],['吉',20],['末吉',10]];
+var YI=['提审','修 bug','看站内信','备份工程','写注释','敲木鱼','早点睡','喝奶茶','找人帮测','合并分支','整理贴图','升版本号','摸鱼十分钟','给队友点奶茶','更新手札','调数值','撞钟'];
+var JI=['催审','改 UUID','周五发版','git push --force','熬夜','大改架构','删存档','群里剧透','改完不测','动 manifest 不升版本','深夜提审','和审核员较劲'];
+var COLORS=['朱红','鎏金','黛青','月白','玄黑','翠绿','藕荷','琥珀'];
+var DIRS=['正东','东南','正南','西南','正西','西北','正北','东北'];
+var HOURS=['子时','丑时','寅时','卯时','辰时','巳时','午时','未时','申时','酉时','戌时','亥时'];
 var REDUCED=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
 var SMALL=Math.min(screen.width||800,screen.height||800)<500;
 
@@ -667,17 +875,23 @@ function ago(ts){var d=Math.max(0,Date.now()-ts);if(d<45e3)return '刚刚';if(d<
 var LS={get:function(k,d){try{var v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
 function h32(s){var h=2166136261>>>0;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h>>>0;}
 function r01(seed,k){return (h32(seed+'#'+k)%100000)/100000;}
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return ((t^t>>>14)>>>0)/4294967296;};}
 function cnt(v){v=Math.floor(Number(v)||0);return v<0?0:Math.min(v,1e7);}
 function tstamp(v){v=Number(v);return isFinite(v)&&v>0?v:0;}
 function txt(v,n){return typeof v==='string'?v.replace(/[\u0000-\u001f\u007f]/g,'').trim().slice(0,n):'';}
-function rid(n){var a='abcdefghijkmnpqrstuvwxyz23456789',s='';var r=new Uint8Array(n);(window.crypto||{}).getRandomValues?crypto.getRandomValues(r):r.forEach(function(_,i){r[i]=Math.random()*256;});for(var i=0;i<n;i++)s+=a[r[i]%a.length];return s;}
+function rid(n){var a='abcdefghijkmnpqrstuvwxyz23456789',s='';var r=new Uint8Array(n);if(window.crypto&&crypto.getRandomValues)crypto.getRandomValues(r);else for(var j=0;j<n;j++)r[j]=Math.random()*256;for(var i=0;i<n;i++)s+=a[r[i]%a.length];return s;}
 function parseJSON(s){try{var v=JSON.parse(s);return v&&typeof v==='object'&&!Array.isArray(v)?v:null;}catch(e){return null;}}
 function hue(id){return h32(String(id))%360;}
+function realmOf(m){var i=0;while(i<REALMS.length-1&&m>=REALMS[i+1].m)i++;return i;}
+function realmChip(i){var s=document.createElement('span');s.className='realm';s.style.color=REALMS[i].c;s.textContent=REALMS[i].n;return s;}
+function ymdOf(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 
 var S={pid:null,tab:rid(8),name:'',mq:null,conn:'connecting',synced:false,retry:0,retryT:0,dirty:false,
   people:new Map(),here:new Map(),status:null,cleared:new Set(),
-  mine:{incense:0,bows:0,muyu:0,signs:0,lastSignAt:0,lastSignNo:-1,rituals:[],wishes:[],vowed:false,log:[]},
-  removed:new Set(),bowStreak:0,bowAt:0,bowDoneAt:0,bowLock:false,myAct:{act:'idle',at:0},muyuPending:0,
+  mine:{incense:0,bows:0,muyu:0,signs:0,bells:0,lamps:0,offers:0,bonus:0,penalty:0,cheats:0,banUntil:0,lastSignAt:0,lastSignNo:-1,lastBellAt:0,rituals:[],wishes:[],lampList:[],offer:null,vowed:false,log:[]},
+  removed:new Set(),bowStreak:0,bowAt:0,bowDoneAt:0,bowLock:false,myAct:{act:'idle',at:0},muyuPending:0,combo:0,lastTap:0,
+  streakStart:0,streakTaps:0,lastTapPerf:0,
+  otherBows:[],myLastBow:0,lastBonusAt:0,lastDm:0,realmReady:false,lastRealm:0,auto:false,autoT:0,amb:false,
   throttle:new Map(),sawPassed:false,statusPrimed:false,sound:LS.get('gs.sound',true)!==false};
 S.pid=LS.get('gs.pid',null);if(typeof S.pid!=='string'||!/^[a-z0-9]{6,16}$/.test(S.pid)){S.pid=rid(10);LS.set('gs.pid',S.pid);}
 S.name=txt(LS.get('gs.name',''),12);
@@ -686,15 +900,28 @@ S.name=txt(LS.get('gs.name',''),12);
 var AC=null;
 function ac(){if(!S.sound)return null;try{if(!AC){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;AC=new C();}if(AC.state==='suspended')AC.resume();return AC;}catch(e){return null;}}
 function noise(a,dur){var len=Math.max(1,Math.floor(a.sampleRate*dur)),b=a.createBuffer(1,len,a.sampleRate),d=b.getChannelData(0);for(var i=0;i<len;i++)d[i]=Math.random()*2-1;var s=a.createBufferSource();s.buffer=b;return s;}
-function tok(){var a=ac();if(!a)return;var t=a.currentTime;var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(740,t);o.frequency.exponentialRampToValueAtTime(410,t+.09);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.5,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.17);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.2);
-  var n=noise(a,.03),f=a.createBiquadFilter(),g2=a.createGain();f.type='bandpass';f.frequency.value=1900;f.Q.value=2.5;g2.gain.setValueAtTime(.3,t);g2.gain.exponentialRampToValueAtTime(.0001,t+.03);n.connect(f);f.connect(g2);g2.connect(a.destination);n.start(t);}
-function bell(){var a=ac();if(!a)return;var t=a.currentTime,base=392;[[1,.3,3.6],[2.71,.13,2.4],[5.18,.05,1.4],[1.004,.16,3.2]].forEach(function(p){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=base*p[0];g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(p[1],t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+p[2]);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+p[2]+.05);});}
+function partials(a,base,list,dest){var t=a.currentTime;list.forEach(function(p){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=base*p[0];g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(p[1],t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+p[2]);o.connect(g);g.connect(dest||a.destination);o.start(t);o.stop(t+p[2]+.05);});}
+function tok(soft){var a=ac();if(!a)return;var t=a.currentTime,v=soft?.25:.5;var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.setValueAtTime(740,t);o.frequency.exponentialRampToValueAtTime(410,t+.09);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.17);o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+.2);
+  var n=noise(a,.03),f=a.createBiquadFilter(),g2=a.createGain();f.type='bandpass';f.frequency.value=1900;f.Q.value=2.5;g2.gain.setValueAtTime(v*.6,t);g2.gain.exponentialRampToValueAtTime(.0001,t+.03);n.connect(f);f.connect(g2);g2.connect(a.destination);n.start(t);}
+function bell(){var a=ac();if(!a)return;partials(a,392,[[1,.3,3.6],[2.71,.13,2.4],[5.18,.05,1.4],[1.004,.16,3.2]]);}
+function bigBell(){var a=ac();if(!a)return;var t=a.currentTime;partials(a,98,[[1,.34,7.5],[2,.18,5.5],[2.76,.13,4.2],[3.01,.08,3.6],[4.07,.06,2.8],[5.4,.045,2],[1.006,.2,7]]);
+  var n=noise(a,.09),f=a.createBiquadFilter(),g=a.createGain();f.type='lowpass';f.frequency.value=900;g.gain.setValueAtTime(.45,t);g.gain.exponentialRampToValueAtTime(.0001,t+.09);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}
 function whoosh(){var a=ac();if(!a)return;var t=a.currentTime,n=noise(a,.7),f=a.createBiquadFilter(),g=a.createGain();f.type='lowpass';f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(2400,t+.25);f.frequency.exponentialRampToValueAtTime(500,t+.7);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.22,t+.08);g.gain.exponentialRampToValueAtTime(.0001,t+.7);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}
 function rattle(){var a=ac();if(!a)return;var t0=a.currentTime;for(var i=0;i<9;i++){var t=t0+i*.085+Math.random()*.03,n=noise(a,.025),f=a.createBiquadFilter(),g=a.createGain();f.type='bandpass';f.frequency.value=2200+Math.random()*1400;f.Q.value=4;g.gain.setValueAtTime(.26,t);g.gain.exponentialRampToValueAtTime(.0001,t+.025);n.connect(f);f.connect(g);g.connect(a.destination);n.start(t);}}
-function toggleSound(){S.sound=!S.sound;LS.set('gs.sound',S.sound);paintSound();}
+function chime(){var a=ac();if(!a)return;var t=a.currentTime;[784,988,1175,1568].forEach(function(f,i){var o=a.createOscillator(),g=a.createGain();o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,t+i*.09);g.gain.exponentialRampToValueAtTime(.12,t+i*.09+.01);g.gain.exponentialRampToValueAtTime(.0001,t+i*.09+1.6);o.connect(g);g.connect(a.destination);o.start(t+i*.09);o.stop(t+i*.09+1.7);});}
+var AMB=null;
+function startAmb(){var a=ac();if(!a||AMB)return;var master=a.createGain();master.gain.value=0;master.connect(a.destination);var lp=a.createBiquadFilter();lp.type='lowpass';lp.frequency.value=700;lp.connect(master);
+  var oscs=[[110,'sine',.5],[164.81,'sine',.35],[220.6,'triangle',.1]].map(function(p){var o=a.createOscillator(),g=a.createGain();o.type=p[1];o.frequency.value=p[0];g.gain.value=p[2];o.connect(g);g.connect(lp);o.start();return o;});
+  var lfo=a.createOscillator(),lg=a.createGain();lfo.frequency.value=.07;lg.gain.value=.015;lfo.connect(lg);lg.connect(master.gain);lfo.start();
+  master.gain.setTargetAtTime(.04,a.currentTime,1.5);
+  var timer=setInterval(function(){if(AMB&&Math.random()<.6)partials(a,528,[[1,.05,4],[2.72,.02,2.5]]);},16000);
+  AMB={master:master,oscs:oscs.concat([lfo]),timer:timer};}
+function stopAmb(){if(!AMB||!AC)return;var m=AMB;AMB=null;clearInterval(m.timer);m.master.gain.setTargetAtTime(0,AC.currentTime,.3);setTimeout(function(){m.oscs.forEach(function(o){try{o.stop();}catch(e){}});try{m.master.disconnect();}catch(e){}},1500);}
+function setAmb(on){S.amb=on;if(on&&!S.sound){S.sound=true;LS.set('gs.sound',true);paintSound();}if(on)startAmb();else stopAmb();var b=$('#ambBtn');b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'禅音：开':'禅音';}
+function toggleSound(){S.sound=!S.sound;LS.set('gs.sound',S.sound);if(!S.sound&&S.amb)setAmb(false);paintSound();}
 function paintSound(){var b=$('#soundBtn');b.textContent='声音：'+(S.sound?'开':'关');b.setAttribute('aria-pressed',S.sound?'true':'false');}
 
-/* ---------- canvas: incense, smoke, petals ---------- */
+/* ---------- canvas: incense, smoke, lanterns, petals ---------- */
 var cv=$('#smoke'),ctx=cv.getContext('2d'),dpr=1,scale=1;
 function resize(){var w=cv.clientWidth,h=cv.clientHeight;if(!w||!h)return;dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);scale=w/W;}
 try{new ResizeObserver(resize).observe(cv);}catch(e){window.addEventListener('resize',resize);}
@@ -702,12 +929,14 @@ resize();
 function sprite(r,g,b,size,stops){var c=document.createElement('canvas');c.width=c.height=size;var x=c.getContext('2d'),gr=x.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);stops.forEach(function(s){gr.addColorStop(s[0],'rgba('+r+','+g+','+b+','+s[1]+')');});x.fillStyle=gr;x.fillRect(0,0,size,size);return c;}
 var SMOKE=sprite(226,218,204,64,[[0,.9],[.45,.45],[1,0]]);
 var EMBER=sprite(255,150,60,32,[[0,1],[.35,.55],[1,0]]);
+var LGLOW=sprite(255,170,80,64,[[0,.55],[.4,.2],[1,0]]);
 var STICKS=[],P=[],PETALS=[],PMAX=SMALL?220:380;
+var LANTERNS=new Map();
 function rebuildSticks(){
   var now=Date.now(),list=[];
   entries().forEach(function(e){
-    var id=e[0],d=e[1],rs=d.rituals||[];
-    rs.slice(-RITUAL_KEEP).forEach(function(ts){
+    var id=e[0],d=e[1];
+    (d.rituals||[]).slice(-RITUAL_KEEP).forEach(function(ts){
       var age=now-ts;if(!ts||age>BURN_MS||age<-300000)return;
       var seed=id+':'+ts,cx=400+(r01(seed,1)-.5)*124,y0=313+(r01(seed,2)-.5)*2.4,lean=(r01(seed,3)-.5)*.14;
       for(var k=-1;k<=1;k++)list.push({x:cx+k*6.5,y0:y0,lean:lean+k*.05,born:Math.min(ts,now),seed:r01(seed,5+k),fixed:false});
@@ -715,6 +944,16 @@ function rebuildSticks(){
   });
   list.sort(function(a,b){return b.born-a.born;});
   STICKS=[{x:400,y0:313,lean:0,born:0,seed:.37,fixed:true}].concat(list.slice(0,45));
+}
+function lanternSlot(key){var left=r01(key,1)<.5;return {tx:left?(128+r01(key,2)*112):(560+r01(key,2)*112),ty:104+r01(key,3)*92,seed:r01(key,4)};}
+function addLantern(key,name,text,born){if(LANTERNS.has(key))return;var s=lanternSlot(key);LANTERNS.set(key,{key:key,n:name,t:text,born:born,tx:s.tx,ty:s.ty,seed:s.seed,expire:0});}
+function rebuildLanterns(){
+  var now=Date.now(),seen={},list=[];
+  entries().forEach(function(e){var id=e[0],d=e[1];(d.lampList||[]).forEach(function(l){if(!l.at||now-l.at>LAMP_MS||now-l.at<-300000)return;list.push({key:id+':'+l.at,n:id===S.pid?(S.name||'你'):d.n,t:l.t,at:l.at});});});
+  list.sort(function(a,b){return b.at-a.at;});list=list.slice(0,14);
+  list.forEach(function(l){seen[l.key]=1;var ex=LANTERNS.get(l.key);if(ex){ex.expire=l.at+LAMP_MS;ex.n=l.n;}else{addLantern(l.key,l.n,l.t,Math.min(l.at,now-RISE_MS));LANTERNS.get(l.key).expire=l.at+LAMP_MS;}});
+  LANTERNS.forEach(function(v,k){if(!seen[k]&&(v.expire||now-v.born>60000))LANTERNS.delete(k);});
+  $('#scene').dataset.lamps=LANTERNS.size;
 }
 function tipOf(s,now){var f=s.fixed?1:Math.max(0,1-(now-s.born)/BURN_MS),L=s.fixed?90:10+102*f;return [s.x+Math.sin(s.lean)*L,s.y0-Math.cos(s.lean)*L];}
 function drawSticks(now){
@@ -731,34 +970,72 @@ function drawSmoke(dt){
   for(var i=P.length-1;i>=0;i--){var p=P[i];p.age+=dt;if(p.age>=p.life){P.splice(i,1);continue;}var t=p.age/p.life;p.vy*=1-.12*dt;p.y+=p.vy*dt;p.x+=(p.vx+Math.sin(p.ph+p.age*p.fr)*p.amp*(.25+t))*dt;var r=p.r0+p.grow*t,a=p.a0*(t<.12?t/.12:Math.pow(1-t,1.3));ctx.globalAlpha=a;ctx.drawImage(SMOKE,p.x-r,p.y-r,r*2,r*2);}
   ctx.globalAlpha=1;
 }
+function drawLanterns(now){
+  LANTERNS.forEach(function(l){
+    var age=now-l.born,k=Math.max(0,Math.min(1,age/RISE_MS)),e=1-Math.pow(1-k,3);
+    var x=400+(l.tx-400)*e,y=300+(l.ty-300)*e,s=.55+.45*e;
+    if(k>=1){x+=Math.sin(now/1700+l.seed*9)*2.4;y+=Math.sin(now/1150+l.seed*7)*3.6;}
+    var alpha=1;if(l.expire){var left=l.expire-now;if(left<60000)alpha=Math.max(0,left/60000);}
+    l.x=x;l.y=y;if(alpha<=0)return;
+    ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.globalAlpha=alpha;
+    ctx.drawImage(LGLOW,-34,-34,68,68);
+    ctx.beginPath();ctx.moveTo(-10,-13);ctx.quadraticCurveTo(0,-18,10,-13);ctx.lineTo(8,11);ctx.quadraticCurveTo(0,13.5,-8,11);ctx.closePath();
+    var g=ctx.createLinearGradient(0,-16,0,12);g.addColorStop(0,'#f8cf7a');g.addColorStop(.55,'#ec7a3c');g.addColorStop(1,'#c9432c');ctx.fillStyle=g;ctx.fill();
+    ctx.strokeStyle='rgba(110,35,18,.35)';ctx.lineWidth=.8;ctx.beginPath();ctx.moveTo(0,-15.5);ctx.lineTo(0,12);ctx.moveTo(-5,-14.5);ctx.lineTo(-4,11.6);ctx.moveTo(5,-14.5);ctx.lineTo(4,11.6);ctx.stroke();
+    ctx.globalAlpha=alpha*(.75+.25*Math.sin(now/140+l.seed*30));ctx.fillStyle='#ffe29a';ctx.beginPath();ctx.ellipse(0,13,3,1.8,0,0,6.2832);ctx.fill();
+    ctx.restore();
+  });
+  ctx.globalAlpha=1;
+}
 function burstPetals(n){if(REDUCED)n=Math.round(n/3);for(var i=0;i<n;i++)PETALS.push({x:Math.random()*W,y:-20-Math.random()*220,vy:26+Math.random()*40,vx:(Math.random()-.5)*20,rot:Math.random()*6.28,vr:(Math.random()-.5)*3,s:3+Math.random()*4,c:Math.random()<.5?'#f2b6a0':'#f0d38a',age:0,life:6+Math.random()*3});}
 function drawPetals(dt){for(var i=PETALS.length-1;i>=0;i--){var p=PETALS[i];p.age+=dt;if(p.age>p.life||p.y>H+20){PETALS.splice(i,1);continue;}p.y+=p.vy*dt;p.x+=(p.vx+Math.sin(p.age*2+p.rot)*14)*dt;p.rot+=p.vr*dt;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot);ctx.globalAlpha=Math.max(0,Math.min(1,p.life-p.age));ctx.fillStyle=p.c;ctx.beginPath();ctx.ellipse(0,0,p.s,p.s*.55,0,0,6.2832);ctx.fill();ctx.restore();}ctx.globalAlpha=1;}
 var lastT=0,raf=0,lastRebuild=0;
 function frame(ts){
   raf=requestAnimationFrame(frame);
   var dt=lastT?Math.min(.05,(ts-lastT)/1000):.016;lastT=ts;var now=Date.now();
-  if(now-lastRebuild>4000){lastRebuild=now;rebuildSticks();mark('merit');}
+  if(now-lastRebuild>4000){lastRebuild=now;rebuildSticks();rebuildLanterns();mark('merit');}
   ctx.setTransform(dpr*scale,0,0,dpr*scale,0,0);ctx.clearRect(0,0,W,H);
-  drawSticks(now);emit(dt);drawSmoke(dt);drawPetals(dt);
+  drawLanterns(now);drawSticks(now);emit(dt);drawSmoke(dt);drawPetals(dt);
 }
 
 /* ---------- scene helpers ---------- */
 function buildRays(){var g=$('#rays'),s='';for(var i=0;i<48;i++){var a=i*Math.PI*2/48,r1=118,r2=i%2?130:137;s+='<line x1="'+(400+Math.cos(a)*r1).toFixed(1)+'" y1="'+(238+Math.sin(a)*r1).toFixed(1)+'" x2="'+(400+Math.cos(a)*r2).toFixed(1)+'" y2="'+(238+Math.sin(a)*r2).toFixed(1)+'"/>';}g.innerHTML=s;}
 function restart(el,cls){el.classList.remove(cls);void el.getBoundingClientRect();el.classList.add(cls);}
 function floater(x,y,text,cls){var el=document.createElement('span');el.className='floater'+(cls?' '+cls:'');el.textContent=text;el.style.left=(x/W*100)+'%';el.style.top=(y/H*100)+'%';$('#floaters').appendChild(el);setTimeout(function(){el.remove();},1500);}
-function ripple(){var e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');e.setAttribute('cx','400');e.setAttribute('cy','556');e.setAttribute('rx','96');e.setAttribute('ry','28');e.setAttribute('class','ripple');$('#fx').appendChild(e);setTimeout(function(){e.remove();},1300);}
+function ring(cx,cy,rx,ry,big){var e=document.createElementNS('http://www.w3.org/2000/svg','ellipse');e.setAttribute('cx',cx);e.setAttribute('cy',cy);e.setAttribute('rx',rx);e.setAttribute('ry',ry);e.setAttribute('class','ripple'+(big?' big':''));$('#fx').appendChild(e);setTimeout(function(){e.remove();},1900);}
+function ripple(){ring(400,556,96,28);}
 function nameEl(name){var b=document.createElement('b');b.textContent=name||'一位香客';return b;}
 function toast(node){var box=$('#toasts'),el=document.createElement('div');el.className='toast';if(typeof node==='string')el.textContent=node;else el.appendChild(node);box.appendChild(el);while(box.children.length>3)box.firstElementChild.remove();setTimeout(function(){el.classList.add('out');setTimeout(function(){el.remove();},450);},4200);}
 function toastWho(name,text){var f=document.createDocumentFragment();f.appendChild(nameEl(name));f.appendChild(document.createTextNode(' '+text));toast(f);}
 function hint(t){$('#hint').textContent=t;}
 function throttled(key,ms){var now=Date.now(),t=S.throttle.get(key)||0;if(now-t<ms)return false;S.throttle.set(key,now);return true;}
+var dmLanes=[0,0,0,0,0];
+function showDm(name,text,mine){
+  var box=$('#danmaku');if(box.children.length>16)return;
+  var el=document.createElement('div');el.className='dm'+(mine?' mine':'');el.appendChild(nameEl(name));el.appendChild(document.createTextNode(text));
+  var now=Date.now(),lane=0,best=Infinity;for(var i=0;i<dmLanes.length;i++){if(dmLanes[i]<best){best=dmLanes[i];lane=i;}}dmLanes[lane]=Math.max(now,dmLanes[lane])+2600;
+  el.style.top=(9+lane*8.4)+'%';box.appendChild(el);
+  el.style.setProperty('--d',(-(box.clientWidth+el.offsetWidth+24))+'px');void el.offsetWidth;el.classList.add('go');
+  setTimeout(function(){el.remove();},9800);
+}
+function renderOfferings(){
+  var now=Date.now(),list=[];
+  entries().forEach(function(e){var id=e[0],d=e[1],o=d.offer;if(o&&OFFERS[o.k]&&o.at&&now-o.at<OFFER_MS)list.push({n:id===S.pid?(S.name||'你'):d.n,k:o.k,at:o.at});});
+  list.sort(function(a,b){return b.at-a.at;});list=list.slice(0,8);
+  var slots=[150,550,182,582,214,614,246,646],g=$('#offerings');while(g.firstChild)g.removeChild(g.firstChild);
+  list.forEach(function(o,i){var ns='http://www.w3.org/2000/svg',u=document.createElementNS(ns,'use');u.setAttribute('href','#o-'+o.k);u.setAttribute('x',slots[i]-13);u.setAttribute('y',527);u.setAttribute('width',26);u.setAttribute('height',26);
+    var t=document.createElementNS(ns,'title');t.textContent=o.n+' 供上的'+OFFERS[o.k];var gg=document.createElementNS(ns,'g');gg.appendChild(t);gg.appendChild(u);g.appendChild(gg);});
+}
 
 /* ---------- data model ---------- */
 function cleanPerson(d){
-  var o={n:txt(d.n,12)||'香客',incense:cnt(d.incense),bows:cnt(d.bows),muyu:cnt(d.muyu),signs:cnt(d.signs),vowed:!!d.vowed,rituals:[],wishes:[],log:[]};
+  var o={n:txt(d.n,12)||'香客',incense:cnt(d.incense),bows:cnt(d.bows),muyu:cnt(d.muyu),signs:cnt(d.signs),bells:cnt(d.bells),lamps:cnt(d.lamps),offers:cnt(d.offers),bonus:cnt(d.bonus),vowed:!!d.vowed,
+    penalty:cnt(d.penalty),cheats:cnt(d.cheats),banUntil:tstamp(d.banUntil),rituals:[],wishes:[],lampList:[],offer:null,log:[]};
   if(Array.isArray(d.rituals))o.rituals=d.rituals.slice(-RITUAL_KEEP).map(tstamp).filter(Boolean);
   if(Array.isArray(d.wishes))d.wishes.slice(0,WISH_KEEP).forEach(function(w){if(w&&typeof w==='object'){var t=txt(w.t,30);if(t)o.wishes.push({t:t,at:tstamp(w.at)});}});
-  if(Array.isArray(d.log))d.log.slice(-LOG_KEEP).forEach(function(l){if(l&&typeof l==='object'&&LOG_KINDS[l.k]){o.log.push({k:l.k,at:tstamp(l.at),no:Number.isInteger(l.no)?l.no:-1,t:txt(l.t,30),c:cnt(l.c)});}});
+  if(Array.isArray(d.lampList))d.lampList.slice(-LAMP_KEEP).forEach(function(l){if(l&&typeof l==='object'&&tstamp(l.at))o.lampList.push({t:txt(l.t,16),at:tstamp(l.at)});});
+  if(d.offer&&typeof d.offer==='object'&&OFFERS[d.offer.k]&&tstamp(d.offer.at))o.offer={k:d.offer.k,at:tstamp(d.offer.at)};
+  if(Array.isArray(d.log))d.log.slice(-LOG_KEEP).forEach(function(l){if(l&&typeof l==='object'&&LOG_KINDS[l.k]){o.log.push({k:l.k,at:tstamp(l.at),no:Number.isInteger(l.no)?l.no:-1,t:txt(l.t,30),c:cnt(l.c),r:Number.isInteger(l.r)?l.r:-1,o:OFFERS[l.o]?l.o:''});}});
   return o;
 }
 function cleanStatus(s){
@@ -767,26 +1044,37 @@ function cleanStatus(s){
     manual:(s.manual==='passed'||s.manual==='returned')?s.manual:'pending',
     submittedAt:/^\d{4}-\d{2}-\d{2}$/.test(s.submittedAt||'')?s.submittedAt:'',version:txt(s.version,20),modapi:txt(s.modapi,40),note:txt(s.note,60),by:txt(s.by,12),at:tstamp(s.at)};
 }
-function meDoc(){var m=S.mine;return {n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,vowed:m.vowed,rituals:m.rituals,wishes:m.wishes,log:m.log};}
+function meDoc(){var m=S.mine;return {n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,bells:m.bells,lamps:m.lamps,offers:m.offers,bonus:m.bonus,vowed:m.vowed,
+  penalty:m.penalty,cheats:m.cheats,banUntil:m.banUntil,rituals:m.rituals,wishes:m.wishes,lampList:m.lampList,offer:m.offer,log:m.log};}
 function entries(){var out=[],hasMe=false;S.people.forEach(function(d,id){if(id===S.pid){out.push([id,meDoc()]);hasMe=true;}else out.push([id,d]);});if(!hasMe)out.push([S.pid,meDoc()]);return out;}
-function meritOf(d){return cnt(d.incense)*3+cnt(d.bows)+cnt(d.muyu)+(d.vowed?99:0);}
+function meritOf(d){return Math.max(0,cnt(d.incense)*3+cnt(d.bows)+cnt(d.muyu)+cnt(d.bells)*2+cnt(d.lamps)*9+cnt(d.offers)*5+cnt(d.bonus)+(d.vowed?99:0)-cnt(d.penalty));}
 function lastRitual(){var rs=S.mine.rituals;return rs.length?Math.max.apply(null,rs):0;}
+function lastLamp(){var l=S.mine.lampList;return l.length?l[l.length-1].at:0;}
 function mergeMine(r){
   var m=S.mine,now=Date.now(),d=cleanPerson(r);
-  ['incense','bows','muyu','signs'].forEach(function(k){if(d[k]>m[k])m[k]=d[k];});
+  ['incense','bows','muyu','signs','bells','lamps','offers','bonus','penalty','cheats'].forEach(function(k){if(d[k]>m[k])m[k]=d[k];});
+  if(d.banUntil>m.banUntil)m.banUntil=d.banUntil;
   var rsa=tstamp(r.lastSignAt);if(rsa>m.lastSignAt){m.lastSignAt=rsa;if(Number.isInteger(r.lastSignNo))m.lastSignNo=r.lastSignNo;}
+  var rba=tstamp(r.lastBellAt);if(rba>m.lastBellAt)m.lastBellAt=rba;
   var set={};m.rituals.concat(d.rituals).forEach(function(t){if(t&&now-t<BURN_MS)set[t]=1;});
   m.rituals=Object.keys(set).map(Number).sort(function(a,b){return a-b;}).slice(-RITUAL_KEEP);
   var ws={};m.wishes.concat(d.wishes).forEach(function(w){if(S.removed.has(w.at))return;ws[w.at+'|'+w.t]=w;});
   m.wishes=Object.keys(ws).map(function(k){return ws[k];}).sort(function(a,b){return b.at-a.at;}).slice(0,WISH_KEEP);
-  var ls={};m.log.concat(d.log).forEach(function(l){ls[l.at+'|'+l.k]=l;});
-  m.log=Object.keys(ls).map(function(k){return ls[k];}).sort(function(a,b){return a.at-b.at;}).slice(-LOG_KEEP);
+  var ls={};m.lampList.concat(d.lampList).forEach(function(l){ls[l.at]=l;});
+  m.lampList=Object.keys(ls).map(function(k){return ls[k];}).sort(function(a,b){return a.at-b.at;}).slice(-LAMP_KEEP);
+  if(d.offer&&(!m.offer||d.offer.at>m.offer.at))m.offer=d.offer;
+  var lg={};m.log.concat(d.log).forEach(function(l){lg[l.at+'|'+l.k]=l;});
+  m.log=Object.keys(lg).map(function(k){return lg[k];}).sort(function(a,b){return a.at-b.at;}).slice(-LOG_KEEP);
   if(d.vowed)m.vowed=true;
 }
-function myBody(){var m=S.mine,now=Date.now();return JSON.stringify({v:1,n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,lastSignAt:m.lastSignAt,lastSignNo:m.lastSignNo,
-  rituals:m.rituals.filter(function(t){return now-t<BURN_MS;}).slice(-RITUAL_KEEP),wishes:m.wishes.slice(0,WISH_KEEP),vowed:!!m.vowed,log:m.log.slice(-LOG_KEEP),at:now});}
+function myBody(){var m=S.mine,now=Date.now();return JSON.stringify({v:2,n:S.name||'香客',incense:m.incense,bows:m.bows,muyu:m.muyu,signs:m.signs,bells:m.bells,lamps:m.lamps,offers:m.offers,bonus:m.bonus,
+  penalty:m.penalty,cheats:m.cheats,banUntil:m.banUntil,
+  lastSignAt:m.lastSignAt,lastSignNo:m.lastSignNo,lastBellAt:m.lastBellAt,
+  rituals:m.rituals.filter(function(t){return now-t<BURN_MS;}).slice(-RITUAL_KEEP),wishes:m.wishes.slice(0,WISH_KEEP),
+  lampList:m.lampList.filter(function(l){return now-l.at<LAMP_MS;}).slice(-LAMP_KEEP),offer:m.offer&&now-m.offer.at<OFFER_MS?m.offer:null,
+  vowed:!!m.vowed,log:m.log.slice(-LOG_KEEP),at:now});}
 function saveLocal(){LS.set('gs.mine.'+ROOM,S.mine);}
-function loadLocal(){var m=LS.get('gs.mine.'+ROOM,null);if(m&&typeof m==='object'){mergeMine(m);}}
+function loadLocal(){var m=LS.get('gs.mine.'+ROOM,null);if(m&&typeof m==='object')mergeMine(m);}
 
 /* ---------- network ---------- */
 var pubTimer=0;
@@ -794,7 +1082,7 @@ function queueSave(delay){saveLocal();S.dirty=true;clearTimeout(pubTimer);pubTim
 function publishMine(){if(!S.dirty||!S.synced||!S.mq||!S.mq.connected())return;if(S.mq.publish(PREFIX+'p/'+S.pid,myBody(),true))S.dirty=false;}
 function publishHere(){if(!S.mq||!S.mq.connected())return;S.mq.publish(PREFIX+'h/'+S.tab,JSON.stringify({p:S.pid,n:S.name||'香客',act:S.myAct.act,at:Date.now()}),true);}
 function emitEv(k,extra){if(!S.mq||!S.mq.connected())return;var e={p:S.pid,n:S.name||'香客',k:k,at:Date.now()};if(extra)for(var x in extra)e[x]=extra[x];S.mq.publish(PREFIX+'e',JSON.stringify(e),false);}
-function logAndEmit(k,extra){var l={k:k,at:Date.now(),no:-1,t:'',c:0};if(extra)for(var x in extra)l[x]=extra[x];S.mine.log.push(l);S.mine.log=S.mine.log.slice(-LOG_KEEP);emitEv(k,extra);mark('ledger');}
+function logAndEmit(k,extra){var l={k:k,at:Date.now(),no:-1,t:'',c:0,r:-1,o:''};if(extra)for(var x in extra)l[x]=extra[x];S.mine.log.push(l);S.mine.log=S.mine.log.slice(-LOG_KEEP);emitEv(k,extra);mark('ledger');}
 function setConn(c){S.conn=c;mark('conn');}
 function connect(){
   if(S.mq&&S.mq.connected())return;
@@ -802,7 +1090,7 @@ function connect(){
   if(S.mq){var old=S.mq;S.mq=null;try{old.end();}catch(e){}}
   var mq=MiniMqtt(BROKER,{clientId:'gs_'+S.pid.slice(0,8)+'_'+rid(6),keepalive:45,will:{topic:PREFIX+'h/'+S.tab,payload:'',retain:true},
     onConnect:function(){if(S.mq!==mq)return;S.retry=0;setConn('online');mq.subscribe(PREFIX+'#');publishHere();
-      setTimeout(function(){if(S.mq!==mq)return;S.synced=true;S.dirty=true;publishMine();},1600);},
+      setTimeout(function(){if(S.mq!==mq)return;S.synced=true;S.dirty=true;publishMine();readyRealm();},1600);},
     onMessage:onMsg,
     onClose:function(){if(S.mq!==mq)return;S.synced=false;setConn('offline');scheduleRetry();}});
   S.mq=mq;
@@ -814,9 +1102,9 @@ function onMsg(topic,payload,retained){
   if(kind==='p'&&/^[a-z0-9]{6,16}$/.test(id)){
     if(!payload){S.people.delete(id);}
     else{var d=parseJSON(payload);if(!d)return;if(S.people.size>300&&!S.people.has(id))return;
-      if(id===S.pid){mergeMine(d);}
+      if(id===S.pid)mergeMine(d);
       S.people.set(id,cleanPerson(d));}
-    rebuildSticks();mark('merit','wishes','ledger','actions');
+    rebuildSticks();rebuildLanterns();mark('merit','wishes','ledger','actions','offer','rank','present');
   }else if(kind==='h'&&/^[a-z0-9]{6,16}$/.test(id)){
     if(!payload)S.here.delete(id);
     else{var h=parseJSON(payload);if(!h)return;
@@ -827,12 +1115,14 @@ function onMsg(topic,payload,retained){
   }else if(kind==='e'&&!parts[1]){
     if(retained)return;var ev=parseJSON(payload);if(!ev||ev.p===S.pid)return;onEvent(ev);
   }else if(kind==='s'&&!parts[1]){
-    var st=payload?cleanStatus(parseJSON(payload)):null;S.status=st;mark('status');
+    S.status=payload?cleanStatus(parseJSON(payload)):null;mark('status');
   }
 }
 function onEvent(ev){
-  var name=txt(ev.n,12)||'香客',k=ev.k;
-  if(k==='bow'){ripple();if(throttled('bow'+ev.p,2500))toastWho(name,'叩首');}
+  var name=txt(ev.n,12)||'香客',k=ev.k,p=/^[a-z0-9]{6,16}$/.test(ev.p||'')?ev.p:'';
+  if(k==='bow'){ripple();if(throttled('bow'+p,2500))toastWho(name,'叩首');
+    var now=Date.now();S.otherBows.push({p:p,n:name,at:now});S.otherBows=S.otherBows.slice(-10);
+    if(now-S.myLastBow<3000)grantTongxin(name);}
   else if(k==='muyu'){var c=Math.min(4,cnt(ev.c)||1);for(var i=0;i<c;i++)setTimeout(function(){floater(248+(Math.random()-.5)*44,334,'+1','other');},i*120);}
   else if(k==='incense')toastWho(name,'上了三炷香');
   else if(k==='bow3'){ripple();toastWho(name,'行三叩首礼');}
@@ -841,6 +1131,12 @@ function onEvent(ev){
   else if(k==='wish'){var t=txt(ev.t,30);toastWho(name,t?('挂上许愿牌「'+t+'」'):'挂上一块许愿牌');}
   else if(k==='vow'){toastWho(name,'前来还愿');burstPetals(80);}
   else if(k==='status')toastWho(name,'更新了审核进度');
+  else if(k==='bell'){ringBell();bigBell();if(throttled('bell'+p,4000))toastWho(name,'撞响了大钟');}
+  else if(k==='lamp'){var lt=txt(ev.t,16);if(p&&tstamp(ev.at))addLantern(p+':'+tstamp(ev.at),name,lt,Date.now());toastWho(name,lt?('放了一盏天灯「'+lt+'」'):'放了一盏天灯');}
+  else if(k==='offer'){toastWho(name,'供上一份'+(OFFERS[ev.o]||'供品'));}
+  else if(k==='dm'){var dt=txt(ev.t,20);if(dt)showDm(name,dt,false);}
+  else if(k==='rise'){var r=REALMS[Number.isInteger(ev.r)?ev.r:-1];if(r){toastWho(name,'突破至「'+r.n+'」！');burstPetals(36);}}
+  else if(k==='cheat'){var why=txt(ev.t,30);toastWho(name,'用连点器走火入魔'+(why?'（'+why+'）':'')+'，功德 -'+num(ev.c));restart($('#scene'),'cursed');}
 }
 
 /* ---------- actions ---------- */
@@ -850,31 +1146,113 @@ function setAct(act){
   clearTimeout(setAct.t);if(act!=='idle')setAct.t=setTimeout(function(){setAct('idle');},5000);
   mark('present');
 }
+function readyRealm(){if(S.realmReady){S.lastRealm=Math.max(S.lastRealm,realmOf(meritOf(S.mine)));return;}S.lastRealm=realmOf(meritOf(S.mine));S.realmReady=true;}
+function checkRise(){
+  if(!S.realmReady)return;var r=realmOf(meritOf(S.mine));
+  if(r>S.lastRealm){S.lastRealm=r;logAndEmit('rise',{r:r});chime();burstPetals(70);floater(400,210,'突破！'+REALMS[r].n,'big');hint('恭喜突破至「'+REALMS[r].n+'」！全殿都收到了喜报。');}
+}
+function afterMerit(delay){queueSave(delay);checkRise();mark('merit','rank','actions');}
 function doIncense(){
   var now=Date.now(),left=INCENSE_CD-(now-lastRitual());
   if(left>0){hint('香火正旺，'+Math.ceil(left/1000)+' 秒后可以再上。');return;}
   S.mine.rituals=S.mine.rituals.filter(function(t){return now-t<BURN_MS;}).concat([now]).slice(-RITUAL_KEEP);
   S.mine.incense++;whoosh();setAct('incense');rebuildSticks();floater(400,190,'+3 功德');
-  hint('香已点燃。请到蒲团前叩首三次。');logAndEmit('incense');queueSave(250);mark('merit','actions');
+  hint('香已点燃。请到蒲团前叩首三次。');logAndEmit('incense');afterMerit(250);
 }
 function doBow(){
   if(S.bowLock)return;S.bowLock=true;setTimeout(function(){S.bowLock=false;},REDUCED?300:950);
-  var now=Date.now();if(now-S.bowAt>20000)S.bowStreak=0;S.bowAt=now;S.bowStreak++;
+  var now=Date.now();if(now-S.bowAt>20000)S.bowStreak=0;S.bowAt=now;S.bowStreak++;S.myLastBow=now;
   S.mine.bows++;bell();setAct('bow');emitEv('bow');
   restart($('#stageInner'),'bowing');restart($('#cushionBody'),'press');ripple();floater(400,512,'+1 功德');
+  var partner=null;S.otherBows.forEach(function(b){if(now-b.at<3000&&b.p!==S.pid)partner=b;});
+  if(partner)grantTongxin(partner.n);
   var n=S.bowStreak;
-  if(n>=3){hint('三叩首 · 礼成');S.bowStreak=0;S.bowDoneAt=now;logAndEmit('bow3');setTimeout(function(){if(Date.now()-S.bowDoneAt>=1300)hint('礼成。可以敲木鱼积攒功德，或者求一签。');},1500);}
+  if(n>=3){hint('三叩首 · 礼成');S.bowStreak=0;S.bowDoneAt=now;logAndEmit('bow3');setTimeout(function(){if(Date.now()-S.bowDoneAt>=1300)hint('礼成。可以撞钟、放天灯，或者求一签。');},1500);}
   else hint(n===1?'一叩首':'二叩首');
-  queueSave();mark('merit','actions');
+  afterMerit();
 }
-var muyuTimer=0;
-function doMuyu(){
-  S.mine.muyu++;tok();setAct('muyu');
+function grantTongxin(name){
+  var now=Date.now();if(now-S.lastBonusAt<3000)return;S.lastBonusAt=now;
+  S.mine.bonus+=5;logAndEmit('tongxin',{t:name});
+  ring(400,556,96,28,true);setTimeout(function(){ring(400,556,96,28,true);},220);floater(400,470,'同心叩首 +5','big');
+  toast('同心叩首！与 '+name+' 同时下拜，功德 +5');afterMerit();
+}
+var muyuTimer=0,TAPS=[];
+/* 连点器检测：返回判定理由，没问题返回 null。只看亲手敲的木鱼。 */
+function antiCheat(e){
+  var now=performance.now(),i,n;
+  TAPS.push({t:now,x:e&&typeof e.clientX==='number'?e.clientX:null,y:e&&typeof e.clientY==='number'?e.clientY:null,
+    touch:!!(e&&e.pointerType==='touch'),trusted:!(e&&e.isTrusted===false)});
+  if(TAPS.length>120)TAPS.shift();
+  if(!S.streakStart||now-S.lastTapPerf>2000){S.streakStart=now;S.streakTaps=0;}
+  S.lastTapPerf=now;S.streakTaps++;n=TAPS.length;
+  var untrusted=0;for(i=0;i<n;i++)if(!TAPS[i].trusted&&now-TAPS[i].t<10000)untrusted++;
+  if(untrusted>=3)return '脚本代点';
+  var in2=0;for(i=0;i<n;i++)if(now-TAPS[i].t<2000)in2++;
+  if(in2>=32)return '手速超凡，2 秒敲了 '+in2+' 下';
+  if(n>=41){var iv=[],sum=0;for(i=n-40;i<n;i++){var d=TAPS[i].t-TAPS[i-1].t;iv.push(d);sum+=d;}
+    var mean=sum/40;if(mean<300){var v=0;iv.forEach(function(x){v+=(x-mean)*(x-mean);});if(Math.sqrt(v/40)/mean<.025)return '节奏整齐得不像人';}}
+  if(n>=40){var l=TAPS.slice(-40),same=l.every(function(r){return r.touch&&r.x!==null&&r.x===l[0].x&&r.y===l[0].y;});
+    if(same&&(l[39].t-l[0].t)/39<350)return '触屏落点纹丝不动';}
+  var dur=now-S.streakStart;if(dur>8*60000&&S.streakTaps/(dur/1000)>5)return '连续八分钟不停手';
+  return null;
+}
+function curseFx(){restart($('#scene'),'cursed');restart($('#scene'),'shake');var a=ac();if(a)partials(a,73,[[1,.3,3.2],[1.06,.26,3],[2.13,.1,2.2],[2.9,.05,1.4]]);}
+function punish(why){
+  var now=Date.now(),lv=Math.min(S.mine.cheats,2),fine=[108,324,999][lv],ban=[60,180,600][lv],voided=Math.max(0,S.streakTaps-1);
+  S.mine.cheats++;S.mine.penalty+=fine+voided;S.mine.banUntil=now+ban*1000;
+  TAPS=[];S.streakStart=0;S.streakTaps=0;S.combo=0;
+  if(S.auto)setAuto(false);
+  S.lastRealm=realmOf(meritOf(S.mine));
+  logAndEmit('cheat',{c:fine+voided,t:why});curseFx();
+  $('#penReason').textContent='佛祖看出来了：'+why+'。';
+  var ul=$('#penList');ul.textContent='';
+  [['本轮连击作废',voided+' 下'],['另罚功德',String(fine)],['禅定罚坐',(ban>=60?ban/60+' 分钟':ban+' 秒')+'，期间木鱼不计功德']].forEach(function(p){var li=document.createElement('li');li.textContent=p[0]+'：'+p[1];ul.appendChild(li);});
+  $('#penNote').textContent='这是你第 '+S.mine.cheats+' 次走火入魔，'+(S.mine.cheats<3?'再犯罚得更重。':'已经是最重的一档。')+'全殿的人都看到了。';
+  openOverlay('#penaltyOverlay');
+  queueSave(200);mark('merit','rank','actions','present');
+}
+function doMuyu(auto,e){
+  var now=Date.now();
+  if(auto){tok(true);restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');floater(248+(Math.random()-.5)*34,326,'咚','other');return;}
+  if(S.mine.banUntil>now){tok(true);restart($('#muyuBody'),'knock');floater(248,326,'禅定中 · 不计功德','other');
+    hint('走火入魔，禅定罚坐中：还剩 '+Math.ceil((S.mine.banUntil-now)/1000)+' 秒，木鱼暂不计功德。');return;}
+  var why=antiCheat(e);if(why){punish(why);return;}
+  S.combo=now-S.lastTap<1200?S.combo+1:1;S.lastTap=now;
+  S.mine.muyu++;tok(false);setAct('muyu');
   restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');
-  floater(248+(Math.random()-.5)*34,326,'功德 +1');
+  floater(248+(Math.random()-.5)*34,326,S.combo>=5?'功德 +1 · 连击 ×'+S.combo:'功德 +1');
   S.muyuPending++;if(!muyuTimer)muyuTimer=setTimeout(function(){muyuTimer=0;var c=S.muyuPending;S.muyuPending=0;if(c)emitEv('muyu',{c:c});},600);
   if(S.mine.muyu%108===0){logAndEmit('muyu108',{c:S.mine.muyu});hint('木鱼又敲满一百零八下，功德记上了。');}
-  queueSave(1200);mark('merit');
+  afterMerit(1200);
+}
+function setAuto(on){S.auto=on;clearInterval(S.autoT);var b=$('#autoBtn');b.setAttribute('aria-pressed',on?'true':'false');b.textContent=on?'自动敲木鱼：开':'自动敲木鱼';
+  if(on&&!document.hidden)S.autoT=setInterval(function(){doMuyu(true);},1000);if(on)hint('木鱼自己敲起来了，每秒一下。自动敲只图个响，不计功德。');}
+function ringBell(){restart($('#bellBody'),'swing');ring(190,62,34,34,true);restart($('#scene'),'shake');}
+function doBell(){
+  var now=Date.now(),left=BELL_CD-(now-S.mine.lastBellAt);
+  if(left>0){hint('钟声还在回荡，'+Math.ceil(left/1000)+' 秒后再撞。');return;}
+  S.mine.lastBellAt=now;S.mine.bells++;bigBell();ringBell();setAct('bell');emitEv('bell');floater(190,110,'+2 功德');
+  hint('咚——钟声传遍全殿。');afterMerit();
+}
+function openLamp(){var left=LAMP_CD-(Date.now()-lastLamp());if(left>0){hint('上一盏天灯刚升空，'+Math.ceil(left/1000)+' 秒后再放。');return;}$('#lampText').value='';openOverlay('#lampOverlay');}
+function submitLamp(text){
+  text=txt(String(text||'').replace(/\s+/g,' '),16);if(!text){$('#lampText').focus();return;}
+  var now=Date.now();S.mine.lampList=S.mine.lampList.concat([{t:text,at:now}]).slice(-LAMP_KEEP);S.mine.lamps++;
+  addLantern(S.pid+':'+now,S.name||'你',text,now);$('#scene').dataset.lamps=LANTERNS.size;
+  whoosh();chime();setAct('lamp');logAndEmit('lamp',{t:text,at:now});closeOverlay();floater(400,260,'+9 功德');
+  hint('天灯升空了，会在大殿上空飘半个时辰。');afterMerit(200);
+}
+function openOffer(){var left=OFFER_CD-(Date.now()-(S.mine.offer?S.mine.offer.at:0));if(left>0){hint('供品刚摆上，'+Math.ceil(left/1000)+' 秒后可以换。');return;}openOverlay('#offerOverlay');}
+function placeOffer(k){
+  if(!OFFERS[k])return;var now=Date.now();S.mine.offer={k:k,at:now};S.mine.offers++;
+  bell();setAct('offer');logAndEmit('offer',{o:k});closeOverlay();renderOfferings();floater(k==='tea'?600:200,520,'+5 功德');
+  hint('供上一份'+OFFERS[k]+'，摆在供桌上三个时辰。');afterMerit(200);mark('offer');
+}
+function sendDm(text){
+  text=txt(String(text||'').replace(/\s+/g,' '),20);if(!text)return;
+  var now=Date.now();if(now-S.lastDm<DM_CD){hint('说慢一点，'+Math.ceil((DM_CD-(now-S.lastDm))/1000)+' 秒后再发。');return;}
+  S.lastDm=now;showDm(S.name||'你',text,true);emitEv('dm',{t:text});$('#dmText').value='';
 }
 function doSign(){
   var now=Date.now();
@@ -889,7 +1267,7 @@ function openSign(i,again){
   $('#signNo').textContent=s.n;$('#signLvl').textContent=lvlName(s);
   var poem=$('#signPoem');poem.textContent='';s.poem.forEach(function(l){var sp=document.createElement('span');sp.textContent=l;poem.appendChild(sp);});
   $('#signJie').textContent=s.jie;
-  $('#signNote').textContent=again?('一事一签。这是你刚才求得的签，'+Math.max(1,Math.ceil((SIGN_CD-(Date.now()-S.mine.lastSignAt))/1000))+' 秒后可以再求。'):'';
+  $('#signNote').textContent=again?('一事一签。这是你刚才求得的签，'+Math.max(1,Math.ceil((SIGN_CD-(Date.now()-S.mine.lastSignAt))/1000))+' 秒后可以再求。'):'签筒里共 '+SIGNS.length+' 支签。';
   openOverlay('#signOverlay');
 }
 function openWish(prefill){$('#wishText').value=typeof prefill==='string'?prefill:'';openOverlay('#wishOverlay');}
@@ -905,12 +1283,62 @@ function curStatus(){return S.status||DEFAULT_STATUS;}
 function isPassed(){return curStatus().manual==='passed';}
 function doVow(){
   if(S.mine.vowed){hint('你已经还过愿了，再撒一次花。');burstPetals(40);return;}
-  S.mine.vowed=true;bell();burstPetals(110);setAct('vow');logAndEmit('vow');queueSave(200);hint('还愿礼成，功德 +99。');mark('merit','actions');
+  S.mine.vowed=true;bell();burstPetals(110);setAct('vow');logAndEmit('vow');hint('还愿礼成，功德 +99。');afterMerit(200);
+}
+
+/* ---------- fortune & certificate ---------- */
+function fortune(){
+  var d=new Date(),day=ymdOf(d),rnd=mulberry(h32(S.pid+'|'+day));
+  var roll=rnd()*100,acc=0,level=LUCK[LUCK.length-1][0];for(var i=0;i<LUCK.length;i++){acc+=LUCK[i][1];if(roll<acc){level=LUCK[i][0];break;}}
+  function pick(pool,n,avoid){var out=[],guard=0;while(out.length<n&&guard++<200){var v=pool[Math.floor(rnd()*pool.length)];if(out.indexOf(v)<0&&(!avoid||avoid.indexOf(v)<0))out.push(v);}return out;}
+  var yi=pick(YI,3),ji=pick(JI,2,yi);
+  return {day:day,level:level,yi:yi,ji:ji,color:COLORS[Math.floor(rnd()*COLORS.length)],dir:DIRS[Math.floor(rnd()*DIRS.length)],hour:HOURS[Math.floor(rnd()*HOURS.length)],num:1+Math.floor(rnd()*108)};
+}
+function openFortune(){
+  var f=fortune();
+  $('#fDateLine').textContent=f.day+' · '+(S.name||'香客');$('#fLevel').textContent=f.level;
+  $('#fYi').textContent=f.yi.join('、');$('#fJi').textContent=f.ji.join('、');
+  $('#fColor').textContent=f.color;$('#fDir').textContent=f.dir;$('#fHour').textContent=f.hour;$('#fNum').textContent=f.num;
+  $('#fCopy').textContent='复制发群里';openOverlay('#fortuneOverlay');
+}
+function copyText(text,btn,okText){var done=function(){btn.textContent=okText;};try{navigator.clipboard.writeText(text).then(done,function(){btn.textContent='复制失败，请手动截图';});}catch(e){btn.textContent='复制失败，请手动截图';}}
+function copyFortune(){var f=fortune();copyText('【过审祈福殿 · 今日运势】'+(S.name||'香客')+' '+f.day+'：'+f.level+'｜宜：'+f.yi.join('、')+'｜忌：'+f.ji.join('、')+'｜幸运色：'+f.color+'｜吉方：'+f.dir+'｜吉时：'+f.hour+'｜幸运数：'+f.num,$('#fCopy'),'已复制');}
+function wrapText(g,text,x,y,maxW,lh){var line='',lines=[];Array.from(text).forEach(function(ch){if(g.measureText(line+ch).width>maxW&&line){lines.push(line);line=ch;}else line+=ch;});if(line)lines.push(line);lines.forEach(function(l,i){g.fillText(l,x,y+i*lh);});return y+lines.length*lh;}
+function drawCert(){
+  var c=document.createElement('canvas');c.width=900;c.height=1200;var g=c.getContext('2d');
+  var brush='"Ma Shan Zheng","STKaiti","KaiTi",serif',serif='"Noto Serif SC","Songti SC","SimSun",serif';
+  g.fillStyle='#efe6d2';g.fillRect(0,0,900,1200);
+  var rnd=mulberry(h32(S.pid));for(var i=0;i<2600;i++){g.fillStyle='rgba(120,90,50,'+(rnd()*.06)+')';g.fillRect(rnd()*900,rnd()*1200,1+rnd()*2,1+rnd()*2);}
+  var vg=g.createRadialGradient(450,600,300,450,600,780);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(90,60,30,.18)');g.fillStyle=vg;g.fillRect(0,0,900,1200);
+  g.strokeStyle='#9c2a20';g.lineWidth=8;g.strokeRect(34,34,832,1132);g.strokeStyle='#b8923f';g.lineWidth=2;g.strokeRect(52,52,796,1096);
+  [[52,52],[848,52],[52,1148],[848,1148]].forEach(function(p){g.fillStyle='#9c2a20';g.fillRect(p[0]-9,p[1]-9,18,18);});
+  g.textAlign='center';g.fillStyle='#7e2219';g.font='110px '+brush;g.fillText('功德证书',450,210);
+  g.fillStyle='#6f5f4f';g.font='32px '+serif;g.fillText('过审祈福殿 · 殿号 '+ROOM,450,268);
+  g.strokeStyle='rgba(156,42,32,.4)';g.lineWidth=1.5;g.beginPath();g.moveTo(160,300);g.lineTo(740,300);g.stroke();
+  var m=S.mine,merit=meritOf(S.mine),r=REALMS[realmOf(merit)];
+  g.textAlign='left';g.fillStyle='#2a211c';g.font='36px '+serif;
+  var y=380,body=['兹有香客「'+(S.name||'香客')+'」，',
+    '于过审祈福殿上香 '+m.incense+' 回、叩首 '+m.bows+' 次、敲木鱼 '+m.muyu+' 下、撞钟 '+m.bells+' 响、放天灯 '+m.lamps+' 盏、供奉 '+m.offers+' 回，同心叩首得功德 '+m.bonus+'。',
+    '累计功德 '+num(merit)+'，修为已至「'+r.n+'」。',
+    '特颁此证，以资褒扬。',
+    '愿《非常了不起的修仙模拟》早日过审，上架大卖！'];
+  body.forEach(function(p){y=wrapText(g,p,110,y,680,56)+14;});
+  g.textAlign='center';g.fillStyle='#9c2a20';g.font='150px '+brush;g.fillText(r.n,450,Math.min(y+170,980));
+  var d=new Date();g.textAlign='right';g.fillStyle='#4a3b30';g.font='30px '+serif;g.fillText('公元 '+d.getFullYear()+' 年 '+(d.getMonth()+1)+' 月 '+d.getDate()+' 日',790,1090);
+  g.save();g.translate(210,1030);g.rotate(-.08);g.fillStyle='rgba(176,40,30,.9)';g.fillRect(-78,-78,156,156);g.strokeStyle='#efe6d2';g.lineWidth=4;g.strokeRect(-68,-68,136,136);
+  g.fillStyle='#efe6d2';g.textAlign='center';g.textBaseline='middle';g.font='58px '+brush;g.fillText('过审',0,-30);g.fillText('祈福',0,34);g.restore();
+  return c.toDataURL('image/png');
+}
+function openCert(){
+  var img=$('#certImg');img.removeAttribute('src');openOverlay('#certOverlay');
+  var ready=document.fonts&&document.fonts.load?Promise.all([document.fonts.load('110px "Ma Shan Zheng"'),document.fonts.load('36px "Noto Serif SC"')]):Promise.resolve();
+  var timeout=new Promise(function(r){setTimeout(r,2500);});
+  Promise.race([ready,timeout]).catch(function(){}).then(function(){try{var url=drawCert();img.src=url;$('#certSave').href=url;}catch(e){hint('证书生成失败，稍后再试。');}});
 }
 
 /* ---------- overlays ---------- */
 var lastFocus=null;
-function openOverlay(sel){closeOverlay(true);var o=$(sel);lastFocus=document.activeElement;o.hidden=false;var f=o.querySelector('input:not([readonly]),button.btn-gold');if(f)f.focus();}
+function openOverlay(sel){closeOverlay(true);var o=$(sel);lastFocus=document.activeElement;o.hidden=false;var f=o.querySelector('input:not([readonly]),button.btn-gold,a.btn-gold');if(f)f.focus();}
 function closeOverlay(silent){var any=false;Array.prototype.forEach.call(document.querySelectorAll('.overlay'),function(o){if(!o.hidden)any=true;o.hidden=true;});if(any&&!silent&&lastFocus&&lastFocus.focus)lastFocus.focus();}
 function inviteUrl(){var base=location.href.split('#')[0];return ROOM===ROOM_DEFAULT?base:base+'#'+ROOM;}
 function openInvite(){var url=inviteUrl();$('#inviteLink').value=url;
@@ -921,32 +1349,36 @@ function copyInvite(){var url=$('#inviteLink').value;var done=function(){$('#cop
 function selectLink(){var i=$('#inviteLink');i.focus();i.select();try{if(document.execCommand('copy'))$('#copyBtn').textContent='已复制';else $('#copyBtn').textContent='请长按链接复制';}catch(e){$('#copyBtn').textContent='请长按链接复制';}}
 function openName(){$('#nameInput').value=S.name||('香客'+(1000+Math.floor(Math.random()*9000)));openOverlay('#nameOverlay');}
 function submitName(){var n=txt($('#nameInput').value.replace(/\s+/g,' '),12);if(!n){$('#nameInput').focus();return;}
-  S.name=n;LS.set('gs.name',n);closeOverlay();$('#nameShow').textContent=n;publishHere();queueSave(200);mark('present','wishes','ledger');hint('欢迎进殿，'+n+'。先上三炷香吧。');}
+  S.name=n;LS.set('gs.name',n);closeOverlay();$('#nameShow').textContent=n;publishHere();queueSave(200);mark('present','wishes','ledger','rank');hint('欢迎进殿，'+n+'。先上三炷香吧。');}
 
 /* ---------- rendering ---------- */
 var need={},rq=0;
 function mark(){for(var i=0;i<arguments.length;i++)need[arguments[i]]=1;if(!rq)rq=requestAnimationFrame(flushRender);}
 function flushRender(){rq=0;var n=need;need={};
-  if(n.merit)renderMerit();if(n.actions)renderActions();if(n.wishes)renderWishes();if(n.ledger)renderLedger();if(n.present||n.conn)renderPresent();if(n.status)renderStatus();}
+  if(n.merit)renderMerit();if(n.actions)renderActions();if(n.wishes)renderWishes();if(n.ledger)renderLedger();if(n.present||n.conn)renderPresent();if(n.status)renderStatus();if(n.offer)renderOfferings();if(n.rank)renderRank();}
 function renderMerit(){
   var total=0;entries().forEach(function(e){total+=meritOf(e[1]);});
   var i=0;while(i<MILESTONES.length-1&&total>=MILESTONES[i][0])i++;
   var next=MILESTONES[i],prev=i?MILESTONES[i-1][0]:0,pct=total>=next[0]?100:(total-prev)/(next[0]-prev)*100;
   $('#meritNum').textContent=num(total);$('#meritBar').style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
-  $('#meritNext').textContent=total>=MILESTONES[MILESTONES.length-1][0]?'功德圆满，审核必过':('距「'+next[1]+'」还差 '+num(next[0]-total));
-  $('#meritMine').textContent=num(meritOf(S.mine));$('#stickCount').textContent=num(STICKS.length);
-  $('#myStats').textContent='上香 '+num(S.mine.incense)+' · 叩首 '+num(S.mine.bows)+' · 木鱼 '+num(S.mine.muyu)+' · 求签 '+num(S.mine.signs);
+  $('#meritNext').textContent=total>=MILESTONES[MILESTONES.length-1][0]?'功德无量，审核必过':('距「'+next[1]+'」还差 '+num(next[0]-total));
+  var mine=meritOf(S.mine),ri=realmOf(mine);$('#meritMine').textContent=num(mine);
+  var mr=$('#myRealm');mr.textContent='';mr.appendChild(realmChip(ri));
+  $('#stickCount').textContent=num(STICKS.length);
+  var m=S.mine;$('#myStats').textContent='上香 '+num(m.incense)+' · 叩首 '+num(m.bows)+' · 木鱼 '+num(m.muyu)+' · 撞钟 '+num(m.bells)+' · 天灯 '+num(m.lamps)+' · 供品 '+num(m.offers)+(m.bonus?' · 同心 '+num(m.bonus):'');
 }
 function renderActions(){
-  var passed=isPassed(),w=$('#actWish');
+  var passed=isPassed(),w=$('#actWish'),now=Date.now();
   w.classList.toggle('primary',passed);$('#wishLbl').textContent=passed?'还愿':'许愿';
   $('#wishSub').textContent=passed?(S.mine.vowed?'已还愿':'功德 +99'):'挂许愿牌';
   w.querySelector('.ico-wish').toggleAttribute('hidden',passed);w.querySelector('.ico-vow').toggleAttribute('hidden',!passed);
-  var left=INCENSE_CD-(Date.now()-lastRitual());
-  $('#incenseSub').textContent=left>0?('香火正旺 '+Math.ceil(left/1000)+'s'):'点三炷';
-  $('#actIncense').setAttribute('aria-disabled',left>0?'true':'false');
-  var done=Date.now()-S.bowDoneAt<4000;
-  $('#bowSub').textContent=done?'礼成':(S.bowStreak===1?'一叩':S.bowStreak===2?'二叩':'三叩为礼');
+  var left=INCENSE_CD-(now-lastRitual());
+  $('#incenseSub').textContent=left>0?('香火正旺 '+Math.ceil(left/1000)+'s'):'点三炷';$('#actIncense').setAttribute('aria-disabled',left>0?'true':'false');
+  var done=now-S.bowDoneAt<4000;$('#bowSub').textContent=done?'礼成':(S.bowStreak===1?'一叩':S.bowStreak===2?'二叩':'三叩为礼');
+  var banLeft=S.mine.banUntil-now;$('#muyuSub').textContent=banLeft>0?('禅定 '+Math.ceil(banLeft/1000)+'s'):'功德 +1';$('#actMuyu').setAttribute('aria-disabled',banLeft>0?'true':'false');
+  var bl=BELL_CD-(now-S.mine.lastBellAt);$('#bellSub').textContent=bl>0?('余音 '+Math.ceil(bl/1000)+'s'):'全殿都听见';$('#actBell').setAttribute('aria-disabled',bl>0?'true':'false');
+  var ll=LAMP_CD-(now-lastLamp());$('#lampSub').textContent=ll>0?('升空中 '+Math.ceil(ll/1000)+'s'):'写下心愿';$('#actLamp').setAttribute('aria-disabled',ll>0?'true':'false');
+  var ol=OFFER_CD-(now-(S.mine.offer?S.mine.offer.at:0));$('#offerSub').textContent=ol>0?('已摆上 '+Math.ceil(ol/1000)+'s'):(S.mine.offer&&now-S.mine.offer.at<OFFER_MS?('换掉'+OFFERS[S.mine.offer.k]):'摆上供桌');
 }
 function renderWishes(){
   var list=[];
@@ -965,18 +1397,31 @@ function renderWishes(){
 }
 function renderLedger(){
   var items=[];
-  entries().forEach(function(e){var id=e[0],d=e[1];(d.log||[]).forEach(function(l){if(FEED_TEXT[l.k])items.push({n:id===S.pid?(S.name||'你'):d.n,k:l.k,at:l.at,no:l.no,t:l.t,c:l.c});});});
+  entries().forEach(function(e){var id=e[0],d=e[1];(d.log||[]).forEach(function(l){if(FEED_TEXT[l.k])items.push({n:id===S.pid?(S.name||'你'):d.n,k:l.k,at:l.at,no:l.no,t:l.t,c:l.c,r:l.r,o:l.o});});});
   items.sort(function(a,b){return b.at-a.at;});items=items.slice(0,FEED_LIMIT);
   var ol=$('#ledger');ol.textContent='';$('#ledgerEmpty').hidden=items.length>0;
   items.forEach(function(it){var li=document.createElement('li'),sp=document.createElement('span'),tm=document.createElement('time');
     sp.appendChild(nameEl(it.n));sp.appendChild(document.createTextNode(' '+FEED_TEXT[it.k](it)));tm.textContent=ago(it.at);
     li.appendChild(sp);li.appendChild(tm);ol.appendChild(li);});
 }
+function renderRank(){
+  var rows=entries().map(function(e){return {id:e[0],n:e[0]===S.pid?(S.name||'你'):e[1].n,m:meritOf(e[1]),x:cnt(e[1].cheats)};}).filter(function(r){return r.m>0||r.x>0||r.id===S.pid;});
+  rows.sort(function(a,b){return b.m-a.m;});
+  var ol=$('#rank');ol.textContent='';var shown=rows.slice(0,10),meIdx=-1;rows.forEach(function(r,i){if(r.id===S.pid)meIdx=i;});
+  if(meIdx>=10)shown.push(rows[meIdx]);
+  $('#rankEmpty').hidden=rows.some(function(r){return r.m>0;});
+  shown.forEach(function(r){var i=rows.indexOf(r),li=document.createElement('li');if(r.id===S.pid)li.className='me';
+    var no=document.createElement('span');no.className='no';no.textContent=i+1;
+    var who=document.createElement('span');who.className='who';var nm=document.createElement('span');nm.textContent=r.n+(r.id===S.pid?'（你）':'');who.appendChild(nm);who.appendChild(realmChip(realmOf(r.m)));
+    if(r.x>0){var bad=document.createElement('span');bad.className='realm badge-bad';bad.textContent='入魔×'+r.x;who.appendChild(bad);}
+    var pts=document.createElement('span');pts.className='pts';pts.textContent=num(r.m);
+    li.appendChild(no);li.appendChild(who);li.appendChild(pts);ol.appendChild(li);});
+}
 function renderPresent(){
   var now=Date.now(),byPid=new Map();
   S.here.forEach(function(h,tab){
     var age=now-h.at,fresh=age<90000&&age>-120000;
-    if(now-h.at>600000&&!S.cleared.has(tab)&&S.mq&&S.mq.connected()){S.cleared.add(tab);S.mq.publish(PREFIX+'h/'+tab,'',true);}
+    if(age>600000&&!S.cleared.has(tab)&&S.mq&&S.mq.connected()){S.cleared.add(tab);S.mq.publish(PREFIX+'h/'+tab,'',true);}
     if(!fresh||!h.p||h.p===S.pid)return;var prev=byPid.get(h.p);if(!prev||h.at>prev.at)byPid.set(h.p,h);
   });
   var list=[{p:S.pid,n:S.name||'你',act:S.myAct.act,at:S.myAct.at,me:true}];byPid.forEach(function(h){list.push(h);});
@@ -985,9 +1430,10 @@ function renderPresent(){
     var li=document.createElement('li');li.className='person'+(p.me?' me':'');
     var av=document.createElement('span');av.className='av';av.style.background='hsl('+hue(p.p)+' 55% 68%)';av.textContent=Array.from(p.n||'香')[0];
     var nm=document.createElement('span');nm.className='nm';nm.textContent=p.n||'香客';
-    var busy=p.act!=='idle'&&now-p.at<6500&&ACT_TEXT[p.act];
-    var d=document.createElement('span');d.className='doing'+(busy?' busy':'');d.textContent=(p.me?'你 · ':'')+(busy||'静坐');
-    li.appendChild(av);li.appendChild(nm);li.appendChild(d);box.appendChild(li);
+    var doc=p.me?meDoc():S.people.get(p.p),chip=realmChip(realmOf(doc?meritOf(doc):0));
+    var busy=p.act!=='idle'&&now-p.at<6500&&ACT_TEXT[p.act],banned=doc&&doc.banUntil>now;
+    var d=document.createElement('span');d.className='doing'+(banned?' banned':busy?' busy':'');d.textContent=(p.me?'你 · ':'')+(banned?'走火入魔 · 禅定罚坐':(busy||'静坐'));
+    li.appendChild(av);li.appendChild(nm);li.appendChild(chip);li.appendChild(d);box.appendChild(li);
   });
   var pill=$('#connPill');pill.dataset.conn=S.conn;
   $('#connText').textContent=S.conn==='online'?('联机中 · 殿中 '+list.length+' 人'):S.conn==='connecting'?'连接中…':'断线了，正在重连…';
@@ -1012,27 +1458,47 @@ function renderStatus(){
 }
 
 /* ---------- wiring ---------- */
+function scenePoint(e){var r=$('#scene').getBoundingClientRect();return {x:(e.clientX-r.left)/r.width*W,y:(e.clientY-r.top)/r.height*H};}
 function bind(){
   $('#actIncense').addEventListener('click',doIncense);
   $('#actBow').addEventListener('click',doBow);
-  $('#actMuyu').addEventListener('click',doMuyu);
+  $('#actMuyu').addEventListener('click',function(e){doMuyu(false,e);});
   $('#actSign').addEventListener('click',doSign);
   $('#actWish').addEventListener('click',function(){if(isPassed())doVow();else openWish();});
+  $('#actBell').addEventListener('click',doBell);
+  $('#actLamp').addEventListener('click',openLamp);
+  $('#actOffer').addEventListener('click',openOffer);
+  $('#actFortune').addEventListener('click',openFortune);
+  $('#actCert').addEventListener('click',openCert);
   $('#wishOpen2').addEventListener('click',function(){openWish();});
   $('#hotBurner').addEventListener('click',doIncense);
   $('#hotCushion').addEventListener('click',doBow);
   $('#hotSign').addEventListener('click',doSign);
-  $('#hotMuyu').addEventListener('pointerdown',function(e){e.preventDefault();doMuyu();});
+  $('#hotBell').addEventListener('click',doBell);
+  $('#hotMuyu').addEventListener('pointerdown',function(e){e.preventDefault();doMuyu(false,e);});
+  $('#scene').addEventListener('click',function(e){
+    if(e.target.closest&&e.target.closest('.hot'))return;var pt=scenePoint(e),best=null,bd=30*30;
+    LANTERNS.forEach(function(l){if(l.x==null)return;var dx=l.x-pt.x,dy=l.y-pt.y,d2=dx*dx+dy*dy;if(d2<bd){bd=d2;best=l;}});
+    if(best)toastWho(best.n,best.t?('的天灯：「'+best.t+'」'):'放的天灯');
+  });
   $('#soundBtn').addEventListener('click',toggleSound);
+  $('#ambBtn').addEventListener('click',function(){setAmb(!S.amb);});
+  $('#autoBtn').addEventListener('click',function(){setAuto(!S.auto);});
   $('#nameBtn').addEventListener('click',openName);
   $('#inviteBtn').addEventListener('click',openInvite);
   $('#copyBtn').addEventListener('click',copyInvite);
+  $('#fCopy').addEventListener('click',copyFortune);
   $('#nameForm').addEventListener('submit',function(e){e.preventDefault();submitName();});
   $('#wishForm').addEventListener('submit',function(e){e.preventDefault();submitWish($('#wishText').value);});
+  $('#lampForm').addEventListener('submit',function(e){e.preventDefault();submitLamp($('#lampText').value);});
+  $('#dmForm').addEventListener('submit',function(e){e.preventDefault();sendDm($('#dmText').value);});
   Array.prototype.forEach.call(document.querySelectorAll('.overlay'),function(o){o.addEventListener('click',function(e){if(o.id==='nameOverlay'&&!S.name)return;if(e.target===o||e.target.closest('[data-close]'))closeOverlay();});});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!(!S.name&&!$('#nameOverlay').hidden))closeOverlay();});
-  [['#presets',function(t){$('#wishText').value=t;$('#wishText').focus();}],['#presets2',function(t){openWish(t);}]].forEach(function(p){
-    var box=$(p[0]);PRESETS.forEach(function(t){var b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',function(){p[1](t);});box.appendChild(b);});});
+  [['#presets',PRESETS,function(t){$('#wishText').value=t;$('#wishText').focus();}],['#presets2',PRESETS,function(t){openWish(t);}],['#lampPresets',LAMP_PRESETS,function(t){$('#lampText').value=t;$('#lampText').focus();}]].forEach(function(p){
+    var box=$(p[0]);p[1].forEach(function(t){var b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',function(){p[2](t);});box.appendChild(b);});});
+  var grid=$('#offerGrid');Object.keys(OFFERS).forEach(function(k){var b=document.createElement('button');b.type='button';b.dataset.k=k;
+    b.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#o-'+k+'"></use></svg>';var s=document.createElement('span');s.textContent=OFFERS[k];b.appendChild(s);
+    b.addEventListener('click',function(){placeOffer(k);});grid.appendChild(b);});
   $('#statusForm').addEventListener('submit',function(e){
     e.preventDefault();var msg=$('#fMsg');
     if(!S.mq||!S.mq.connected()){msg.textContent='还没连上，稍后再存';return;}
@@ -1043,8 +1509,8 @@ function bind(){
     S.status=cleanStatus(b);msg.textContent='已保存';setTimeout(function(){$('#statusEdit').open=false;msg.textContent='';mark('status');},900);
   });
   document.addEventListener('visibilitychange',function(){
-    if(document.hidden){cancelAnimationFrame(raf);raf=0;}
-    else{if(!raf){lastT=0;raf=requestAnimationFrame(frame);}if(!S.mq||!S.mq.connected()){S.retry=0;connect();}else publishHere();}
+    if(document.hidden){cancelAnimationFrame(raf);raf=0;clearInterval(S.autoT);}
+    else{if(!raf){lastT=0;raf=requestAnimationFrame(frame);}if(S.auto)setAuto(true);if(!S.mq||!S.mq.connected()){S.retry=0;connect();}else publishHere();}
   });
   window.addEventListener('online',function(){if(!S.mq||!S.mq.connected()){S.retry=0;connect();}});
   window.addEventListener('pagehide',function(){try{if(S.mq&&S.mq.connected()){publishMine();S.mq.publish(PREFIX+'h/'+S.tab,'',true);S.mq.end();}}catch(e){}});
@@ -1054,13 +1520,14 @@ function tick(){
   var s=Math.floor(Date.now()/1000);
   if(s%3===0)mark('present');
   if(s%25===0)publishHere();
-  if(s%30===0)mark('wishes','ledger','status');
+  if(s%30===0)mark('wishes','ledger','status','offer');
 }
 
 buildRays();loadLocal();bind();paintSound();
+S.lastRealm=realmOf(meritOf(S.mine));setTimeout(function(){if(!S.realmReady)readyRealm();},6000);
 $('#nameShow').textContent=S.name||'未留名';
 $('#roomLine').textContent='殿号 '+ROOM+' · 联机服务：EMQX 公共 MQTT 服务器（消息公开，请勿写隐私）';
-rebuildSticks();mark('merit','actions','wishes','ledger','present','status','conn');
+rebuildSticks();rebuildLanterns();mark('merit','actions','wishes','ledger','present','status','conn','offer','rank');
 raf=requestAnimationFrame(frame);
 setInterval(tick,1000);
 connect();
