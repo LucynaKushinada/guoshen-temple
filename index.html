@@ -746,7 +746,7 @@ button{touch-action:manipulation}
     <p class="desc" id="penReason"></p>
     <ul class="pen-list" id="penList"></ul>
     <p class="desc" id="penNote"></p>
-    <div class="row"><button type="button" class="btn-gold" data-close>弟子知错</button></div>
+    <div class="row"><button type="button" class="btn-gold" id="penOk" data-close>弟子知错</button></div>
   </div>
 </div>
 <div class="overlay" id="inviteOverlay" hidden role="dialog" aria-modal="true" aria-labelledby="inviteTitle">
@@ -843,7 +843,7 @@ var RITUAL_KEEP=6,WISH_KEEP=5,LOG_KEEP=16,FEED_LIMIT=40,LAMP_KEEP=3;
 var FIELDS=['mu','in','bo','be','la','of','sw','fw','bn'];
 var FNAME={mu:'木鱼',in:'上香',bo:'叩首',be:'撞钟',la:'天灯',of:'供品',sw:'御剑',fw:'烟花',bn:'同心功德'};
 var CAPS={mu:2000,in:48,bo:300,be:60,la:12,of:12,sw:30,fw:30,bn:100};
-var RATE={mu:[16,40],in:[1/30,2],bo:[1.1,5],be:[1/8,2],la:[1/60,2],of:[1/60,2],sw:[1/20,2],fw:[1/20,2],bn:[5/3,10]};
+var RATE={mu:[20,60],in:[1/30,2],bo:[1.1,5],be:[1/8,2],la:[1/60,2],of:[1/60,2],sw:[1/20,2],fw:[1/20,2],bn:[5/3,10]};
 var WEIGHT={mu:1,in:3,bo:1,be:2,la:9,of:5,sw:3,fw:2,bn:1};
 var DAY_CAP=(function(){var s=0;FIELDS.forEach(function(f){s+=CAPS[f]*WEIGHT[f];});return s;})();
 var MILESTONES=[[108,'小有功德'],[1080,'功德深厚'],[3600,'福慧双修'],[9999,'功德圆满'],[99999,'功德无量']];
@@ -886,7 +886,10 @@ var SIGNS=[
 var PRESETS=['愿网易人审早日通过','愿手机自测早日现身','愿炼气篇上架大卖','愿再也不撞 UUID','愿玩家都玩得开心'];
 var LAMP_PRESETS=['愿人审早过','愿自测现身','愿上架大卖','愿永无 bug','愿好评如潮'];
 var ACT_TEXT={incense:'上香中',bow:'叩首中',muyu:'敲木鱼',sign:'求签中',wish:'许愿中',vow:'还愿中',bell:'撞钟中',lamp:'放天灯',offer:'摆供品',sword:'御剑中',fw:'放烟花'};
-var LOG_KINDS={incense:1,bow3:1,muyu108:1,sign:1,wish:1,vow:1,lamp:1,offer:1,rise:1,tongxin:1,cheat:1,sword:1,fw:1};
+var LOG_KINDS={incense:1,bow3:1,muyu108:1,sign:1,wish:1,vow:1,lamp:1,offer:1,rise:1,tongxin:1,cheat:1,sword:1,fw:1,pardon:1};
+/* v3.0 的推测性连点规则误伤过真人：这些理由的旧处罚一律撤销 */
+var AMNESTY_ID=1,OLD_SOFT=['节奏整齐得不像人','触屏落点纹丝不动','连续五分钟不停手','页面在后台还在敲'];
+function softOld(t){return OLD_SOFT.indexOf(t)>=0||/^手速超凡/.test(t||'');}
 var FEED_TEXT={
   incense:function(){return '上了三炷香';},
   bow3:function(){return '行三叩首礼';},
@@ -900,7 +903,8 @@ var FEED_TEXT={
   tongxin:function(it){return '与 '+(it.t||'同道')+' 同心叩首';},
   cheat:function(it){return '用连点器被抓（'+(it.t||'连点器')+'），天雷劈下'+(it.c<0?'，逐出山门':'，功德 -'+num(it.c));},
   sword:function(){return '御剑绕殿一周';},
-  fw:function(){return '放了一场烟花';}
+  fw:function(){return '放了一场烟花';},
+  pardon:function(){return '之前的连点判定是误判，处罚已撤销，功德恢复';}
 };
 var LUCK=[['大吉',15],['中吉',30],['小吉',25],['吉',20],['末吉',10]];
 var YI=['提审','修 bug','看站内信','备份工程','写注释','敲木鱼','早点睡','喝奶茶','找人帮测','合并分支','整理贴图','升版本号','摸鱼十分钟','给队友点奶茶','更新手札','调数值','撞钟','御剑'];
@@ -996,9 +1000,9 @@ function meritFromTot(tot){var s=0;FIELDS.forEach(function(f){s+=tot[f]*WEIGHT[f
 /* ================= state ================= */
 var S={name:'',tab:rid(8),mq:null,conn:'connecting',synced:false,retry:0,retryT:0,dirty:false,passive:false,
   docs:new Map(),here:new Map(),status:null,statusEnv:'',frauds:new Map(),proofs:new Map(),cleared:new Set(),struck:0,
-  mine:{days:{},penalty:0,cheats:0,expelled:false,banUntil:0,vowed:false,rituals:[],wishes:[],lampList:[],offer:null,log:[],lastSignAt:0,lastSignNo:-1,lastBellAt:0,lastSwordAt:0,lastFwAt:0},
+  mine:{days:{},penalty:0,cheats:0,expelled:false,banUntil:0,vowed:false,pardon:0,rituals:[],wishes:[],lampList:[],offer:null,log:[],lastSignAt:0,lastSignNo:-1,lastBellAt:0,lastSwordAt:0,lastFwAt:0},
   removed:new Set(),bowStreak:0,bowAt:0,bowDoneAt:0,bowLock:false,myAct:{act:'idle',at:0},muyuPending:0,combo:0,lastTap:0,
-  streakStart:0,streakTaps:0,lastTapPerf:0,otherBows:[],myLastBow:0,lastBonusAt:0,lastDm:0,realmReady:false,lastRealm:0,
+  suspectAt:0,pardoned:0,otherBows:[],myLastBow:0,lastBonusAt:0,lastDm:0,realmReady:false,lastRealm:0,
   auto:false,autoT:0,amb:false,skyMode:'auto',phase:'',totalPrimed:false,lastTotal:0,celebrated:{},auraUntil:0,
   throttle:new Map(),sawPassed:false,statusPrimed:false,sound:LS.get('gs.sound',true)!==false,
   stat:{strikes:0,trib:0,swords:0,fw:0,milestones:0,frauds:0}};
@@ -1241,31 +1245,49 @@ function myMerit(){if(S.mine.expelled||S.frauds.has(ID.pid))return 0;return Math
 function todayMerit(){var b=S.mine.days[todayKey()];return b?meritFromTot(b):0;}
 function meDoc(){var m=S.mine;return {pid:ID.pid,n:S.name||'香客',at:Date.now(),days:m.days,penalty:m.penalty,cheats:m.cheats,expelled:m.expelled,banUntil:m.banUntil,vowed:m.vowed,rituals:m.rituals,wishes:m.wishes,lampList:m.lampList,offer:m.offer,log:m.log};}
 function myBody(){var m=S.mine,now=Date.now(),days={};Object.keys(m.days).sort().slice(-400).forEach(function(k){if(k>=SEASON_DAY)days[k]=m.days[k];});
-  return {pid:ID.pid,n:S.name||'香客',at:now,days:days,penalty:cnt(m.penalty),cheats:cnt(m.cheats),expelled:!!m.expelled,banUntil:tstamp(m.banUntil),vowed:!!m.vowed,
+  return {pid:ID.pid,n:S.name||'香客',at:now,days:days,penalty:cnt(m.penalty),cheats:cnt(m.cheats),expelled:!!m.expelled,banUntil:tstamp(m.banUntil),vowed:!!m.vowed,pardon:cnt(m.pardon),
     rituals:m.rituals.filter(function(t){return now-t<BURN_MS;}).slice(-RITUAL_KEEP),wishes:m.wishes.slice(0,WISH_KEEP),lampList:m.lampList.filter(function(l){return now-l.at<LAMP_MS;}).slice(-LAMP_KEEP),
     offer:m.offer&&now-m.offer.at<OFFER_MS?m.offer:null,log:m.log.slice(-LOG_KEEP),lastSignAt:m.lastSignAt,lastSignNo:m.lastSignNo,lastBellAt:m.lastBellAt,lastSwordAt:m.lastSwordAt,lastFwAt:m.lastFwAt};}
 function saveLocal(){LS.set('gs.mine3.'+ROOM,S.mine);}
 function loadLocal(){var m=LS.get('gs.mine3.'+ROOM,null);if(m&&typeof m==='object'){
   if(m.days&&typeof m.days==='object')Object.keys(m.days).forEach(function(k){if(/^\d{4}-\d{2}-\d{2}$/.test(k)&&k>=SEASON_DAY){var b=emptyDay();FIELDS.forEach(function(f){b[f]=Math.min(CAPS[f],cnt(m.days[k][f]));});S.mine.days[k]=b;}});
-  ['penalty','cheats'].forEach(function(k){S.mine[k]=cnt(m[k]);});S.mine.expelled=!!m.expelled;S.mine.banUntil=tstamp(m.banUntil);S.mine.vowed=!!m.vowed;
+  ['penalty','cheats','pardon'].forEach(function(k){S.mine[k]=cnt(m[k]);});S.mine.expelled=!!m.expelled;S.mine.banUntil=tstamp(m.banUntil);S.mine.vowed=!!m.vowed;
   ['lastSignAt','lastBellAt','lastSwordAt','lastFwAt'].forEach(function(k){S.mine[k]=tstamp(m[k]);});S.mine.lastSignNo=Number.isInteger(m.lastSignNo)?m.lastSignNo:-1;
   if(Array.isArray(m.rituals))S.mine.rituals=m.rituals.map(tstamp).filter(Boolean).slice(-RITUAL_KEEP);
   if(Array.isArray(m.wishes))S.mine.wishes=m.wishes.filter(function(w){return w&&typeof w.t==='string';}).map(function(w){return {t:txt(w.t,30),at:tstamp(w.at)};}).slice(0,WISH_KEEP);
   if(Array.isArray(m.lampList))S.mine.lampList=m.lampList.filter(function(l){return l&&tstamp(l.at);}).map(function(l){return {t:txt(l.t,16),at:tstamp(l.at)};}).slice(-LAMP_KEEP);
   if(m.offer&&OFFERS[m.offer.k])S.mine.offer={k:m.offer.k,at:tstamp(m.offer.at)};
   if(Array.isArray(m.log))S.mine.log=m.log.filter(function(l){return l&&LOG_KINDS[l.k];}).slice(-LOG_KEEP);}}
+function applyAmnesty(){var m=S.mine;if(cnt(m.pardon)>=AMNESTY_ID)return;
+  var pen=cnt(m.penalty),ch=cnt(m.cheats),ex=!!m.expelled,a=amnesty(m,m.log);
+  m.penalty=a.penalty;m.cheats=a.cheats;m.expelled=a.expelled;m.banUntil=a.banUntil;m.log=a.log;m.pardon=AMNESTY_ID;
+  if(!(a.penalty<pen||a.cheats<ch||(ex&&!a.expelled)))return;
+  var freed=pen-a.penalty;S.pardoned=Math.max(1,freed);m.log.push({k:'pardon',at:Date.now(),no:-1,t:'',c:freed,r:-1,o:''});m.log=m.log.slice(-LOG_KEEP);saveLocal();
+  setTimeout(function(){showBanner('天道赦免','误判已撤销');toast('天道赦免：之前的连点判定是误判，处罚已撤销'+(freed>0?'，功德 +'+num(freed)+' 已恢复':'')+'。');},900);}
 function mergeMine(d){
   var m=S.mine;if(d.days&&typeof d.days==='object')Object.keys(d.days).forEach(function(k){if(!/^\d{4}-\d{2}-\d{2}$/.test(k)||k<SEASON_DAY)return;var b=m.days[k]||(m.days[k]=emptyDay());FIELDS.forEach(function(f){var v=cnt(d.days[k][f]);if(v>b[f]&&v<=CAPS[f])b[f]=v;});});
-  if(cnt(d.penalty)>m.penalty)m.penalty=cnt(d.penalty);if(cnt(d.cheats)>m.cheats)m.cheats=cnt(d.cheats);if(d.expelled)m.expelled=true;if(tstamp(d.banUntil)>m.banUntil)m.banUntil=tstamp(d.banUntil);if(d.vowed)m.vowed=true;
+  if(cnt(d.pardon)>=cnt(m.pardon)){ /* 赦免前的旧存档不再把已撤销的处罚带回来 */
+    if(cnt(d.penalty)>m.penalty)m.penalty=cnt(d.penalty);if(cnt(d.cheats)>m.cheats)m.cheats=cnt(d.cheats);if(d.expelled)m.expelled=true;if(tstamp(d.banUntil)>m.banUntil)m.banUntil=tstamp(d.banUntil);}
+  if(d.vowed)m.vowed=true;
   ['lastSignAt','lastBellAt','lastSwordAt','lastFwAt'].forEach(function(k){if(tstamp(d[k])>m[k])m[k]=tstamp(d[k]);});}
 
 /* ================= people (verified docs) ================= */
-function cleanDoc(d){return {pid:d.pid,n:txt(d.n,12)||'香客',at:tstamp(d.at),days:d.days,penalty:cnt(d.penalty),cheats:cnt(d.cheats),expelled:!!d.expelled,banUntil:tstamp(d.banUntil),vowed:!!d.vowed,
+/* 没带赦免标记的旧存档：连点处罚只按日志里还在的铁证（脚本代点）重算，推测性判定的罚没一律作废 */
+function amnesty(d,log){
+  if(cnt(d.pardon)>=AMNESTY_ID)return {penalty:cnt(d.penalty),cheats:cnt(d.cheats),expelled:!!d.expelled,banUntil:tstamp(d.banUntil),log:log};
+  var keep=log.filter(function(l){return !(l.k==='cheat'&&softOld(l.t));}),pen=0,ex=false,ban=0,hard=0;
+  keep.forEach(function(l){if(l.k!=='cheat')return;hard++;if(Number(l.c)<0)ex=true;else{pen+=cnt(l.c);ban=Math.max(ban,tstamp(l.at)+10*60000);}});
+  return {penalty:pen,cheats:hard,expelled:ex,banUntil:ex?tstamp(d.banUntil):ban,log:keep};
+}
+function cleanDoc(d){
+  var log=Array.isArray(d.log)?d.log.slice(-LOG_KEEP).filter(function(l){return l&&LOG_KINDS[l.k];}).map(function(l){return {k:l.k,at:tstamp(l.at),no:Number.isInteger(l.no)?l.no:-1,t:txt(l.t,30),c:Number(l.c)||0,r:Number.isInteger(l.r)?l.r:-1,o:OFFERS[l.o]?l.o:''};}):[],
+    a=amnesty(d,log);
+  return {pid:d.pid,n:txt(d.n,12)||'香客',at:tstamp(d.at),days:d.days,penalty:a.penalty,cheats:a.cheats,expelled:a.expelled,banUntil:a.banUntil,vowed:!!d.vowed,
   rituals:Array.isArray(d.rituals)?d.rituals.slice(-RITUAL_KEEP).map(tstamp).filter(Boolean):[],
   wishes:Array.isArray(d.wishes)?d.wishes.slice(0,WISH_KEEP).filter(function(w){return w&&typeof w.t==='string';}).map(function(w){return {t:txt(w.t,30),at:tstamp(w.at)};}):[],
   lampList:Array.isArray(d.lampList)?d.lampList.slice(-LAMP_KEEP).filter(function(l){return l&&tstamp(l.at);}).map(function(l){return {t:txt(l.t,16),at:tstamp(l.at)};}):[],
   offer:d.offer&&OFFERS[d.offer.k]&&tstamp(d.offer.at)?{k:d.offer.k,at:tstamp(d.offer.at)}:null,
-  log:Array.isArray(d.log)?d.log.slice(-LOG_KEEP).filter(function(l){return l&&LOG_KINDS[l.k];}).map(function(l){return {k:l.k,at:tstamp(l.at),no:Number.isInteger(l.no)?l.no:-1,t:txt(l.t,30),c:Number(l.c)||0,r:Number.isInteger(l.r)?l.r:-1,o:OFFERS[l.o]?l.o:''};}):[]};}
+  log:a.log};}
 function entries(){
   var out=[],me=false;
   S.docs.forEach(function(x,pid){
@@ -1329,7 +1351,8 @@ function connect(){
   if(S.mq){var old=S.mq;S.mq=null;try{old.end();}catch(e){}}
   var mq=MiniMqtt(BROKER,{clientId:'gs_'+(ID.pid||'anon').slice(0,8)+'_'+rid(6),keepalive:45,will:{topic:PREFIX+'h/'+S.tab,payload:'',retain:true},
     onConnect:function(){if(S.mq!==mq)return;S.retry=0;setConn('online');mq.subscribe(PREFIX+'#');publishHere();
-      setTimeout(function(){if(S.mq!==mq)return;S.synced=true;S.dirty=true;publishMine();readyRealm();setTimeout(function(){S.totalPrimed=true;},2500);},1800);},
+      setTimeout(function(){if(S.mq!==mq)return;S.synced=true;S.dirty=true;publishMine();readyRealm();setTimeout(function(){S.totalPrimed=true;},2500);
+        if(S.pardoned){emitEv('pardon',{c:S.pardoned});S.pardoned=0;}},1800);},
     onMessage:onMsg,onClose:function(){if(S.mq!==mq)return;S.synced=false;setConn('offline');scheduleRetry();}});
   S.mq=mq;
 }
@@ -1376,42 +1399,48 @@ function onEvent(ev,pid){
   else if(k==='rise'){var r=Number.isInteger(ev.r)?ev.r:-1;if(REALMS[r]){playTribulation(name,r);toastWho(name,'渡劫成功，突破至「'+REALMS[r].n+'」！');}}
   else if(k==='sword'){launchSword();if(throttled('sword'+pid,5000))toastWho(name,'御剑绕殿一周');}
   else if(k==='fw'){fireworksShow(6);if(throttled('fw'+pid,5000))toastWho(name,'放了一场烟花');}
+  else if(k==='pardon')toastWho(name,FEED_TEXT.pardon());
   else if(k==='cheat'){var why=txt(ev.t,30);strike();restart($('#scene'),'cursed');showBanner(name+' 用连点器被抓',ev.x?'逐出山门':'天雷劈下',true);
     toastWho(name,'用连点器被抓（'+(why||'连点器')+'），天雷劈下'+(ev.x?'，逐出山门！':'，功德 -'+num(ev.c)),true);}
 }
 
-/* ================= anti-clicker (strict) ================= */
-var TAPS=[];
+/* ================= anti-clicker =================
+   脚本代点（isTrusted=false）是铁证，当场处罚。其余几条是统计推测：门槛定在真人做不到的地方，
+   计时用事件自带的时间戳（手机上不受屏幕刷新对齐的影响），而且第一次只警告，10 分钟内再犯才处罚。 */
+var TAPS=[],WARN_MS=10*60000;
 function antiCheat(e){
-  var now=performance.now(),i,n;
-  if(document.hidden)return '页面在后台还在敲';
-  TAPS.push({t:now,x:e&&typeof e.clientX==='number'?e.clientX:null,y:e&&typeof e.clientY==='number'?e.clientY:null,touch:!!(e&&e.pointerType==='touch'),trusted:!(e&&e.isTrusted===false)});
-  if(TAPS.length>120)TAPS.shift();
-  if(!S.streakStart||now-S.lastTapPerf>2000){S.streakStart=now;S.streakTaps=0;}
-  S.lastTapPerf=now;S.streakTaps++;n=TAPS.length;
-  var untrusted=0;for(i=0;i<n;i++)if(!TAPS[i].trusted&&now-TAPS[i].t<10000)untrusted++;
-  if(untrusted>=2)return '脚本代点';
-  var in2=0;for(i=0;i<n;i++)if(now-TAPS[i].t<2000)in2++;
-  if(in2>=28)return '手速超凡，2 秒敲了 '+in2+' 下';
-  if(n>=31){var iv=[],sum=0;for(i=n-30;i<n;i++){var d=TAPS[i].t-TAPS[i-1].t;iv.push(d);sum+=d;}var mean=sum/30;
-    if(mean<350){var v=0;iv.forEach(function(x){v+=(x-mean)*(x-mean);});if(Math.sqrt(v/30)/mean<.04)return '节奏整齐得不像人';}}
-  if(n>=30){var l=TAPS.slice(-30),same=l.every(function(r){return r.touch&&r.x!==null&&r.x===l[0].x&&r.y===l[0].y;});if(same&&(l[29].t-l[0].t)/29<400)return '触屏落点纹丝不动';}
-  var dur=now-S.streakStart;if(dur>5*60000&&S.streakTaps/(dur/1000)>4)return '连续五分钟不停手';
+  var now=performance.now(),t=e&&e.timeStamp>0&&Math.abs(now-e.timeStamp)<60000?e.timeStamp:now,i,n;
+  TAPS.push({t:t,x:e&&typeof e.clientX==='number'?e.clientX:null,y:e&&typeof e.clientY==='number'?e.clientY:null,touch:!!(e&&e.pointerType==='touch'),trusted:!(e&&e.isTrusted===false)});
+  if(TAPS.length>80)TAPS.shift();n=TAPS.length;
+  var untrusted=0;for(i=0;i<n;i++)if(!TAPS[i].trusted&&Math.abs(t-TAPS[i].t)<10000)untrusted++;
+  if(untrusted>=2)return {why:'脚本代点',hard:true};
+  var in2=0;for(i=0;i<n;i++)if(t-TAPS[i].t>=0&&t-TAPS[i].t<2000)in2++;
+  if(in2>=36)return {why:'手速远超常人：2 秒敲了 '+in2+' 下'};
+  if(n>=61){var sum=0,v=0,mean;for(i=n-60;i<n;i++)sum+=TAPS[i].t-TAPS[i-1].t;mean=sum/60;
+    if(mean>0&&mean<300){for(i=n-60;i<n;i++){var d=TAPS[i].t-TAPS[i-1].t-mean;v+=d*d;}if(Math.sqrt(v/60)/mean<.008)return {why:'节奏机械般精准：连续 60 下间隔分毫不差'};}}
+  if(n>=50){var l=TAPS.slice(-50),same=l.every(function(r){return r.touch&&r.x!==null&&r.x===l[0].x&&r.y===l[0].y;});if(same&&(l[49].t-l[0].t)/49<300)return {why:'触屏落点分毫不差：连续 50 下同一个像素'};}
   return null;
 }
-function punish(why){
-  var now=Date.now();S.mine.cheats++;var second=S.mine.cheats>=2,tm=todayMerit(),fine=tm+999;
+function penOverlay(title,ok,reason,rows,note){$('#penTitle').textContent=title;$('#penOk').textContent=ok;$('#penReason').textContent=reason;
+  var ul=$('#penList');ul.textContent='';rows.forEach(function(p){var li=document.createElement('li');li.textContent=p[0]+'：'+p[1];ul.appendChild(li);});
+  $('#penNote').textContent=note;openOverlay('#penaltyOverlay');}
+function warnCheat(why){S.suspectAt=Date.now();TAPS=[];S.combo=0;
+  tok(true);restart($('#muyuBody'),'knock');floater(248,326,'这一下不计功德','bad');showBanner('天道示警','慢一点',true);
+  hint('佛祖起了疑心（'+why+'）。这次只是警告，十分钟内再犯才会处罚。');
+  penOverlay('天道示警','知道了','佛祖起了疑心（'+why+'）。也可能是误会，所以这次只警告，不罚功德，也不会通报。',
+    [['这一下','不计功德'],['十分钟内再犯','天雷劈下，全殿通报，罚没当天功德']],'正常敲就好：慢一点，别用连点器。');}
+function punish(why,warned){
+  var now=Date.now();S.mine.cheats++;S.suspectAt=0;var second=S.mine.cheats>=2,tm=todayMerit(),fine=tm+999;
   if(second){S.mine.expelled=true;var eod=new Date();eod.setHours(23,59,59,999);S.mine.banUntil=eod.getTime();}
   else{S.mine.penalty+=fine;S.mine.banUntil=now+10*60000;}
-  TAPS=[];S.streakStart=0;S.streakTaps=0;S.combo=0;if(S.auto)setAuto(false);
+  TAPS=[];S.combo=0;if(S.auto)setAuto(false);
   S.lastRealm=realmOf(myMerit());
   logAndEmit('cheat',{c:second?-1:fine,t:why,x:second?1:0});
   strike();restart($('#scene'),'cursed');showBanner('天道示警',second?'逐出山门':'天雷劈下',true);
-  $('#penReason').textContent='佛祖看出来了：'+why+'。全殿的人都看到了这道天雷。';
-  var ul=$('#penList');ul.textContent='';
-  (second?[['二度作弊','逐出山门，本季功德全部作废'],['禅定罚坐','到今天结束']]:[['今日功德作废',num(tm)],['另罚功德','999'],['禅定罚坐','10 分钟，期间木鱼不计功德']]).forEach(function(p){var li=document.createElement('li');li.textContent=p[0]+'：'+p[1];ul.appendChild(li);});
-  $('#penNote').textContent=second?'你已被逐出山门，功德榜上会一直挂着记录。':'这是第一次。再被抓到一次，直接逐出山门。';
-  openOverlay('#penaltyOverlay');queueSave(200);mark('merit','rank','actions','present');
+  penOverlay('天雷劈下','弟子知错',(warned?'刚刚已经示警过，又一次':'佛祖看出来了')+'（'+why+'）。全殿的人都看到了这道天雷。',
+    second?[['二度作弊','逐出山门，本季功德全部作废'],['禅定罚坐','到今天结束']]:[['今日功德作废',num(tm)],['另罚功德','999'],['禅定罚坐','10 分钟，期间木鱼不计功德']],
+    second?'你已被逐出山门，功德榜上会一直挂着记录。':'这是第一次。再被抓到一次，直接逐出山门。');
+  queueSave(200);mark('merit','rank','actions','present');
 }
 
 /* ================= actions ================= */
@@ -1437,7 +1466,7 @@ function doMuyu(auto,e){var now=Date.now();
   if(auto){tok(true);restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');floater(248+(Math.random()-.5)*34,326,'咚','other');return;}
   if(blocked())return;
   if(S.mine.banUntil>now){tok(true);restart($('#muyuBody'),'knock');floater(248,326,'禅定中 · 不计功德','bad');hint('禅定罚坐中：还剩 '+Math.ceil((S.mine.banUntil-now)/1000)+' 秒，木鱼暂不计功德。');return;}
-  var why=antiCheat(e);if(why){punish(why);return;}
+  var hit=antiCheat(e);if(hit){var warned=now-S.suspectAt<WARN_MS;if(hit.hard||warned)punish(hit.why,!hit.hard&&warned);else warnCheat(hit.why);return;}
   S.combo=now-S.lastTap<1200?S.combo+1:1;S.lastTap=now;
   var got=earn('mu',1);tok(false);setAct('muyu');restart($('#muyuBody'),'knock');restart($('#mallet'),'knock');
   if(!got){floater(248,326,'今日木鱼已满','other');hint('今天的木鱼功德已满 '+CAPS.mu+' 下，明天再来。');return;}
@@ -1635,7 +1664,7 @@ function bind(){
   $('#wishForm').addEventListener('submit',function(e){e.preventDefault();submitWish($('#wishText').value);});
   $('#lampForm').addEventListener('submit',function(e){e.preventDefault();submitLamp($('#lampText').value);});
   $('#dmForm').addEventListener('submit',function(e){e.preventDefault();sendDm($('#dmText').value);});
-  Array.prototype.forEach.call(document.querySelectorAll('.overlay'),function(o){o.addEventListener('click',function(e){if(o.id==='nameOverlay'&&!S.name)return;if(e.target===o||e.target.closest('[data-close]'))closeOverlay();});});
+  Array.prototype.forEach.call(document.querySelectorAll('.overlay'),function(o){o.addEventListener('click',function(e){if(o.id==='nameOverlay'&&!S.name)return;if(e.target===o&&o.id==='penaltyOverlay')return;if(e.target===o||e.target.closest('[data-close]'))closeOverlay();});});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!(!S.name&&!$('#nameOverlay').hidden))closeOverlay();});
   [['#presets',PRESETS,function(t){$('#wishText').value=t;$('#wishText').focus();}],['#presets2',PRESETS,function(t){openWish(t);}],['#lampPresets',LAMP_PRESETS,function(t){$('#lampText').value=t;$('#lampText').focus();}]].forEach(function(p){
     var box=$(p[0]);p[1].forEach(function(t){var b=document.createElement('button');b.type='button';b.textContent=t;b.addEventListener('click',function(){p[2](t);});box.appendChild(b);});});
@@ -1652,9 +1681,9 @@ function bind(){
 function tick(){mark('actions');var s=Math.floor(Date.now()/1000);if(s%3===0){mark('present');lockTick();}if(s%25===0)publishHere();if(s%30===0)mark('wishes','ledger','status','offer','rank');}
 
 /* ================= boot ================= */
-$('#rulesLine').textContent='殿规：所有存档和操作都有数字签名，谁也冒充不了谁。每项功德每日有上限（木鱼 '+CAPS.mu+'、上香 '+CAPS.in+'、叩首 '+CAPS.bo+'、撞钟 '+CAPS.be+'……一天最多 '+num(DAY_CAP)+'）。账上超出上限、或前后两份存档涨得不可能那么快，就被天道查实作弊：证据公开、全殿通报、天雷劈下、逐出山门。连点器（脚本代点、2 秒 28 下以上、节奏整齐得不像人、触屏定点、五分钟不停手）第一次作废当天功德并罚 999，第二次逐出山门。自动敲木鱼只图个响，不计功德。';
+$('#rulesLine').textContent='殿规：所有存档和操作都有数字签名，谁也冒充不了谁。每项功德每日有上限（木鱼 '+CAPS.mu+'、上香 '+CAPS.in+'、叩首 '+CAPS.bo+'、撞钟 '+CAPS.be+'……一天最多 '+num(DAY_CAP)+'）。账上超出上限、或前后两份存档涨得不可能那么快，就被天道查实作弊：证据公开、全殿通报、天雷劈下、逐出山门。连点器：脚本代点当场处罚；2 秒 36 下以上、连续 60 下节奏分毫不差、触屏 50 下落在同一个像素，这几条先警告一次，十分钟内再犯才处罚。处罚是作废当天功德并罚 999，第二次逐出山门。自动敲木鱼只图个响，不计功德。';
 $('#roomLine').textContent='殿号 '+ROOM+' · 本季开殿于 '+SEASON_LABEL+' · 联机服务：EMQX 公共 MQTT 服务器（消息公开，请勿写隐私）';
-buildRays();buildStars();applySky();bind();paintSound();loadLocal();lockTick();
+buildRays();buildStars();applySky();bind();paintSound();loadLocal();applyAmnesty();lockTick();
 $('#nameShow').textContent=S.name||'未留名';$('#scene').dataset.stats=JSON.stringify(S.stat);
 rebuildSticks();rebuildLanterns();mark('merit','actions','wishes','ledger','present','status','conn','offer','rank');
 raf=requestAnimationFrame(frame);setInterval(tick,1000);
