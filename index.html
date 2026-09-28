@@ -72,7 +72,11 @@ button{touch-action:manipulation}
 .edit select,.edit input,.panel input{background:var(--hall);border:1px solid var(--line);border-radius:6px;padding:7px 9px;color:var(--ash);font-size:16px;width:100%}
 .edit .row{grid-column:1/-1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .edit .row small{color:var(--ash-3)}
-@media (max-width:640px){.stage{flex-basis:100%}.stage + .stage{border-left:0;border-top:1px solid var(--line)}}
+@media (max-width:640px){
+  .stage{flex-basis:100%;padding:8px 14px}
+  .stage + .stage{border-left:0;border-top:1px solid var(--line)}
+  .hall{order:1}.progress{order:2}.lower{order:3}.foot{order:4}
+}
 
 /* hall */
 .hall{display:grid;justify-items:center;gap:12px}
